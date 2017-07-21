@@ -4,7 +4,7 @@ import { URLSearchParams, } from '@angular/http';
 
 import { ApiService } from 'app/common/services/api.service';
 import { ECacheType } from 'app/common/type-cache.enum';
-import { GlobalVariableService } from 'app/globalvariable.service';
+import { GlobalService } from 'app/global.service';
 import { CacheService } from 'app/common/services/cache.service';
 
 @Injectable()
@@ -27,19 +27,19 @@ export class AuthService {
 
         this._nameToken = "TOKEN_AUTH";
         this._nameEndPointAuthApi = "AUTHAPI";
-        this._typeLogin = "SSO";
-        this._authorizationUrl = GlobalVariableService.GetEndPoints().AUTH + '/connect/authorize';
-        this._client_id = 'Target-spa-v2';
-        this._redirect_uri = GlobalVariableService.GetEndPoints().APP;
+        this._typeLogin = GlobalService.getAuthSettings().TYPE_LOGIN;
+        this._authorizationUrl = GlobalService.getEndPoints().AUTH + '/connect/authorize';
+        this._client_id = GlobalService.getAuthSettings().CLIENT_ID;
+        this._redirect_uri = GlobalService.getEndPoints().APP;
         this._response_type = "token";
-        this._scope = "ssosa";
+        this._scope = GlobalService.getAuthSettings().SCOPE;
 
 
     }
 
     public loginResourceOwner(email, password, reload = false) {
 
-        this.apiAuth.setResource("auth", GlobalVariableService.GetEndPoints().AUTHAPI).post({
+        this.apiAuth.setResource("auth", GlobalService.getEndPoints().AUTHAPI).post({
 
             ClientId: this._client_id,
             ClientSecret: "******",
@@ -50,8 +50,8 @@ export class AuthService {
         }).subscribe(data => {
 
             CacheService.add(this._nameToken, data.Data.Token, ECacheType.COOKIE, 0.1);
+            this.router.navigate(["/home"]);
 
-            window.location.href = this.makeUrl('/Home');
 
             if (reload)
                 window.location.reload();
@@ -64,7 +64,7 @@ export class AuthService {
     public loginSso() {
 
 
-          
+
         let state = Date.now() + "" + Math.random();
         localStorage["state"] = state;
 
@@ -79,8 +79,6 @@ export class AuthService {
             "state=" + encodeURI(state);
 
         window.location.href = url;
-
-
         return this._typeLogin;
 
     }
@@ -92,20 +90,19 @@ export class AuthService {
     public logout() {
 
         this._reset();
-
+          
         if (this._typeLogin == "SSO") {
-            var authorizationUrl = GlobalVariableService.GetEndPoints().AUTH + 'account/logout?returnUrl=' + GlobalVariableService.GetEndPoints().APP;
+            var authorizationUrl = GlobalService.getEndPoints().AUTH + 'account/logout?returnUrl=' + GlobalService.getEndPoints().APP;
             window.location.href = authorizationUrl;
         }
         else {
-            window.location.href = this.makeUrl('/Login');
+            this.router.navigate(["/login"]);
         }
     }
 
     public processTokenCallback() {
 
-        if (window.location.href.indexOf("access_token") > -1)
-        {
+        if (window.location.href.indexOf("access_token") > -1) {
 
             let hash = window.location.hash.substr(1);
 
@@ -115,7 +112,6 @@ export class AuthService {
                 return result;
             }, {}) as any;
 
-            console.log("processTokenCallback", result);
 
             if (!result.error) {
                 if (result.state !== localStorage["state"]) {
@@ -138,6 +134,8 @@ export class AuthService {
 
         this.api.setResource('CurrentUser').get().subscribe(data => {
             callback(data)
+        }, err => {
+            this.loginSso();
         });
 
     }
