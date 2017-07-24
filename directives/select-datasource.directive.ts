@@ -30,7 +30,6 @@ export class DataSourceDirective implements OnInit {
     private datasource(el) {
 
         this.addOption(el, undefined, "Selecione");
-        console.log("datasource",this.dataitem);
         this.api.setResource(this.dataitem).getDataitem().subscribe((data) => {
             for (var i = 0; i < data.dataList.length; i++) {
                 this.addOption(el, data.dataList[i].id, data.dataList[i].name);
