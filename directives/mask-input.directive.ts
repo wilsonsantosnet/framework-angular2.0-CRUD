@@ -21,6 +21,10 @@ export class MaskInputDirective implements ControlValueAccessor {
     }
 
     writeValue(value: any): void {
+        if (value) {
+           
+            this._elemetRef.nativeElement.value = value;
+        }
     }
 
     registerOnChange(fn: any): void {
@@ -33,9 +37,11 @@ export class MaskInputDirective implements ControlValueAccessor {
 
     @HostListener('keyup', ['$event'])
     onKeyup($event: any) {
+
+        if (this.mask == "")
+            return;
+        
         var valor = $event.target.value.replace(/\D/g, '');
-        var pad = this.mask.replace(/\D/g, '').replace(/9/g, '_');
-        var valorMask = valor + pad.substring(0, pad.length - valor.length);
 
         // retorna caso pressionado backspace
         if ($event.keyCode === 8) {
@@ -43,6 +49,18 @@ export class MaskInputDirective implements ControlValueAccessor {
             return;
         }
 
+        this.aplicarMascara(valor);
+
+        $event.target.value = valor;
+        
+    }
+
+    aplicarMascara(valor)
+    {
+        var pad = this.mask.replace(/\D/g, '').replace(/9/g, '_');
+        var valorMask = valor + pad.substring(0, pad.length - valor.length);
+
+      
         if (valor.length <= pad.length) {
             this.onChange(valor);
         }
@@ -61,7 +79,7 @@ export class MaskInputDirective implements ControlValueAccessor {
             valor = valor.substr(0, valor.indexOf('_'));
         }
 
-        $event.target.value = valor;
+        return valor;
     }
     
 

@@ -33,6 +33,7 @@ export class BindCustomComponent implements OnInit, OnChanges {
 
     ngOnChanges(changes: SimpleChanges): void {
 
+        
         if (this.format.toLocaleLowerCase() === 'date')
             this.value = this.datePipe.transform(this.model, 'dd/MM/yyyy');
 
@@ -45,9 +46,9 @@ export class BindCustomComponent implements OnInit, OnChanges {
         else if (this.format.toLocaleLowerCase() === 'decimal' && !isNaN(this.model))
             this.value = this.decimalPipe.transform(this.model, '1.2-2');
 
-        else if ((this.format.toLocaleLowerCase() === 'integer' || this.format.toLocaleLowerCase() === 'int' || this.format.toLocaleLowerCase() === 'int?') && !isNaN(this.model) )
+        else if ((this.format.toLocaleLowerCase() === 'integer' || this.format.toLocaleLowerCase() === 'int' || this.format.toLocaleLowerCase() === 'int?') && !isNaN(this.model)) 
             this.value = this.decimalPipe.transform(this.model, '1.0-0');
-
+        
         else if (this.format.toLocaleLowerCase() === 'percent' && !isNaN(this.model))
             this.value = this.percentPipe.transform(this.model, '1.2-2');
 
@@ -81,7 +82,7 @@ export class BindCustomComponent implements OnInit, OnChanges {
             this.api.setResource(this.instance).getDataitem({ filterid: this.model }).subscribe(data => {
                 this.value = data.dataList[0].name;
             });
-       }
+        }
     }
 
 }
