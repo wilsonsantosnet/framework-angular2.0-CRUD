@@ -1,5 +1,6 @@
-﻿import { Directive, ElementRef, Input, Output, EventEmitter } from '@angular/core';
-import { NgModel } from '@angular/forms';
+import { Directive, ElementRef, Input, Output, EventEmitter, Optional, Self } from '@angular/core';
+
+import { NgModel, FormControlName } from '@angular/forms';
 import * as moment from 'moment';
 
 declare var $: any;
@@ -14,8 +15,8 @@ export class DateDirective {
     @Input() saUiDateTimePicker: any; //configuração do plugin
     @Output() change = new EventEmitter();
 
-    constructor(private el: ElementRef, private ngModel: NgModel) {
-       this.render();
+    constructor(private el: ElementRef, private ngModel: NgModel, @Optional() @Self() private controlName: FormControlName) {
+        this.render();
     }
 
     render() {
@@ -26,6 +27,7 @@ export class DateDirective {
         let options = $.extend(this.saUiDateTimePicker, {
             mask: '39/19/2999 29:59',
             format: 'd/m/Y H:i',
+            
             todayButton: true,
             defaultSelect: true,
             step: 30
@@ -36,12 +38,47 @@ export class DateDirective {
         let ultimoValor = '';
         $(element).on('change', ret => {
             let valor = $(element).val();
+            
             if (valor != ultimoValor) {
+
+                this.updateValue(valor, ultimoValor);
                 ultimoValor = valor;
-                this.ngModel.update.emit(valor); // necessário para atualizar o valor do 'model' no angular
-                this.change.emit(); //necessário para emitir o evento change
             }
         });
+    }
+
+
+
+    private updateValue(value,valueold) {
+
+        if (this.ngModel) {
+            this.ngModel.viewToModelUpdate(value);
+
+            if (value != valueold) {
+                this.ngModel.control.markAsDirty();
+            }
+        }
+
+        if (this.hasFormControl()) {
+            this.control.setValue(value);
+
+            if (value != valueold) {
+                this.control.markAsDirty();
+            }
+        }
+
+        this.change.emit(); //necessário para emitir o evento change
+    }
+
+    private hasFormControl() { return this.controlName && this.controlName.control; }
+
+    get control() {
+
+        if (!this.controlName) {
+            return null;
+        }
+
+        return this.controlName.control;
     }
 
 }
