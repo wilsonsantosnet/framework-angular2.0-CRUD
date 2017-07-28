@@ -1,4 +1,4 @@
-﻿import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { GlobalService } from '../../global.service';
 
@@ -36,15 +36,14 @@ export class ConfirmModalComponent implements OnInit {
     _operationVM: any;
 
     constructor() {
-       
+        this.vm = {};
+        this.vm.messageConfirmation = "tem certeza que deseja Executar Essa operação?"
     }
 
 
     ngOnInit() {
 
-        this.vm = {};
-        this.vm.messageConfirmation = "tem certeza que deseja Executar Essa operação?";
-
+        
         GlobalService.operationExecuted.subscribe((result) => {
             if (result.selector == "confirm-modal") {
                 this.vm.messageConfirmation = result.message || this.vm.messageConfirmation;
