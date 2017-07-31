@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+﻿import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { GlobalService } from '../../global.service';
 
@@ -11,8 +11,10 @@ import { GlobalService } from '../../global.service';
                     <div class="modal-header">
                       <h3 class="modal-title">Confirmação</h3>
                     </div>
-                    <div class="modal-body">
-                      {{ vm.messageConfirmation }}
+                    <div class="card">
+                      <h5 class="card-block">
+                        {{ vm.messageConfirmation }}
+                      </h5>
                     </div>
                     <div class="modal-footer">
                       <button class="btn btn-danger" type="button" (click)="onConfimationYes()">Sim</button>

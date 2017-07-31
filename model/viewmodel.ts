@@ -13,6 +13,7 @@ export class ViewModel {
         this.modelFilter = init.modelFilter;
         this.summary = init.summary;
         this.model = init.model;
+        this.details = init.details;
         this.infos = init.infos;
         this.grid = init.grid;
         this.form = init.form;
@@ -27,6 +28,7 @@ export class ViewModel {
     modelFilter: {};
     summary: any;
     model: {};
+    details: {};
     infos: any;
     grid: any;
     form: FormGroup;

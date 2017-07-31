@@ -28,6 +28,35 @@ export class ApiService<T> {
 
     }
 
+    public upload(file: File): Observable<T>
+    {
+        let url = this.makeBaseUrl();
+        this.loading(url, true);
+
+        let formData: FormData = new FormData();
+        formData.append('uploadFile', file, file.name);
+
+        let headers = new Headers();
+        headers.append('Content-Type', 'multipart/form-data');
+        headers.append('Accept', 'application/json');
+        let options = new RequestOptions({ headers: headers });
+
+        return this.http.post(this.makeBaseUrl(),
+            formData,
+            options)
+            .map(res => {
+                this.notification(res);
+                return this.successResult(res);
+            })
+            .catch(error => {
+                return this.errorResult(error);
+            })
+            .finally(() => {
+                this.loading(url, false);
+            });
+
+    }
+
     public post(data: any): Observable<T> {
 
         let url = this.makeBaseUrl();

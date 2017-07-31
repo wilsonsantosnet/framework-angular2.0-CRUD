@@ -1,5 +1,8 @@
 ﻿import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { DatePipe, DecimalPipe, PercentPipe, CurrencyPipe } from "@angular/common";
+
+
+
 import { ApiService } from "app/common/services/api.service";
 
 @Component({
@@ -24,26 +27,33 @@ export class BindCustomComponent implements OnInit, OnChanges {
     @Input() instance: string;
     @Input() filterid: string;
 
+    //datePipe: DatePipe;
+
     constructor(
-        private datePipe: DatePipe,
         private decimalPipe: DecimalPipe,
         private percentPipe: PercentPipe,
         private currencyPipe: CurrencyPipe,
-        private api: ApiService<any>) { }
+        private api: ApiService<any>) {
+
+        //this.datePipe = new DatePipe("pt-BR");
+
+    }
 
     ngOnChanges(changes: SimpleChanges): void {
 
-        
-        if (this.format.toLocaleLowerCase() === 'date')
-            this.value = this.datePipe.transform(this.model, 'dd/MM/yyyy');
 
-        else if (this.format.toLocaleLowerCase() === 'time')
-            this.value = this.datePipe.transform(this.model, 'HH:mm');
+        //console.log(moment().format('MMMM Do YYYY, h:mm:ss a'));
+        //if (this.format.toLocaleLowerCase() === 'date')
+        //    this.value = this.datePipe.transform(this.model, 'dd/MM/yyyy');
 
-        else if (this.format.toLocaleLowerCase() === 'datetime' || this.format.toLocaleLowerCase() === 'datetime?')
-            this.value = this.datePipe.transform(this.model, 'dd/MM/yyyy HH:mm');
+        //else if (this.format.toLocaleLowerCase() === 'time')
+        //    this.value = this.datePipe.transform(this.model, 'HH:mm');
 
-        else if (this.format.toLocaleLowerCase() === 'decimal' && !isNaN(this.model))
+        //else if (this.format.toLocaleLowerCase() === 'datetime' || this.format.toLocaleLowerCase() === 'datetime?')
+        //     this.value = this.datePipe.transform(this.model, 'dd/MM/yyyy HH:mm');
+       
+
+        if (this.format.toLocaleLowerCase() === 'decimal' && !isNaN(this.model))
             this.value = this.decimalPipe.transform(this.model, '1.2-2');
 
         else if ((this.format.toLocaleLowerCase() === 'integer' || this.format.toLocaleLowerCase() === 'int' || this.format.toLocaleLowerCase() === 'int?') && !isNaN(this.model)) 

@@ -9,10 +9,9 @@ import { GlobalService } from 'app/global.service';
       <thead>
         <tr>
           <th *ngFor="let info of vm.grid">
-            {{ info.label }}
             <button class="btn btn-sm btn-default pull-right" (click)="onOrderBy(info.label)">
               <i class="fa fa-arrows-v"></i>
-            </button>
+            </button> {{ info.label }}
           </th>
           <th width="175" class="text-center">Ações</th>
         </tr>
