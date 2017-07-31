@@ -4,7 +4,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { PaginationModule } from 'ngx-bootstrap/pagination'
 import { ModalModule } from 'ngx-bootstrap/modal';
-import { MomentModule } from 'angular2-moment';
 
 import { BindCustomComponent } from './components/bind-custom.component';
 import { MakeGridComponent } from './components/grid.component'
@@ -24,8 +23,7 @@ import { EditorHtmlDiretive } from './directives/editor-html.directive';
         CommonModule,
         ReactiveFormsModule,
         PaginationModule.forRoot(),
-        ModalModule.forRoot(), 
-        MomentModule
+        ModalModule.forRoot() 
     ],
     declarations: [
         BindCustomComponent,
