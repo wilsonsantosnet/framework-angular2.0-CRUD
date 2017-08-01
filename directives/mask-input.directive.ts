@@ -49,7 +49,7 @@ export class MaskInputDirective implements ControlValueAccessor {
             return;
         }
 
-        this.aplicarMascara(valor);
+         valor = this.aplicarMascara(valor);
 
         $event.target.value = valor;
         
