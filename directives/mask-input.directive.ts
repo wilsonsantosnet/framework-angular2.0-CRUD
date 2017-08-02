@@ -1,4 +1,4 @@
-﻿import { Directive, ElementRef, Renderer, Input, OnInit, HostListener } from '@angular/core';
+import { Directive, ElementRef, Renderer, Input, OnInit, HostListener } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 
 @Directive({
@@ -49,19 +49,17 @@ export class MaskInputDirective implements ControlValueAccessor {
             return;
         }
 
-         valor = this.aplicarMascara(valor);
-
-        $event.target.value = valor;
-        
+		var valorComMascara = this.aplicarMascara(valor);
+		$event.target.value = valorComMascara;
+		this.onChange(valorComMascara);
     }
 
     aplicarMascara(valor)
     {
         var pad = this.mask.replace(/\D/g, '').replace(/9/g, '_');
         var valorMask = valor + pad.substring(0, pad.length - valor.length);
-
-      
-        if (valor.length <= pad.length) {
+	      
+		if (valor.length <= pad.length) {
             this.onChange(valor);
         }
 
