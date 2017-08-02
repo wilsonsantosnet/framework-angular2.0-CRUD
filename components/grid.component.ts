@@ -1,4 +1,4 @@
-﻿import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { GlobalService } from 'app/global.service';
 
@@ -8,18 +8,18 @@ import { GlobalService } from 'app/global.service';
     <table class="table">
       <thead>
         <tr>
-          <th *ngFor="let info of vm.grid">
-            <button class="btn btn-sm btn-default pull-right" (click)="onOrderBy(info.label)">
+          <th *ngFor="let grid of vm.grid">
+            <button class="btn btn-sm btn-default pull-right" (click)="onOrderBy(grid.key)">
               <i class="fa fa-arrows-v"></i>
-            </button> {{ info.label }}
+            </button> {{ grid.info.label }}
           </th>
           <th width="175" class="text-center">Ações</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let item of vm.filterResult">
-          <td *ngFor="let info of vm.grid">
-            <bind-custom [model]="item[info.label]" [format]="info.type" [tag]="'span'"></bind-custom>
+          <td *ngFor="let grid of vm.grid">
+            <bind-custom [model]="item[grid.key]" [format]="grid.info.type" [tag]="'span'"></bind-custom>
           </td>
 
           <td>
