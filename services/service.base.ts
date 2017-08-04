@@ -4,12 +4,11 @@
     protected getInfoGrid(infos) {
 
         var list = [];
-        for (let key in infos) {
-            var info = infos[key];
-            if (info.list == true)
-                list.push({ key: key, info: info });
+		for (let key in infos) {
+			var info = infos[key];
+			if (info.list == true)
+				list.push({key: key, info: info});
         }
-
         return list;
     }
 

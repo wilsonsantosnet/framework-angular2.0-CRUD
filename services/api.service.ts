@@ -152,9 +152,9 @@ export class ApiService<T> {
     public setResource(resource: string, endpoint?: string): ApiService<T> {
 
         this._resource = resource;
-        this._apiDefault = GlobalService.getEndPoints().DEFAULT;
+		this._apiDefault = GlobalService.getEndPoints().DEFAULT;
 
-        if (endpoint !== undefined)
+        if (endpoint)
             this._apiDefault = endpoint;
 
         return this;

@@ -25,6 +25,7 @@ export class BindCustomComponent implements OnInit, OnChanges {
     @Input() format: string;
     @Input() tag: string;
     @Input() instance: string;
+    @Input() endpoint: string;
     @Input() filterid: string;
 
     //datePipe: DatePipe;
@@ -51,14 +52,14 @@ export class BindCustomComponent implements OnInit, OnChanges {
 
         //else if (this.format.toLocaleLowerCase() === 'datetime' || this.format.toLocaleLowerCase() === 'datetime?')
         //     this.value = this.datePipe.transform(this.model, 'dd/MM/yyyy HH:mm');
-       
+
 
         if (this.format.toLocaleLowerCase() === 'decimal' && !isNaN(this.model))
             this.value = this.decimalPipe.transform(this.model, '1.2-2');
 
-        else if ((this.format.toLocaleLowerCase() === 'integer' || this.format.toLocaleLowerCase() === 'int' || this.format.toLocaleLowerCase() === 'int?') && !isNaN(this.model)) 
+        else if ((this.format.toLocaleLowerCase() === 'integer' || this.format.toLocaleLowerCase() === 'int' || this.format.toLocaleLowerCase() === 'int?') && !isNaN(this.model))
             this.value = this.decimalPipe.transform(this.model, '1.0-0');
-        
+
         else if (this.format.toLocaleLowerCase() === 'percent' && !isNaN(this.model))
             this.value = this.percentPipe.transform(this.model, '1.2-2');
 
@@ -89,7 +90,7 @@ export class BindCustomComponent implements OnInit, OnChanges {
         }
 
         if (this.instance != undefined && this.model != undefined) {
-            this.api.setResource(this.instance).getDataitem({ filterid: this.model }).subscribe(data => {
+            this.api.setResource(this.instance, this.endpoint).getDataitem({ filterid: this.model }).subscribe(data => {
                 this.value = data.dataList[0].name;
             });
         }

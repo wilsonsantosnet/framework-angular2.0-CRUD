@@ -9,6 +9,7 @@ import { BindCustomComponent } from './components/bind-custom.component';
 import { MakeGridComponent } from './components/grid.component'
 import { MakePaginationComponent } from 'app/common/components/pagination.component';
 import { ConfirmModalComponent } from 'app/common/components/confirm-modal.component';
+import { CepComponent } from 'app/common/components/cep.component';
 
 import { DataSourceDirective } from './directives/select-datasource.directive';
 import { MaskInputDirective } from './directives/mask-input.directive';
@@ -33,7 +34,8 @@ import { EditorHtmlDiretive } from './directives/editor-html.directive';
         MaskInputDirective,
         DateDirective,
         EditorHtmlDiretive,
-        MakeGridComponent
+        MakeGridComponent,
+        CepComponent
     ],
     providers: [
     ],
@@ -41,9 +43,10 @@ import { EditorHtmlDiretive } from './directives/editor-html.directive';
         BindCustomComponent,
         MakePaginationComponent,
         ConfirmModalComponent,
+        MakeGridComponent,
+        CepComponent,
         DataSourceDirective,
         MaskInputDirective,
-        MakeGridComponent,
         DateDirective,
         EditorHtmlDiretive]
 })
