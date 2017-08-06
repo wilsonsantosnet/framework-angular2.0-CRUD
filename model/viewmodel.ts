@@ -27,8 +27,8 @@ export class ViewModel {
     filterResult: any[];
     modelFilter: {};
     summary: any;
-    model: {};
-    details: {};
+    model: any;
+    details: any;
     infos: any;
     grid: any;
     form: FormGroup;
