@@ -10,6 +10,8 @@ import { MakeGridComponent } from './components/grid.component'
 import { MakePaginationComponent } from 'app/common/components/pagination.component';
 import { ConfirmModalComponent } from 'app/common/components/confirm-modal.component';
 import { CepComponent } from 'app/common/components/cep.component';
+import { UploadCustomComponent } from 'app/common/components/upload-file.component';
+
 
 import { DataSourceDirective } from './directives/select-datasource.directive';
 import { MaskInputDirective } from './directives/mask-input.directive';
@@ -35,7 +37,8 @@ import { EditorHtmlDiretive } from './directives/editor-html.directive';
         DateDirective,
         EditorHtmlDiretive,
         MakeGridComponent,
-        CepComponent
+        CepComponent,
+        UploadCustomComponent
     ],
     providers: [
     ],
@@ -45,6 +48,7 @@ import { EditorHtmlDiretive } from './directives/editor-html.directive';
         ConfirmModalComponent,
         MakeGridComponent,
         CepComponent,
+        UploadCustomComponent,
         DataSourceDirective,
         MaskInputDirective,
         DateDirective,

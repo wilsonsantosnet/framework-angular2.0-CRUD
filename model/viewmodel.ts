@@ -25,7 +25,7 @@ export class ViewModel {
     actionDescription: string;
     downloadUri: string;
     filterResult: any[];
-    modelFilter: {};
+    modelFilter: any;
     summary: any;
     model: any;
     details: any;

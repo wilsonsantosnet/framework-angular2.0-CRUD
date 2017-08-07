@@ -27,6 +27,7 @@ export class BindCustomComponent implements OnInit, OnChanges {
     @Input() instance: string;
     @Input() endpoint: string;
     @Input() filterid: string;
+    @Input() aux: any;
 
     //datePipe: DatePipe;
 
@@ -56,22 +57,20 @@ export class BindCustomComponent implements OnInit, OnChanges {
 
         if (this.format.toLocaleLowerCase() === 'decimal' && !isNaN(this.model))
             this.value = this.decimalPipe.transform(this.model, '1.2-2');
-
         else if ((this.format.toLocaleLowerCase() === 'integer' || this.format.toLocaleLowerCase() === 'int' || this.format.toLocaleLowerCase() === 'int?') && !isNaN(this.model))
             this.value = this.decimalPipe.transform(this.model, '1.0-0');
-
         else if (this.format.toLocaleLowerCase() === 'percent' && !isNaN(this.model))
             this.value = this.percentPipe.transform(this.model, '1.2-2');
-
         else if (this.format.toLocaleLowerCase() === 'currency' && !isNaN(this.model))
             this.value = this.currencyPipe.transform(this.model, 'BRL', true, '1.2-2');
-
         else if (this.format.toLocaleLowerCase() === 'bool' || this.format.toLocaleLowerCase() === 'bool?')
             this.value = (this.model == true ? "Sim" : "Não");
-
         else if (this.format.toLocaleLowerCase() === 'instance')
             this._getInstance();
-
+        else if (this.format.toLocaleLowerCase() === 'dataitem')
+            this.value = this._getInDataItem(this.model, this.aux);
+        else if (this.format.toLocaleLowerCase() === 'changevalue')
+            this.value = this._getChangeForThis(this.model, this.aux);
         else
             this.value = this.model;
     }
@@ -80,12 +79,22 @@ export class BindCustomComponent implements OnInit, OnChanges {
 
     }
 
+    private _getInDataItem(model, dataitem) {
+
+        var result = dataitem.filter(function (item) {
+            return model == item.id;
+        });
+        return result.length > 0 ? result[0].name : "--";
+    }
+
+    private _getChangeForThis(model, newValue) {
+        return newValue;
+    }
 
     private _getInstance() {
 
 
         if (!this.instance || !this.model) {
-            this.value = "carregando...";
             return;
         }
 

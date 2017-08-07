@@ -9,11 +9,9 @@ import { ApiService } from '../services/api.service';
         <pagination 
             (pageChanged)="onPageChanged($event)" 
             itemsPerPage="10" 
-            totalItems="{{vm.summary.total}}" 
+            [totalItems]="vm.summary.total" 
             previousText="Anterior"
-            nextText="Próximo" 
-            maxSize="5" 
-            rotate="true">
+            nextText="Próximo">
         </pagination>
 
         <div class="pull-right">
@@ -27,7 +25,11 @@ export class MakePaginationComponent {
 
     @Input() vm: any;
     @Output() pageChanged = new EventEmitter<any>();
-    constructor() { }
+    public initialPage: number;
+    constructor() {
+
+        this.initialPage = 1;
+    }
 
     onPageChanged(e: any) {
 

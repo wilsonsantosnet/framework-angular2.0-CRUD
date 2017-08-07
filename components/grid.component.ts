@@ -9,9 +9,9 @@ import { GlobalService } from 'app/global.service';
       <thead>
         <tr>
           <th *ngFor="let grid of vm.grid">
-            <button class="btn btn-sm btn-default pull-right" (click)="onOrderBy(grid.key)">
-              <i class="fa fa-arrows-v"></i>
-            </button> {{ grid.info.label }}
+            <a href (click)="onOrderBy(grid.key)">
+              {{ grid.info.label }}
+            </a> 
           </th>
           <th width="175" class="text-center">Ações</th>
         </tr>
@@ -19,7 +19,7 @@ import { GlobalService } from 'app/global.service';
       <tbody>
         <tr *ngFor="let item of vm.filterResult">
           <td *ngFor="let grid of vm.grid">
-            <bind-custom [model]="item[grid.key]" [format]="grid.info.type" [tag]="'span'"></bind-custom>
+            <bind-custom [model]="item[grid.key]" [format]="grid.info.type" [tag]="'span'" [aux]="grid.info.aux"></bind-custom>
           </td>
 
           <td>

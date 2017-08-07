@@ -43,7 +43,7 @@ export class AuthService {
 
             ClientId: this._client_id,
             ClientSecret: "******",
-            Scope: "openid profile ssosa",
+            Scope: "openid profile ssosm",
             User: email,
             Password: password
 
