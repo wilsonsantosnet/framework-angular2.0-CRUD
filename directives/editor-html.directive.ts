@@ -8,7 +8,6 @@ declare var $: any;
 })
 
 export class EditorHtmlDiretive implements OnInit {
-    @Input() elementId: String;
     @Output() editorKeyup = new EventEmitter<number>();
 
     constructor(private el: ElementRef, private ngModel: NgModel) {
