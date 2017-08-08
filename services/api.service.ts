@@ -1,4 +1,4 @@
-﻿import { Http, RequestOptions, Response, Headers, URLSearchParams } from '@angular/http';
+import { Http, RequestOptions, Response, Headers, URLSearchParams } from '@angular/http';
 import { Router } from '@angular/router';
 import { Inject, Injectable, OnInit } from '@angular/core';
 import { Observable, Observer } from 'rxjs/Rx';
@@ -28,21 +28,20 @@ export class ApiService<T> {
 
     }
 
-    public upload(file: File): Observable<T>
-    {
-        let url = this.makeBaseUrl("/document");
+    public upload(file: File, folder: string): Observable<T> {
+        let url = this.makeResourceUpload();
         this.loading(url, true);
+     
 
-        let rootFolder = 'upload';
         let formData: FormData = new FormData();
         formData.append('files', file, file.name);
-        formData.append('folder', rootFolder + '/' + folder);
+        formData.append('folder', folder);
 
         let headers = new Headers();
         headers.append('Authorization', "Bearer " + CacheService.get('TOKEN_AUTH', ECacheType.COOKIE))
         let options = new RequestOptions({ headers: headers });
 
-        return this.http.post(this.makeBaseUrl(),
+        return this.http.post(url,
             formData,
             options)
             .map(res => {
@@ -56,6 +55,26 @@ export class ApiService<T> {
                 this.loading(url, false);
             });
 
+    }
+
+    public deleteUpload(folder: string, fileName: string): Observable<T> {
+
+
+        let url = this.makeResourceDeleteUpload(folder, fileName);
+        this.loading(url, true);
+
+        return this.http.delete(url,
+            this.requestOptions())
+            .map(res => {
+                this.notification(res);
+                return this.successResult(res);
+            })
+            .catch(error => {
+                return this.errorResult(error);
+            })
+            .finally(() => {
+                this.loading(url, false);
+            });
     }
 
     public post(data: any): Observable<T> {
@@ -77,6 +96,8 @@ export class ApiService<T> {
                 this.loading(url, false);
             });
     }
+
+    
 
     public delete(data: any): Observable<T> {
 
@@ -153,7 +174,7 @@ export class ApiService<T> {
     public setResource(resource: string, endpoint?: string): ApiService<T> {
 
         this._resource = resource;
-		this._apiDefault = GlobalService.getEndPoints().DEFAULT;
+        this._apiDefault = GlobalService.getEndPoints().DEFAULT;
 
         if (endpoint)
             this._apiDefault = endpoint;
@@ -192,10 +213,21 @@ export class ApiService<T> {
 
     }
 
-   private makeBaseUrl(subDominio?: string): string {
+    private makeResourceUpload(): string {
+
+        return this.makeBaseUrl("document");
+
+    }
+
+    private makeResourceDeleteUpload(folder:string, fileName : string): string {
+
+        return this.makeBaseUrl("document") + "/" + folder + "/" + fileName;
+    }
+
+    private makeBaseUrl(subDominio?: string): string {
         let url = ``;
         if (subDominio)
-            url = `${this._apiDefault}${subDominio}/${this.getResource()}`;
+            url = `${this._apiDefault}/${subDominio}/${this.getResource()}`;
         else 
             url = `${this._apiDefault}/${this.getResource()}`;
             
@@ -294,6 +326,4 @@ export class ApiService<T> {
     private loading(url: string, value: boolean) {
         GlobalService.operationRequesting.emit(value);
     }
-
-
 }
