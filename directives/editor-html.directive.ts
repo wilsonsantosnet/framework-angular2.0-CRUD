@@ -28,7 +28,7 @@ export class EditorHtmlDiretive implements OnInit {
             plugins: ['link', 'paste', 'table'],
             skin_url: 'assets/css/skins/lightgray',
             setup: editor => {
-                editor.on('keyup', () => {
+                editor.on('change', () => {
                     const content = editor.getContent();
                     this.editorKeyup.emit(content);
                   });
