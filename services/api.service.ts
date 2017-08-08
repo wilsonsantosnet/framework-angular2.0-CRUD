@@ -30,15 +30,16 @@ export class ApiService<T> {
 
     public upload(file: File): Observable<T>
     {
-        let url = this.makeBaseUrl();
+        let url = this.makeBaseUrl("/document");
         this.loading(url, true);
 
+        let rootFolder = 'upload';
         let formData: FormData = new FormData();
-        formData.append('uploadFile', file, file.name);
+        formData.append('files', file, file.name);
+        formData.append('folder', rootFolder + '/' + folder);
 
         let headers = new Headers();
-        headers.append('Content-Type', 'multipart/form-data');
-        headers.append('Accept', 'application/json');
+        headers.append('Authorization', "Bearer " + CacheService.get('TOKEN_AUTH', ECacheType.COOKIE))
         let options = new RequestOptions({ headers: headers });
 
         return this.http.post(this.makeBaseUrl(),
@@ -191,8 +192,14 @@ export class ApiService<T> {
 
     }
 
-    private makeBaseUrl(): string {
-        return `${this._apiDefault}/${this.getResource()}`;
+   private makeBaseUrl(subDominio?: string): string {
+        let url = ``;
+        if (subDominio)
+            url = `${this._apiDefault}${subDominio}/${this.getResource()}`;
+        else 
+            url = `${this._apiDefault}/${this.getResource()}`;
+            
+        return url;
     }
 
     private makeSearchParams(filters?: any): URLSearchParams {
