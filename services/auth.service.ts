@@ -134,10 +134,8 @@ export class AuthService {
 
         this.api.setResource('CurrentUser').get().subscribe(data => {
             callback(data)
-        }, err => {
-            this.loginSso();
-        });
-
+        }, err => {});
+        
     }
 
     public isAuthenticated(): boolean {
