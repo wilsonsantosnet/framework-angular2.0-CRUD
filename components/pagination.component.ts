@@ -7,9 +7,10 @@ import { ApiService } from '../services/api.service';
     selector: 'make-pagination',
     template: `
         <pagination 
-            (pageChanged)="onPageChanged($event)" 
-            itemsPerPage="10" 
+           (pageChanged)="onPageChanged($event)" 
+            [itemsPerPage]="vm.summary.pageSize" 
             [totalItems]="vm.summary.total" 
+            [maxSize]="5"
             previousText="Anterior"
             nextText="Próximo">
         </pagination>
