@@ -238,7 +238,17 @@ export class ApiService<T> {
         const params = new URLSearchParams();
         if (filters != null) {
             for (const key in filters) {
-                if (filters.hasOwnProperty(key)) {
+
+                if (key.toLowerCase().startsWith("collection"))
+                {
+                    if (filters[key]) {
+                        let values = filters[key].toString().split(",");
+                        for (let value in values) {
+                            params.append(key, values[value]);
+                        }
+                    }
+                }
+                else if (filters.hasOwnProperty(key)) {
                     params.set(key, filters[key]);
                 }
             }
