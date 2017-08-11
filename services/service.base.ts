@@ -21,4 +21,19 @@
         });
 
     }
+	 
+	 public detectChanges(changeDetector: any) {
+
+		changeDetector.detach();
+
+		setInterval(() => {
+			changeDetector.reattach();
+
+			if (changeDetector && !(changeDetector as ViewRef_).destroyed) {
+				changeDetector.detectChanges();
+			}
+
+			changeDetector.detach();
+		}, 250);
+	}
 }
