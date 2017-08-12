@@ -1,4 +1,6 @@
-﻿export class ServiceBase {
+import { ViewRef_ } from "@angular/core/src/view";
+
+export class ServiceBase {
 
 
     protected getInfoGrid(infos) {
