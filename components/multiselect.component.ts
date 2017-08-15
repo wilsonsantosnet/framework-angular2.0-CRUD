@@ -33,15 +33,26 @@ export class MultiSelectComponent implements OnInit {
         this._collectionjsonTemplate = "";
     }
 
-    onChange(e) {
-
-        this._model.push(e.target.value);
+    onChange(e) {        
+        this.addItem(e.target.value, e.target.checked);        
 
         if (this.type.toLowerCase() == "filter")
             return this.vm.modelFilter[this.ctrlName] = this.serializeToFilter();
 
         this.vm.model[this.ctrlName] = this.serializeToSave();
 
+    }
+
+
+    private addItem(value: any, checked: boolean) {
+        if(checked)
+            this._model.push(value);
+        else {
+            var index = this._model.indexOf(value);
+            if (index > -1) {
+                this._model.splice(index, 1);
+            }
+        }
     }
 
     private serializeToSave() {
