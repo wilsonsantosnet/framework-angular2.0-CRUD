@@ -1,4 +1,4 @@
-﻿import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { DatePipe, DecimalPipe, PercentPipe, CurrencyPipe } from "@angular/common";
 
 
@@ -26,7 +26,7 @@ export class BindCustomComponent implements OnInit, OnChanges {
     @Input() tag: string;
     @Input() instance: string;
     @Input() endpoint: string;
-    @Input() filterid: string;
+    @Input() key: string;
     @Input() aux: any;
 
     //datePipe: DatePipe;
@@ -98,11 +98,13 @@ export class BindCustomComponent implements OnInit, OnChanges {
             return;
         }
 
-        if (this.instance != undefined && this.model != undefined) {
-            this.api.setResource(this.instance, this.endpoint).getDataitem({ filterid: this.model }).subscribe(data => {
-                this.value = data.dataList[0].name;
-            });
-        }
+        let filters = [];
+        filters[this.key] = this.model
+
+        this.api.setResource(this.instance, this.endpoint).getDataitem(filters).subscribe(data => {
+            this.value = data.dataList[0].name;
+        });
+
     }
 
 }
