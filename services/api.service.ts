@@ -140,6 +140,30 @@ export class ApiService<T> {
                 this.loading(url, false);
             });
     }
+    
+    public export(filters?: any): Observable<T> {
+
+        if (filters == null)  filters = {};
+        filters.AttributeBehavior = 'Export';
+        filters.FilterBehavior = 'Export';
+        var url = this.makeResourceMore();
+
+        this.loading(url, true);
+
+        return this.http.get(url,
+            this.requestOptions().merge(new RequestOptions({
+                search: this.makeSearchParams(filters)
+            })))
+            .map(res => {
+                return res;
+            })
+            .catch(error => {
+                return this.errorResult(error);
+            })
+            .finally(() => {
+                this.loading(url, false);
+            });
+    }
 
     public getDataListCustom(filters?: any): Observable<T> {
         return this.getMethodCustom('GetDataListCustom');
