@@ -11,7 +11,7 @@ import { MakePaginationComponent } from 'app/common/components/pagination.compon
 import { ConfirmModalComponent } from 'app/common/components/confirm-modal.component';
 import { CepComponent } from 'app/common/components/cep.component';
 import { UploadCustomComponent } from 'app/common/components/upload-file.component';
-
+import { MultiSelectComponent } from 'app/common/components/multiselect.component';
 
 import { DataSourceDirective } from './directives/select-datasource.directive';
 import { MaskInputDirective } from './directives/mask-input.directive';
@@ -38,7 +38,8 @@ import { EditorHtmlDiretive } from './directives/editor-html.directive';
         EditorHtmlDiretive,
         MakeGridComponent,
         CepComponent,
-        UploadCustomComponent
+        UploadCustomComponent,
+        MultiSelectComponent
     ],
     providers: [
     ],
@@ -52,7 +53,8 @@ import { EditorHtmlDiretive } from './directives/editor-html.directive';
         DataSourceDirective,
         MaskInputDirective,
         DateDirective,
-        EditorHtmlDiretive]
+        EditorHtmlDiretive,
+        MultiSelectComponent]
 })
 export class CommonSharedModule {
 
