@@ -1,17 +1,17 @@
-﻿import { Component, NgModule, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, NgModule, OnInit, Input, Output, EventEmitter, ViewChild, AfterViewChecked, AfterViewInit, DoCheck, AfterContentChecked, AfterContentInit } from '@angular/core';
 
 import { ApiService } from "app/common/services/api.service";
+import { GlobalService } from "../../global.service";
 
 @Component({
     selector: 'multiselect',
     template: ` <section class="col-md-12 section-scroll" >
     <div class='checkbox' *ngFor="let option of _datasource">
       <label>
-          <input type='checkbox'  ([ngModel])='option.id' name='{{ctrlNameItem}}'  value='{{option.id}}' (change)='onChange($event)' /> {{ option.name }}
+          <input type='checkbox' [(ngModel)]='option.checked' name='{{ctrlNameItem}}'  value='{{option.id}}' (change)='onChange($event)' /> {{ option.name }}
       </label>
     </div>
-  </section>
- `
+  </section>`
 })
 export class MultiSelectComponent implements OnInit {
 
@@ -23,18 +23,38 @@ export class MultiSelectComponent implements OnInit {
     @Input() type: string;
 
 
-    private _datasource: any;
-    private _model: any;
+    private _datasource: any[];
+    private _modelOutput: any;
     private _collectionjsonTemplate
+    private _modelInput: any;
 
     constructor(private api: ApiService<any>) {
-        this._model = [];
         this.type = "filter";
+    }
+
+    ngOnInit() {
+
+        this.init();
+        this._getInstance();
+
+        GlobalService.notification.subscribe((selector) => {
+            if (selector == "multiselect") {
+                this.init();
+                this._getInstance();
+            }
+        })
+    }
+
+    init() {
+        this._modelOutput = [];
+        this._datasource = [];
+        this._modelInput = this.vm.model[this.ctrlName];
         this._collectionjsonTemplate = "";
     }
 
-    onChange(e) {        
-        this.addItem(e.target.value, e.target.checked);        
+    onChange(e) {
+
+        this.addItem(e.target.value, e.target.checked);
 
         if (this.type.toLowerCase() == "filter")
             return this.vm.modelFilter[this.ctrlName] = this.serializeToFilter();
@@ -45,22 +65,24 @@ export class MultiSelectComponent implements OnInit {
 
 
     private addItem(value: any, checked: boolean) {
-        if(checked)
-            this._model.push(value);
+
+        if (checked) {
+            this._modelOutput.push(value);
+        }
         else {
-            var index = this._model.indexOf(value);
-            if (index > -1) {
-                this._model.splice(index, 1);
-            }
+            this._modelOutput = this._modelOutput.filter((item) => {
+                return item != value;
+            });
         }
     }
 
     private serializeToSave() {
 
+        console.log("serializeToSave", this._modelOutput);
         let items: any = [];
 
-        for (let item in this._model) {
-            items.push(`{ "${this.ctrlNameItem}" : "${this._model[item]}"}`);
+        for (let item in this._modelOutput) {
+            items.push(`{ "${this.ctrlNameItem}" : "${this._modelOutput[item]}"}`);
         }
 
         this._collectionjsonTemplate = `[ ${items.join()} ]`;
@@ -69,17 +91,27 @@ export class MultiSelectComponent implements OnInit {
     }
 
     private serializeToFilter() {
-        return this._model.join()
-    }
-
-    ngOnInit() {
-        this._getInstance();
+        return this._modelOutput.join()
     }
 
     private _getInstance() {
 
+
         this.api.setResource(this.dataitem, this.endpoint).getDataitem().subscribe(result => {
-            this._datasource = result.dataList;
+            this._datasource = [];
+            for (let item in result.dataList) {
+                this._datasource.push({
+                    id: result.dataList[item].id,
+                    name: result.dataList[item].name,
+                    checked: this._modelInput ? this._modelInput.filter((selecteds) => {
+                        let checked = selecteds[this.ctrlNameItem] == result.dataList[item].id;
+                        if (checked)
+                            this.addItem(result.dataList[item].id, checked);
+                        return checked;
+                    }).length > 0 : false
+                });
+            }
+
         });
     }
 }
