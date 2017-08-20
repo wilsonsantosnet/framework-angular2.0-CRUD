@@ -26,7 +26,8 @@ import { EditorHtmlDiretive } from './directives/editor-html.directive';
         CommonModule,
         ReactiveFormsModule,
         PaginationModule.forRoot(),
-        ModalModule.forRoot() 
+        ModalModule.forRoot(),
+        FormsModule,
     ],
     declarations: [
         BindCustomComponent,
