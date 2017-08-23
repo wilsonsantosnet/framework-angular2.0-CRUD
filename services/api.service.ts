@@ -186,7 +186,7 @@ export class ApiService<T> {
         if (filters == null)
             filters = {};
 
-        filters.AttributeBehavior = method;
+        filters.FilterBehavior = method;
         return this.getBase(this.makeResourceMore(), filters);
 
     }
