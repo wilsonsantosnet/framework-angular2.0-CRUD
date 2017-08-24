@@ -1,7 +1,6 @@
-﻿import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 
 import { GlobalService } from 'app/global.service';
-import { ViewModel } from '../model/viewmodel';
 
 @Component({
     selector: 'make-grid',
@@ -16,21 +15,24 @@ import { ViewModel } from '../model/viewmodel';
                   <i class="fa fa-sort table-sort__icon" aria-hidden="true" data-mockup="sort-icon" data-icon="fa-sort"></i>
                 </span>
               </th>
-              <th width="175" class="text-center">Ações</th>
+              <th class="text-center">Ações</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let item of vm.filterResult">
 
-              <td *ngFor="let grid of vm.grid">
+              <td *ngFor="let grid of vm.grid" class="text-nowrap">
                 <bind-custom [model]="bindFields(item, grid.key)" 
                              [format]="grid.info.type" 
                              [tag]="'span'"
                              [aux]="grid.info.aux"></bind-custom>
               </td>
 
-              <td class="text-center">
-                <button (click)="onEdit(item)" *ngIf="showEdit" tooltip-placement="top" uib-tooltip="Editar" class="btn btn-sm btn-default">
+              <td class="text-center text-nowrap">
+                <button *ngFor="let btn of customButton" (click)="btn.click(item)" tooltip-placement="top" uib-tooltip="btn.tooltip" class="btn btn-sm {{ btn.class }}">
+                  <i class="fa {{ btn.icon }}"></i>
+                </button>
+                <button (click)="onEdit(item)" *ngIf="showEdit" tooltip-placement="top" uib-tooltip="Editar" class="btn btn-sm btn-primary">
                   <i class="fa fa-pencil"></i>
                 </button>
                 <button (click)="onDetails(item)" *ngIf="showDetails" tooltip-placement="top" uib-tooltip="Detalhes" class="btn btn-sm">
@@ -50,12 +52,15 @@ import { ViewModel } from '../model/viewmodel';
 })
 export class MakeGridComponent implements OnChanges {
 
-    @Input() vm: ViewModel<any>
+    @Input() vm: any;
 
     @Input() showEdit: boolean = true;
     @Input() showDetails: boolean = true;
     @Input() showPrint: boolean = true;
     @Input() showDelete: boolean = true;
+
+    // [{ class: 'btn-success', tooltip: 'Configuracao', icon: 'fa-cog', click: (model) => { this.router.navigate(['/estagio/configuracao', model.estagioId]); } }]
+    @Input() customButton: any = [];
 
     @Output() edit = new EventEmitter<any>();
     @Output() details = new EventEmitter<any>();
