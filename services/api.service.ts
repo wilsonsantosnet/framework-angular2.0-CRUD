@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { Inject, Injectable, OnInit } from '@angular/core';
 import { Observable, Observer } from 'rxjs/Rx';
 
-
 import { ECacheType } from 'app/common/type-cache.enum';
 import { GlobalService } from 'app/global.service';
 import { CacheService } from 'app/common/services/cache.service';
@@ -14,34 +13,33 @@ export class ApiService<T> {
 
     protected _resource: string;
     private _enableNotifification: boolean;
+    private _enableLoading: boolean;
     private _apiDefault: string;
 
     constructor(private http: Http, private notificationsService: NotificationsService, private router: Router) {
 
         this._apiDefault = GlobalService.getEndPoints().DEFAULT
         this._enableNotifification = true;
+        this._enableLoading = true;
     }
-
+   
     public get(filters?: any, onlyDataResult?: boolean): Observable<T> {
 
         return this.getBase(this.makeBaseUrl(), filters);
 
     }
 
-    public upload(file: File, folder: string): Observable<T> {
-        let url = this.makeResourceUpload();
-        this.loading(url, true);
-     
+    public uploadCustom(formData: FormData, folder: string, url?: string): Observable<T> {
 
-        let formData: FormData = new FormData();
-        formData.append('files', file, file.name);
-        formData.append('folder', folder);
 
+        let _url = url || this.makeBaseUrl();
+               
+        this.loading(_url, true);
         let headers = new Headers();
         headers.append('Authorization', "Bearer " + CacheService.get('TOKEN_AUTH', ECacheType.COOKIE))
         let options = new RequestOptions({ headers: headers });
 
-        return this.http.post(url,
+        return this.http.post(_url,
             formData,
             options)
             .map(res => {
@@ -52,8 +50,17 @@ export class ApiService<T> {
                 return this.errorResult(error);
             })
             .finally(() => {
-                this.loading(url, false);
+                this.loading(_url, false);
             });
+    }
+
+    public upload(file: File, folder: string): Observable<T> {
+
+        let formData: FormData = new FormData();
+        formData.append('files', file, file.name);
+        formData.append('folder', folder);
+        let url = this.makeResourceUpload();
+        return this.uploadCustom(formData, folder, url);
 
     }
 
@@ -97,8 +104,6 @@ export class ApiService<T> {
             });
     }
 
-    
-
     public delete(data: any): Observable<T> {
 
 
@@ -140,10 +145,10 @@ export class ApiService<T> {
                 this.loading(url, false);
             });
     }
-    
+
     public export(filters?: any): Observable<T> {
 
-        if (filters == null)  filters = {};
+        if (filters == null) filters = {};
         filters.AttributeBehavior = 'Export';
         filters.FilterBehavior = 'Export';
         var url = this.makeResourceMore();
@@ -182,7 +187,6 @@ export class ApiService<T> {
     }
 
     public getMethodCustom(method: string, filters?: any): Observable<T> {
-
         if (filters == null)
             filters = {};
 
@@ -193,6 +197,10 @@ export class ApiService<T> {
 
     public enableNotification(enable: boolean) {
         this._enableNotifification = enable;
+    }
+
+    public enableLoading(enable: boolean) {
+        this._enableLoading = enable;
     }
 
     public setResource(resource: string, endpoint?: string): ApiService<T> {
@@ -243,7 +251,7 @@ export class ApiService<T> {
 
     }
 
-    private makeResourceDeleteUpload(folder:string, fileName : string): string {
+    private makeResourceDeleteUpload(folder: string, fileName: string): string {
 
         return this.makeBaseUrl("document") + "/" + folder + "/" + fileName;
     }
@@ -252,9 +260,9 @@ export class ApiService<T> {
         let url = ``;
         if (subDominio)
             url = `${this._apiDefault}/${subDominio}/${this.getResource()}`;
-        else 
+        else
             url = `${this._apiDefault}/${this.getResource()}`;
-            
+
         return url;
     }
 
@@ -263,8 +271,7 @@ export class ApiService<T> {
         if (filters != null) {
             for (const key in filters) {
 
-                if (key.toLowerCase().startsWith("collection"))
-                {
+                if (key.toLowerCase().startsWith("collection")) {
                     if (filters[key]) {
                         let values = filters[key].toString().split(",");
                         for (let value in values) {
@@ -282,7 +289,6 @@ export class ApiService<T> {
     }
 
     private getBase(url: string, filters?: any, onlyDataResult?: boolean): Observable<T> {
-
         if (filters != null && filters.id != null) {
             url += '/' + filters.id;
         }
@@ -351,13 +357,14 @@ export class ApiService<T> {
             {
                 timeOut: 1000,
                 showProgressBar: true,
-                pauseOnHover: false,
+                pauseOnHover: true,
                 clickToClose: false,
             }
         )
     }
 
     private loading(url: string, value: boolean) {
-        GlobalService.operationRequesting.emit(value);
+        if (this._enableLoading)
+          GlobalService.operationRequesting.emit(value);
     }
 }
