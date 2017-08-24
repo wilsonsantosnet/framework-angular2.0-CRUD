@@ -1,5 +1,6 @@
 ﻿import { ViewRef_ } from "@angular/core/src/view";
-
+import createNumberMask from 'text-mask-addons/dist/createNumberMask'
+	
 export class ServiceBase {
 
 
@@ -41,15 +42,19 @@ export class ServiceBase {
 
      public masksConfig() {
 
+			 let decimalMask = createNumberMask({
+            prefix: '',
+            allowDecimal: true,
+            includeThousandsSeparator: false,
+        })
+			 
          return {
-             maskCEP: [/\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/],
-             maskCPF: [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/],
-             maskCNPJ: [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/],
-			 maskTelefone: ['(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/, /\d/],
-			 //maskHorario: ['^([0-9] | 0[0-9] | 1[0-9] | 2[0-3])', ':', '[0-5][0-9]'],
-			 //maskHorario: [/[0-9] | 0[0-9] | 1[0-9] | 2[0-3]/, ':', /[0-5]/, /[0-9]/],
-			 //maskHorario: [/\d/, /\d/, ':', /\d/, /\d/]
-			 maskHorario: [/[0-9]|0[0-9]|1[0-9]|2[0-3]/, ':', /[0-5][0-9]/]
+            maskCEP: [/\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/],
+            maskCPF: [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/],
+            maskCNPJ: [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/],
+            maskTelefone: ['(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/, /\d/],
+            maskHorario: [/[0-9]|0[0-9]|1[0-9]|2[0-3]/, ':', /[0-5][0-9]/],
+            maskDecimal: decimalMask
          }
 
      }
