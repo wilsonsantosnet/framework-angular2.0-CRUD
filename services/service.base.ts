@@ -1,4 +1,4 @@
-import { ViewRef_ } from "@angular/core/src/view";
+﻿import { ViewRef_ } from "@angular/core/src/view";
 
 export class ServiceBase {
 
@@ -37,5 +37,20 @@ export class ServiceBase {
 
 			changeDetector.detach();
 		}, 250);
-	}
+    }
+
+     public masksConfig() {
+
+         return {
+             maskCEP: [/\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/],
+             maskCPF: [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/],
+             maskCNPJ: [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/],
+			 maskTelefone: ['(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/, /\d/],
+			 //maskHorario: ['^([0-9] | 0[0-9] | 1[0-9] | 2[0-3])', ':', '[0-5][0-9]'],
+			 //maskHorario: [/[0-9] | 0[0-9] | 1[0-9] | 2[0-3]/, ':', /[0-5]/, /[0-9]/],
+			 //maskHorario: [/\d/, /\d/, ':', /\d/, /\d/]
+			 maskHorario: [/[0-9]|0[0-9]|1[0-9]|2[0-3]/, ':', /[0-5][0-9]/]
+         }
+
+     }
 }

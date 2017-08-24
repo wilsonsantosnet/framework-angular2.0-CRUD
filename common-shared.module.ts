@@ -8,7 +8,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { BindCustomComponent } from './components/bind-custom.component';
 import { MakeGridComponent } from './components/grid.component'
 import { MakePaginationComponent } from 'app/common/components/pagination.component';
-import { ConfirmModalComponent } from 'app/common/components/confirm-modal.component';
+
 import { CepComponent } from 'app/common/components/cep.component';
 import { UploadCustomComponent } from 'app/common/components/upload-file.component';
 import { MultiSelectComponent } from 'app/common/components/multiselect.component';
@@ -18,7 +18,7 @@ import { MaskInputDirective } from './directives/mask-input.directive';
 import { DateDirective } from './directives/date.directive';
 import { EditorHtmlDiretive } from './directives/editor-html.directive';
 
-
+import { TextMaskModule } from 'angular2-text-mask';
 
 
 @NgModule({
@@ -28,11 +28,11 @@ import { EditorHtmlDiretive } from './directives/editor-html.directive';
         PaginationModule.forRoot(),
         ModalModule.forRoot(),
         FormsModule,
+        TextMaskModule
     ],
     declarations: [
         BindCustomComponent,
         MakePaginationComponent,
-        ConfirmModalComponent,
         DataSourceDirective,
         MaskInputDirective,
         DateDirective,
@@ -40,14 +40,13 @@ import { EditorHtmlDiretive } from './directives/editor-html.directive';
         MakeGridComponent,
         CepComponent,
         UploadCustomComponent,
-        MultiSelectComponent
+		MultiSelectComponent
     ],
     providers: [
     ],
     exports: [
         BindCustomComponent,
         MakePaginationComponent,
-        ConfirmModalComponent,
         MakeGridComponent,
         CepComponent,
         UploadCustomComponent,
@@ -55,7 +54,9 @@ import { EditorHtmlDiretive } from './directives/editor-html.directive';
         MaskInputDirective,
         DateDirective,
         EditorHtmlDiretive,
-        MultiSelectComponent]
+        MultiSelectComponent,
+		TextMaskModule
+	]
 })
 export class CommonSharedModule {
 

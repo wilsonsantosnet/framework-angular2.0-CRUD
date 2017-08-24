@@ -1,6 +1,7 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+﻿import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 
 import { GlobalService } from 'app/global.service';
+import { ViewModel } from '../model/viewmodel';
 
 @Component({
     selector: 'make-grid',
@@ -49,7 +50,7 @@ import { GlobalService } from 'app/global.service';
 })
 export class MakeGridComponent implements OnChanges {
 
-    @Input() vm: any;
+    @Input() vm: ViewModel<any>
 
     @Input() showEdit: boolean = true;
     @Input() showDetails: boolean = true;

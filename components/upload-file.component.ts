@@ -1,81 +1,107 @@
-import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef, ViewChild } from '@angular/core';
+﻿import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { GlobalService } from "app/global.service";
 import { ApiService } from "app/common/services/api.service";
+import { ViewModel } from '../model/viewmodel';
 
 @Component({
-  selector: 'upload-custom',
-  template: `
+    selector: 'upload-custom',
+    template: `
     <div class='row'>     
-  <section class="col-md-12" [formGroup]="vm.form">
-        <label>{{ label }}</label><br>
-        <input type='file' accept="image/*" #file name="{{ctrlName}}" hidden (change)="onChange($event)"/>
-        <div class="input-group">
-          <input type="text" readonly="readonly" [(ngModel)]='fileName' class="form-control" placeholder="Selecionar arquivo..." formControlName="{{ctrlName}}" />
-          <span class="btn-group">
-            <button class="btn btn-secondary" (click)="file.click()" type="button">Procurar</button>
-            <button class='btn btn-secondary' [hidden]="!model" type='button' (click)='onDelete()'>Excluir</button>
-          </span>
-        </div>
-        <br>
-        <img *ngIf='model' src='{{downloadUri}}{{folder}}/{{model}}' />
-    </section></div>`,
-  providers: [ApiService],
+      <section class="col-md-12" [formGroup]="vm.form">
+          <label>{{ label }}</label><br>
+          <input type='file' accept="{{accept}}" #file name="{{ctrlName}}" hidden (change)="onChange($event)"/>
+          <div class="input-group">
+            <input type="text" readonly="readonly" [(ngModel)]='fileNameOld' class="form-control" placeholder="Selecionar arquivo..." formControlName="{{ctrlName}}" />
+            <span class="btn-group">
+              <button class="btn btn-secondary" (click)="file.click()" type="button">Procurar</button>
+              <button class='btn btn-secondary' [hidden]="!fileName" type='button' (click)='onDelete()'>Excluir</button>
+            </span>
+          </div>
+          <br>
+          <img *ngIf='fileName' src='{{downloadUri}}{{folder}}/{{fileName}}' />
+      </section>
+    </div>`,
+    providers: [ApiService],
 })
 export class UploadCustomComponent implements OnInit {
 
-  @ViewChild('file') fileUpload: any;
-  @Input() label: string;
-  @Input() ctrlName: string;
-  @Input() model: any;
-  @Input() form: any;
-  @Input() vm: any;
-  @Input() folder: string;
+    @ViewChild('file') fileUpload: any;
+    @Output() onChangeUploadExternal = new EventEmitter<any>();
 
-  private fileName: string;
-  private imagem: string;
-  private downloadUri: string;
+    @Input() label: string;
+    @Input() accept: string;
+    @Input() ctrlName: string;
+    @Input() vm: ViewModel<any>
+    @Input() folder: string;
+    @Input() enabledUploadExternal: boolean;
 
-  constructor(private api: ApiService<any>, private ref: ChangeDetectorRef) {
-    this.downloadUri = GlobalService.getEndPoints().DOWNLOAD;
-  }
+    private fileName: string;
+    private fileNameOld: string;
+    private downloadUri: string;
+    private fileUri: string;
+
+    constructor(private api: ApiService<any>, private ref: ChangeDetectorRef) {
+
+        this.downloadUri = GlobalService.getEndPoints().DOWNLOAD;
+        this.fileUri = this.downloadUri + this.folder + "/" + this.fileName;
+        this.enabledUploadExternal = false;
+        this.accept = "image/*";
+    }
 
 
-  ngOnInit(): void {
+    ngOnInit(): void {
 
-  }
+    }
 
-  ngAfterViewChecked(): void {
-    this.ref.detectChanges();
-  }
+    ngAfterViewChecked(): void {
+        this.ref.detectChanges();
+    }
 
-  onChange(event) {
-    if (event.target.files.length == 0)
-      return false;
+    onChange(event) {
 
-    let file: File = event.target.files[0];
-    this.fileName = file.name;
-    this.api.setResource('upload');
+        if (event.target.files.length == 0)
+            return false;
 
-    this.api.upload(file, this.folder).subscribe(result => {
-      this.imagem = result.data[0];
-      this.vm.model.imagemUrl = this.imagem;
-    });
-  }
+        let file: File = event.target.files[0];
+        this.fileNameOld = file.name; 
+        
+        if (this.enabledUploadExternal) 
+            return this.uploadCustom(event);
+        
+        return this.uploadDefault(event);
+    }
 
-  onDelete() {
-    this.api.setResource('upload');
-    this.api.deleteUpload(this.folder, this.imagem).subscribe(() => {
-      this.reset();
-    });
-  }
+    uploadCustom(event) {
+        this.onChangeUploadExternal.emit(event)
+        this.reset();
+        return true;
+    }
+    uploadDefault(file: File) {
 
-  reset() {
-    this.fileUpload.nativeElement.value = '';
-    this.vm.model.imagemUrl = null;
-    this.imagem = null;
-  }
+        this.api.setResource('upload');
 
-  ngOnChanges() {
-       this.ref.detectChanges()
-	}
+        this.api.upload(file, this.folder).subscribe(result => {
+            this.vm.model[this.ctrlName] = result.data[0];
+            this.fileName = result.data[0]
+        });
+        return true;
+    }
+
+    onDelete() {
+        this.api.setResource('upload');
+        this.api.deleteUpload(this.folder, this.fileName).subscribe(() => {
+            this.reset();
+        });
+    }
+
+    reset() {
+        this.fileUpload.nativeElement.value = '';
+        this.vm.model[this.ctrlName] = null;
+        this.fileName = null;
+        this.fileNameOld = null;
+    }
+
+    ngOnChanges() {
+        this.ref.detectChanges()
+    }
 }

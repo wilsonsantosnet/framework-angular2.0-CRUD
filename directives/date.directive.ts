@@ -1,7 +1,7 @@
-import { Directive, ElementRef, Input, Output, EventEmitter, Optional, Self } from '@angular/core';
+﻿import { Directive, ElementRef, Input, Output, EventEmitter, Optional, Self } from '@angular/core';
 
 import { NgModel, FormControlName } from '@angular/forms';
-import * as moment from 'moment';
+
 
 declare var $: any;
 

@@ -2,6 +2,7 @@
 
 import { GlobalService } from 'app/global.service';
 import { ApiService } from '../services/api.service';
+import { ViewModel } from '../model/viewmodel';
 
 @Component({
     selector: 'make-pagination',
@@ -24,7 +25,7 @@ import { ApiService } from '../services/api.service';
 })
 export class MakePaginationComponent {
 
-    @Input() vm: any;
+    @Input() vm: ViewModel<any>
     @Output() pageChanged = new EventEmitter<any>();
     public initialPage: number;
     constructor() {

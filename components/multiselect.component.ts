@@ -1,7 +1,8 @@
-import { Component, NgModule, OnInit, Input, Output, EventEmitter, ViewChild, AfterViewChecked, AfterViewInit, DoCheck, AfterContentChecked, AfterContentInit } from '@angular/core';
+﻿import { Component, NgModule, OnInit, Input, Output, EventEmitter, ViewChild, AfterViewChecked, AfterViewInit, DoCheck, AfterContentChecked, AfterContentInit } from '@angular/core';
 
 import { ApiService } from "app/common/services/api.service";
 import { GlobalService } from "../../global.service";
+import { ViewModel } from '../model/viewmodel';
 
 @Component({
     selector: 'multiselect',
@@ -16,20 +17,23 @@ import { GlobalService } from "../../global.service";
 export class MultiSelectComponent implements OnInit {
 
     @Input() dataitem: string;
-    @Input() vm: any;
+    @Input() vm: ViewModel<any>
     @Input() endpoint: string;
     @Input() ctrlName: string;
     @Input() ctrlNameItem: string;
     @Input() type: string;
+    @Input() attributeBehavior: string;
 
 
     private _datasource: any[];
     private _modelOutput: any;
     private _collectionjsonTemplate
     private _modelInput: any;
+    private _filter: any;
 
     constructor(private api: ApiService<any>) {
         this.type = "filter";
+        this._filter = {};
     }
 
     ngOnInit() {
@@ -94,10 +98,11 @@ export class MultiSelectComponent implements OnInit {
         return this._modelOutput.join()
     }
 
-    private _getInstance() {
+    private _getInstance() { 
+        if (this.attributeBehavior)
+            this._filter.AttributeBehavior = this.attributeBehavior;
 
-
-        this.api.setResource(this.dataitem, this.endpoint).getDataitem().subscribe(result => {
+        this.api.setResource(this.dataitem, this.endpoint).getDataitem(this._filter).subscribe(result => {
             this._datasource = [];
             for (let item in result.dataList) {
                 this._datasource.push({

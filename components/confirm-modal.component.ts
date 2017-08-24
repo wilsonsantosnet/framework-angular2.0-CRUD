@@ -5,7 +5,7 @@ import { GlobalService } from '../../global.service';
 @Component({
     selector: 'confirm-modal',
     template: `
-              <div bsModal #_confirmModal="bs-modal" class="gc-modal modal fade">
+              <div bsModal #_confirmModal="bs-modal" class="gc-modal modal fade" >
                 <div class="modal-dialog modal-lg">
                   <div class="modal-content">
                     <div class="modal-header">
@@ -23,12 +23,12 @@ import { GlobalService } from '../../global.service';
                   </div>
                 </div>
               </div>
-            ` 
+            `
 })
 export class ConfirmModalComponent implements OnInit {
 
 
-    
+
     @ViewChild('_confirmModal') private _confirmModal: ModalDirective;
 
     vm: any;
@@ -36,6 +36,13 @@ export class ConfirmModalComponent implements OnInit {
     _openationConfimationYes: any;
     _operationService: any;
     _operationVM: any;
+
+    public config = {
+        animated: true,
+        keyboard: true,
+        backdrop: true,
+        ignoreBackdropClick: false
+    };
 
     constructor() {
         this.vm = {};
@@ -45,7 +52,7 @@ export class ConfirmModalComponent implements OnInit {
 
     ngOnInit() {
 
-        
+
         GlobalService.operationExecuted.subscribe((result) => {
             if (result.selector == "confirm-modal") {
                 this.vm.messageConfirmation = result.message || this.vm.messageConfirmation;
@@ -63,8 +70,9 @@ export class ConfirmModalComponent implements OnInit {
     }
 
     onConfimationYes() {
-        this._openationConfimationYes(this._operationService, this._operationVM);
         this._confirmModal.hide();
+
+        this._openationConfimationYes(this._operationService, this._operationVM);
     }
 
     onCancel() {
