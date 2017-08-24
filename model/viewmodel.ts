@@ -1,6 +1,6 @@
-﻿import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl } from '@angular/forms';
 
-export class ViewModel {
+export class ViewModel<T> {
 
 
     constructor(init: any) {
@@ -17,6 +17,7 @@ export class ViewModel {
         this.infos = init.infos;
         this.grid = init.grid;
         this.form = init.form;
+        this.masks = init.masks;
 
     }
 
@@ -24,17 +25,13 @@ export class ViewModel {
     actionTitle: string;
     actionDescription: string;
     downloadUri: string;
-    filterResult: any[];
+    filterResult: T[];
     modelFilter: any;
     summary: any;
-    model: any;
-    details: any;
+    model: T;
+    details: T;
     infos: any;
     grid: any;
     form: FormGroup;
+    masks : any
 }
-
-
-
-
-
