@@ -62,6 +62,7 @@ export class ApiService<T> {
         let url = this.makeResourceUpload();
         return this.uploadCustom(formData, folder, url);
 
+
     }
 
     public deleteUpload(folder: string, fileName: string): Observable<T> {
