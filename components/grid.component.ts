@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 
 import { GlobalService } from 'app/global.service';
+import { ViewModel } from '../model/viewmodel';
 
 @Component({
     selector: 'make-grid',
@@ -15,33 +16,30 @@ import { GlobalService } from 'app/global.service';
                   <i class="fa fa-sort table-sort__icon" aria-hidden="true" data-mockup="sort-icon" data-icon="fa-sort"></i>
                 </span>
               </th>
-              <th class="text-center">Ações</th>
+              <th width="175" class="text-center">Ações</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let item of vm.filterResult">
 
-              <td *ngFor="let grid of vm.grid" class="text-nowrap">
+              <td *ngFor="let grid of vm.grid">
                 <bind-custom [model]="bindFields(item, grid.key)" 
                              [format]="grid.info.type" 
                              [tag]="'span'"
                              [aux]="grid.info.aux"></bind-custom>
               </td>
 
-              <td class="text-center text-nowrap">
-                <button *ngFor="let btn of customButton" (click)="btn.click(item)" tooltip-placement="top" uib-tooltip="btn.tooltip" class="btn btn-sm {{ btn.class }}">
-                  <i class="fa {{ btn.icon }}"></i>
-                </button>
-                <button (click)="onEdit(item)" *ngIf="showEdit" tooltip-placement="top" uib-tooltip="Editar" class="btn btn-sm btn-primary">
+              <td class="text-center">
+                <button (click)="onEdit($event, item)" *ngIf="showEdit" tooltip-placement="top" uib-tooltip="Editar" class="btn btn-sm btn-default">
                   <i class="fa fa-pencil"></i>
                 </button>
-                <button (click)="onDetails(item)" *ngIf="showDetails" tooltip-placement="top" uib-tooltip="Detalhes" class="btn btn-sm">
+                <button (click)="onDetails($event, item)" *ngIf="showDetails" tooltip-placement="top" uib-tooltip="Detalhes" class="btn btn-sm">
                   <i class="fa fa-table"></i>
                 </button>
-                <button (click)="onPrint(item)" *ngIf="showPrint" tooltip-placement="top" uib-tooltip="Imprimir" class="btn btn-sm btn-success">
+                <button (click)="onPrint($event, item)" *ngIf="showPrint" tooltip-placement="top" uib-tooltip="Imprimir" class="btn btn-sm btn-success">
                   <i class="fa fa-print"></i>
                 </button>
-                <button (click)="onDeleteConfimation(item)" *ngIf="showDelete" tooltip-placement="top" uib-tooltip="Excluir" class="btn btn-sm btn-danger">
+                <button (click)="onDeleteConfimation($event, item)" *ngIf="showDelete" tooltip-placement="top" uib-tooltip="Excluir" class="btn btn-sm btn-danger">
                   <i class="fa fa-trash-o"></i>
                 </button>
               </td>
@@ -52,15 +50,12 @@ import { GlobalService } from 'app/global.service';
 })
 export class MakeGridComponent implements OnChanges {
 
-    @Input() vm: any;
+    @Input() vm: ViewModel<any>
 
     @Input() showEdit: boolean = true;
     @Input() showDetails: boolean = true;
     @Input() showPrint: boolean = true;
     @Input() showDelete: boolean = true;
-
-    // [{ class: 'btn-success', tooltip: 'Configuracao', icon: 'fa-cog', click: (model) => { this.router.navigate(['/estagio/configuracao', model.estagioId]); } }]
-    @Input() customButton: any = [];
 
     @Output() edit = new EventEmitter<any>();
     @Output() details = new EventEmitter<any>();
@@ -81,16 +76,20 @@ export class MakeGridComponent implements OnChanges {
         return item[key];
     }
 
-    onEdit(model) {
+    onEdit(evt, model) {
+        evt.preventDefault();
         this.edit.emit(model);
     }
-    onDetails(model) {
+    onDetails(evt, model) {
+        evt.preventDefault();
         this.details.emit(model);
     }
-    onPrint(model) {
+    onPrint(evt, model) {
+        evt.preventDefault();
         this.print.emit(model);
     }
-    onDeleteConfimation(model) {
+    onDeleteConfimation(evt, model) {
+        evt.preventDefault();
         this.deleteConfimation.emit(model);
     }
 
