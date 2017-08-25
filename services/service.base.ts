@@ -53,7 +53,7 @@ export class ServiceBase {
             maskCPF: [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/],
             maskCNPJ: [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/],
             maskTelefone: ['(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/, /\d/],
-            maskHorario: [/[0-9]|0[0-9]|1[0-9]|2[0-3]/, ':', /[0-5][0-9]/],
+            maskHorario: [/\d/, /\d/, ':', /\d/, /\d/],
             maskDecimal: decimalMask
          }
 
