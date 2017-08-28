@@ -41,10 +41,10 @@ export class MultiSelectComponent implements OnInit {
         this.init();
         this._getInstance();
 
-        GlobalService.notification.subscribe((event) => {
-            if (event == "create" || event == "edit" || ) {
+         GlobalService.notification.subscribe((not) => {
+            if (not.event == "edit" || not.event == "create") {
                 this.init();
-                this._getInstance();
+                this._getInstance(not.parentId);
             }
         })
     }
