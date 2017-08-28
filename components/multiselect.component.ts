@@ -41,8 +41,8 @@ export class MultiSelectComponent implements OnInit {
         this.init();
         this._getInstance();
 
-        GlobalService.notification.subscribe((selector) => {
-            if (selector == "multiselect") {
+        GlobalService.notification.subscribe((event) => {
+            if (event == "create" || event == "edit" || ) {
                 this.init();
                 this._getInstance();
             }
@@ -81,8 +81,7 @@ export class MultiSelectComponent implements OnInit {
     }
 
     private serializeToSave() {
-
-        console.log("serializeToSave", this._modelOutput);
+   
         let items: any = [];
 
         for (let item in this._modelOutput) {
