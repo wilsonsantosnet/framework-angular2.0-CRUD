@@ -150,7 +150,6 @@ export class ApiService<T> {
     public export(filters?: any): Observable<T> {
 
         if (filters == null) filters = {};
-        filters.AttributeBehavior = 'Export';
         filters.FilterBehavior = 'Export';
         var url = this.makeResourceMore();
 
