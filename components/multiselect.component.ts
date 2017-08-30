@@ -1,4 +1,4 @@
-﻿import { Component, NgModule, OnInit, Input, Output, EventEmitter, ViewChild, AfterViewChecked, AfterViewInit, DoCheck, AfterContentChecked, AfterContentInit } from '@angular/core';
+import { Component, NgModule, OnInit, Input, Output, EventEmitter, ViewChild, AfterViewChecked, AfterViewInit, DoCheck, AfterContentChecked, AfterContentInit } from '@angular/core';
 
 import { ApiService } from "app/common/services/api.service";
 import { GlobalService, NotificationParameters } from "../../global.service";
@@ -23,7 +23,7 @@ export class MultiSelectComponent implements OnInit {
     @Input() ctrlNameItem: string;
     @Input() type: string;
     @Input() attributeBehavior: string;
-
+    @Input() key: string;
 
     private _datasource: any[];
     private _modelOutput: any;
@@ -41,7 +41,7 @@ export class MultiSelectComponent implements OnInit {
         this.init();
         this._getInstance();
 
-         GlobalService.notification.subscribe((not) => {
+        GlobalService.notification.subscribe((not) => {
             if (not.event == "edit" || not.event == "create") {
                 this.init();
                 this._getInstance(not.parentId);
@@ -81,7 +81,7 @@ export class MultiSelectComponent implements OnInit {
     }
 
     private serializeToSave() {
-   
+
         let items: any = [];
 
         for (let item in this._modelOutput) {
@@ -97,11 +97,17 @@ export class MultiSelectComponent implements OnInit {
         return this._modelOutput.join()
     }
 
-    private _getInstance() { 
-        if (this.attributeBehavior)
-            this._filter.AttributeBehavior = this.attributeBehavior;
+    private _getInstance(parentId? :  number) {
+        
+        let filters = [];
+        if (parentId) 
+            filters[this.key] = parentId;
 
-        this.api.setResource(this.dataitem, this.endpoint).getDataitem(this._filter).subscribe(result => {
+        if (this.attributeBehavior)
+            filters["AttributeBehavior"] = this.attributeBehavior;
+
+        this.api.setResource(this.dataitem, this.endpoint).getDataitem(filters).subscribe(result => {
+            
             this._datasource = [];
             for (let item in result.dataList) {
                 this._datasource.push({
