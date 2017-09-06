@@ -14,6 +14,7 @@ export class ViewModel<T> {
         this.summary = init.summary;
         this.model = init.model;
         this.details = init.details;
+        this.generalInfo = init.generalInfo;
         this.infos = init.infos;
         this.grid = init.grid;
         this.form = init.form;
@@ -31,6 +32,7 @@ export class ViewModel<T> {
     summary: any;
     model: T;
     details: T;
+    generalInfo: any;
     infos: any;
     grid: any;
     form: FormGroup;
