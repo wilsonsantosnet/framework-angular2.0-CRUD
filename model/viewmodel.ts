@@ -36,6 +36,6 @@ export class ViewModel<T> {
     infos: any;
     grid: any;
     form: FormGroup;
-    masks : any;
+    masks: any;
     reletedViewModel: any;
 }

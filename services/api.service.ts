@@ -21,6 +21,8 @@ export class ApiService<T> {
         this._apiDefault = GlobalService.getEndPoints().DEFAULT
         this._enableNotifification = true;
         this._enableLoading = true;
+
+        console.log("ApiService");
     }
    
     public get(filters?: any, onlyDataResult?: boolean): Observable<T> {
