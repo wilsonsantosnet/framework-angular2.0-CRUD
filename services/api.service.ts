@@ -173,7 +173,7 @@ export class ApiService<T> {
     }
 
     public getDataListCustom(filters?: any): Observable<T> {
-        return this.getMethodCustom('GetDataListCustom');
+        return this.getMethodCustom('GetDataListCustom',filters);
     }
 
     public getDetails(filters?: any): Observable<T> {
