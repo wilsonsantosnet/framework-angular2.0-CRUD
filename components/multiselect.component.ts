@@ -1,4 +1,4 @@
-import { Component, NgModule, OnInit, Input, Output, EventEmitter, ViewChild, AfterViewChecked, AfterViewInit, DoCheck, AfterContentChecked, AfterContentInit } from '@angular/core';
+﻿import { Component, NgModule, OnInit, Input, Output, EventEmitter, ViewChild, AfterViewChecked, AfterViewInit, DoCheck, AfterContentChecked, AfterContentInit } from '@angular/core';
 
 import { ApiService } from "app/common/services/api.service";
 import { GlobalService, NotificationParameters } from "../../global.service";
@@ -44,7 +44,7 @@ export class MultiSelectComponent implements OnInit {
         GlobalService.notification.subscribe((not) => {
             if (not.event == "edit" || not.event == "create") {
                 this.init();
-                this._getInstance(not.parentId);
+                this._getInstance(not.data.parentId);
             }
         })
     }

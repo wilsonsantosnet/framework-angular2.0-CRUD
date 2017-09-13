@@ -30,19 +30,19 @@ import { ViewModel } from '../model/viewmodel';
               </td>
 
               <td class="text-center text-nowrap">
-                <button *ngFor="let btn of customButton" (click)="btn.click(item)" tooltip-placement="top" uib-tooltip="btn.tooltip" class="btn btn-sm {{ btn.class }}">
+                <button *ngFor="let btn of customButton" (click)="btn.click(item)" placement="top" title="btn.tooltip" class="btn btn-sm {{ btn.class }}">
                   <i class="fa {{ btn.icon }}"></i>
                 </button>
-                <button (click)="onEdit($event, item)" *ngIf="showEdit" tooltip-placement="top" uib-tooltip="Editar" class="btn btn-sm btn-primary">
+                <button (click)="onEdit($event, item)" *ngIf="showEdit" placement="top" title="Editar" class="btn btn-sm btn-primary">
                   <i class="fa fa-pencil"></i>
                 </button>
-                <button (click)="onDetails($event, item)" *ngIf="showDetails" tooltip-placement="top" uib-tooltip="Detalhes" class="btn btn-sm">
+                <button (click)="onDetails($event, item)" *ngIf="showDetails" placement="top" title="Detalhes" class="btn btn-sm">
                   <i class="fa fa-table"></i>
                 </button>
-                <button (click)="onPrint($event, item)" *ngIf="showPrint" tooltip-placement="top" uib-tooltip="Imprimir" class="btn btn-sm btn-success">
+                <button (click)="onPrint($event, item)" *ngIf="showPrint" placement="top" title="Imprimir" class="btn btn-sm btn-success">
                   <i class="fa fa-print"></i>
                 </button>
-                <button (click)="onDeleteConfimation($event, item)" *ngIf="showDelete" tooltip-placement="top" uib-tooltip="Excluir" class="btn btn-sm btn-danger">
+                <button (click)="onDeleteConfimation($event, item)" *ngIf="showDelete" placement="top" title="Excluir" class="btn btn-sm btn-danger">
                   <i class="fa fa-trash-o"></i>
                 </button>
               </td>

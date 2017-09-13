@@ -1,8 +1,6 @@
 ﻿import { Directive, ElementRef, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { NgModel } from '@angular/forms';
-
 import { GlobalService, NotificationParameters } from "../../global.service";
-
 declare var $: any;
 
 @Directive({
@@ -19,7 +17,7 @@ export class EditorHtmlDiretive implements OnInit {
 
     ngOnInit() {
         this.render();
-        
+
         GlobalService.notification.subscribe((not) => {
             if (not.event == "edit") {
                 let element = $(this.el.nativeElement);
@@ -33,12 +31,11 @@ export class EditorHtmlDiretive implements OnInit {
     render() {
 
         let element = $(this.el.nativeElement);
-        console.log(element.attr("editorhtml"), tinymce);
 
         tinymce.init({
             selector: '[editorhtml=' + element.attr("editorhtml") + ']',
             plugins: ['link', 'paste', 'table'],
-            skin_url: 'assets/css/skins/lightgray',
+            skin_url: '/assets/css/skins/lightgray',
             setup: editor => {
                 editor.on('change', () => {
                     const content = editor.getContent();

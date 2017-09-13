@@ -21,8 +21,6 @@ export class ApiService<T> {
         this._apiDefault = GlobalService.getEndPoints().DEFAULT
         this._enableNotifification = true;
         this._enableLoading = true;
-
-        console.log("ApiService");
     }
    
     public get(filters?: any, onlyDataResult?: boolean): Observable<T> {
@@ -173,7 +171,7 @@ export class ApiService<T> {
     }
 
     public getDataListCustom(filters?: any): Observable<T> {
-        return this.getMethodCustom('GetDataListCustom',filters);
+        return this.getMethodCustom('GetDataListCustom', filters);
     }
 
     public getDetails(filters?: any): Observable<T> {
@@ -181,7 +179,7 @@ export class ApiService<T> {
     }
 
     public getDataCustom(filters?: any): Observable<T> {
-        return this.getMethodCustom('GetDataCustom');
+        return this.getMethodCustom('GetDataCustom', filters);
     }
 
     public getDataitem(filters?: any): Observable<T> {
@@ -189,6 +187,7 @@ export class ApiService<T> {
     }
 
     public getMethodCustom(method: string, filters?: any): Observable<T> {
+
         if (filters == null)
             filters = {};
 
@@ -291,6 +290,7 @@ export class ApiService<T> {
     }
 
     private getBase(url: string, filters?: any, onlyDataResult?: boolean): Observable<T> {
+
         if (filters != null && filters.id != null) {
             url += '/' + filters.id;
         }

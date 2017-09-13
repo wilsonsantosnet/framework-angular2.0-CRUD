@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, SecurityContext  } from '@angular/core';
+﻿import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, SecurityContext  } from '@angular/core';
 import { DatePipe, DecimalPipe, PercentPipe, CurrencyPipe } from "@angular/common";
 import { DomSanitizer } from '@angular/platform-browser';
 import { ApiService } from "app/common/services/api.service";
@@ -96,10 +96,13 @@ export class BindCustomComponent implements OnInit, OnChanges {
 
     private _getInDataItem(model, dataitem) {
 
-        var result = dataitem.filter(function (item) {
-            return model == item.id;
-        });
-        return result.length > 0 ? result[0].name : "--";
+        if (dataitem) {
+            var result = dataitem.filter(function (item) {
+                return model == item.id;
+            });
+            return result.length > 0 ? result[0].name : "--";
+        }
+        return "--";
     }
 
     private _getChangeForThis(model, newValue) {
