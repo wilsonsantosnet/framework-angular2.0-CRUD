@@ -1,6 +1,7 @@
 ﻿import { Directive, ElementRef, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { NgModel } from '@angular/forms';
 import { GlobalService, NotificationParameters } from "../../global.service";
+
 declare var $: any;
 
 @Directive({
@@ -22,8 +23,8 @@ export class EditorHtmlDiretive implements OnInit {
             if (not.event == "edit") {
                 let element = $(this.el.nativeElement);
                 var selector = element.attr("editorhtml");
-                tinymce.get(selector).getBody().innerHTML = not.data.model[selector];
-                
+                var name = element.attr("name");
+                tinymce.get(selector).getBody().innerHTML = not.data.model[name];
             }
         })
     }

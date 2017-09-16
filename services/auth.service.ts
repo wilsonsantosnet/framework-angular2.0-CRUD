@@ -20,7 +20,8 @@ export class AuthService {
     private readonly _redirect_uri: string;
     private readonly _response_type: string;
     private readonly _scope: string;
-    private readonly _nameCookieCurrentUser: string;
+    private readonly _nameCurrentUser: string;
+    private readonly _type: ECacheType;
 
     constructor(private apiAuth: ApiService<any>, private api: ApiService<any>, private router: Router) {
 
@@ -34,7 +35,8 @@ export class AuthService {
         this._redirect_uri = GlobalService.getEndPoints().APP;
         this._response_type = "token";
         this._scope = GlobalService.getAuthSettings().SCOPE;
-        this._nameCookieCurrentUser = "CURRENT_USER";
+        this._nameCurrentUser = "CURRENT_USER";
+        this._type = ECacheType.COOKIE;
 
 
     }
@@ -51,7 +53,7 @@ export class AuthService {
 
         }).subscribe(data => {
 
-            CacheService.add(this._nameToken, data.Data.Token, ECacheType.COOKIE, 0.1);
+            CacheService.add(this._nameToken, data.Data.Token, this._type);
             this.router.navigate(["/home"]);
 
             if (reload)
@@ -91,7 +93,7 @@ export class AuthService {
     public logout() {
 
         this._reset();
-          
+         
         if (this._typeLogin == "SSO") {
             var authorizationUrl = GlobalService.getEndPoints().AUTH + 'account/logout?returnUrl=' + GlobalService.getEndPoints().APP;
             window.location.href = authorizationUrl;
@@ -137,7 +139,7 @@ export class AuthService {
             callback(currentUser)
         else {
             this.api.setResource('CurrentUser').get().subscribe(data => {
-                CacheService.add(this._nameCookieCurrentUser, JSON.stringify(data.data), ECacheType.COOKIE, 1);
+                CacheService.add(this._nameCurrentUser, JSON.stringify(data.data), this._type);
                 callback(this.currentUser())
             }, err => {
                 this.loginSso();
@@ -146,7 +148,7 @@ export class AuthService {
     }
 
     public currentUser() {
-        var currentUser = CacheService.get(this._nameCookieCurrentUser, ECacheType.COOKIE);
+        var currentUser = CacheService.get(this._nameCurrentUser, this._type);
         return {
             isAuth: currentUser ? true : false,
             claims: JSON.parse(currentUser)
@@ -154,14 +156,14 @@ export class AuthService {
     }
 
     public isAuthenticated(): boolean {
-        const token = CacheService.get(this._nameToken, ECacheType.COOKIE);
+        const token = CacheService.get(this._nameToken, this._type);
         return token !== null;
     }
 
     private _acceptlogin(token, reload) {
 
         console.log("<<<<<<< _acceptlogin >>>>>>>>>>", token)
-        CacheService.add(this._nameToken, token, ECacheType.COOKIE, 0.1);
+        CacheService.add(this._nameToken, token, this._type);
 
         this.router.navigate(["/home"]);
 

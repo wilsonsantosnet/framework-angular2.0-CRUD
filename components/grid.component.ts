@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+﻿import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 
 import { GlobalService } from 'app/global.service';
 import { ViewModel } from '../model/viewmodel';
@@ -6,7 +6,7 @@ import { ViewModel } from '../model/viewmodel';
 @Component({
     selector: 'make-grid',
     template: `
-    <div class="table-responsive">
+    <div class="gc-table-responsive">
         <table class="table table-bordered table-striped">
           <thead class="thead-inverse">
             <tr>

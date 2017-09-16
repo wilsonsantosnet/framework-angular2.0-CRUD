@@ -6,6 +6,7 @@ export class ViewModel<T> {
     constructor(init: any) {
 
         this.mostrarFiltros = init.mostrarFiltros;
+        this.manterTelaAberta = init.manterTelaAberta;
         this.actionTitle = init.actionTitle;
         this.actionDescription = init.actionDescription;
         this.downloadUri = init.downloadUri;
@@ -24,6 +25,7 @@ export class ViewModel<T> {
     }
 
     mostrarFiltros: boolean;
+    manterTelaAberta: boolean;
     actionTitle: string;
     actionDescription: string;
     downloadUri: string;

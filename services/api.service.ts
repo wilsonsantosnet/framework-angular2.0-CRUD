@@ -183,7 +183,10 @@ export class ApiService<T> {
     }
 
     public getDataitem(filters?: any): Observable<T> {
-        return this.getMethodCustom('GetDataItem', filters);
+
+        this._enableLoading = false;
+        let result =  this.getMethodCustom('GetDataItem', filters);
+        return result;
     }
 
     public getMethodCustom(method: string, filters?: any): Observable<T> {
@@ -315,6 +318,7 @@ export class ApiService<T> {
     private successResult(response: Response): Observable<T> {
 
         let _response = response.json();
+        this._enableLoading = true;
         return _response;
     }
 
@@ -366,7 +370,7 @@ export class ApiService<T> {
     }
 
     private loading(url: string, value: boolean) {
-        if (this._enableLoading)
+        if (this._enableLoading || value == false)
           GlobalService.operationRequesting.emit(value);
     }
 }

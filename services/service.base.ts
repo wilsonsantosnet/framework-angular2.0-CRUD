@@ -39,17 +39,17 @@ export class ServiceBase {
 
     public detectChanges(changeDetector: any) {
 
-        //changeDetector.detach();
+        changeDetector.detach();
 
-        //setInterval(() => {
-        //	changeDetector.reattach();
+        setInterval(() => {
+        	changeDetector.reattach();
 
-        //	if (changeDetector && !(changeDetector as ViewRef_).destroyed) {
-        //		changeDetector.detectChanges();
-        //	}
+        	if (changeDetector && !(changeDetector as ViewRef_).destroyed) {
+        		changeDetector.detectChanges();
+        	}
 
-        //	changeDetector.detach();
-        //}, 250);
+        	changeDetector.detach();
+        }, 250);
     }
 
     public masksConfig() {

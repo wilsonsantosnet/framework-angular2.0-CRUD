@@ -13,6 +13,8 @@ import { CepComponent } from 'app/common/components/cep.component';
 import { UploadCustomComponent } from 'app/common/components/upload-file.component';
 import { MultiSelectComponent } from 'app/common/components/multiselect.component';
 
+import { DateFormatPipe } from './pipes/date-format.pipe';
+
 import { DataSourceDirective } from './directives/select-datasource.directive';
 import { MaskInputDirective } from './directives/mask-input.directive';
 import { DateDirective } from './directives/date.directive';
@@ -40,7 +42,8 @@ import { TextMaskModule } from 'angular2-text-mask';
         MakeGridComponent,
         CepComponent,
         UploadCustomComponent,
-		MultiSelectComponent
+        MultiSelectComponent,
+        DateFormatPipe
     ],
     providers: [
     ],

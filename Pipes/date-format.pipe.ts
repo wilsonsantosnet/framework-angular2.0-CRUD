@@ -2,9 +2,9 @@
 import { DatePipe } from '@angular/common';
 
 @Pipe({
-    name: 'dateFormatPipe',
+    name: 'DateFormatPipe',
 })
-export class dateFormatPipe implements PipeTransform {
+export class DateFormatPipe implements PipeTransform {
     transform(value: string) {
         var datePipe = new DatePipe("pt-BR");
         value = datePipe.transform(value, 'dd/MM/yyyy HH:mm');

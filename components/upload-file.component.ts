@@ -35,10 +35,10 @@ export class UploadCustomComponent implements OnInit {
     @Input() folder: string;
     @Input() enabledUploadExternal: boolean;
 
-    private fileName: string;
-    private fileNameOld: string;
-    private downloadUri: string;
-    private fileUri: string;
+    fileName: string;
+    fileNameOld: string;
+    downloadUri: string;
+    fileUri: string;
 
     constructor(private api: ApiService<any>, private ref: ChangeDetectorRef) {
 
@@ -46,10 +46,19 @@ export class UploadCustomComponent implements OnInit {
         this.fileUri = this.downloadUri + this.folder + "/" + this.fileName;
         this.enabledUploadExternal = false;
         this.accept = "image/*";
+
     }
 
 
     ngOnInit(): void {
+        console.log("upload");
+        GlobalService.notification.subscribe((not) => {
+            if (not.event == "edit") {
+                console.log("upload")
+                this.fileNameOld = this.vm.model[this.ctrlName];        
+                this.fileName = this.vm.model[this.ctrlName]
+            }
+        })
 
     }
 
@@ -66,9 +75,9 @@ export class UploadCustomComponent implements OnInit {
         this.fileNameOld = file.name; 
         
         if (this.enabledUploadExternal) 
-            return this.uploadCustom(event);
+            return this.uploadCustom(file);
         
-        return this.uploadDefault(event);
+        return this.uploadDefault(file);
     }
 
     uploadCustom(event) {
@@ -78,9 +87,7 @@ export class UploadCustomComponent implements OnInit {
     }
     uploadDefault(file: File) {
 
-        this.api.setResource('upload');
-
-        this.api.upload(file, this.folder).subscribe(result => {
+        this.api.setResource('upload').upload(file, this.folder).subscribe(result => {
             this.vm.model[this.ctrlName] = result.data[0];
             this.fileName = result.data[0]
         });
@@ -88,8 +95,7 @@ export class UploadCustomComponent implements OnInit {
     }
 
     onDelete() {
-        this.api.setResource('upload');
-        this.api.deleteUpload(this.folder, this.fileName).subscribe(() => {
+        this.api.setResource('upload').deleteUpload(this.folder, this.fileName).subscribe(() => {
             this.reset();
         });
     }

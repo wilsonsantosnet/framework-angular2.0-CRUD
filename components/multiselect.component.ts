@@ -25,11 +25,11 @@ export class MultiSelectComponent implements OnInit {
     @Input() attributeBehavior: string;
     @Input() key: string;
 
-    private _datasource: any[];
-    private _modelOutput: any;
-    private _collectionjsonTemplate
-    private _modelInput: any;
-    private _filter: any;
+    _datasource: any[];
+    _modelOutput: any;
+    _collectionjsonTemplate
+    _modelInput: any;
+    _filter: any;
 
     constructor(private api: ApiService<any>) {
         this.type = "filter";
