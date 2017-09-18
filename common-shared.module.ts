@@ -14,6 +14,7 @@ import { UploadCustomComponent } from 'app/common/components/upload-file.compone
 import { MultiSelectComponent } from 'app/common/components/multiselect.component';
 
 import { DateFormatPipe } from './pipes/date-format.pipe';
+import { MaskFormatPipe } from './pipes/mask.pipe';
 
 import { DataSourceDirective } from './directives/select-datasource.directive';
 import { MaskInputDirective } from './directives/mask-input.directive';
@@ -43,7 +44,8 @@ import { TextMaskModule } from 'angular2-text-mask';
         CepComponent,
         UploadCustomComponent,
         MultiSelectComponent,
-        DateFormatPipe
+        DateFormatPipe,
+        MaskFormatPipe
     ],
     providers: [
     ],

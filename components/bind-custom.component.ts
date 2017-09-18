@@ -2,6 +2,7 @@
 import { DatePipe, DecimalPipe, PercentPipe, CurrencyPipe } from "@angular/common";
 import { DomSanitizer } from '@angular/platform-browser';
 import { ApiService } from "app/common/services/api.service";
+import { MaskFormatPipe } from "../pipes/mask.pipe";
 
 @Component({
     selector: 'bind-custom',
@@ -12,7 +13,7 @@ import { ApiService } from "app/common/services/api.service";
       <div *ngIf="tag === 'div'">{{ value }}</div>
       <div *ngIf="tag === 'inner'" [innerHTML]='value'></div>
     `,
-    providers: [DatePipe, DecimalPipe, PercentPipe, CurrencyPipe, ApiService],
+    providers: [DatePipe, DecimalPipe, PercentPipe, CurrencyPipe, MaskFormatPipe, ApiService],
 })
 export class BindCustomComponent implements OnInit, OnChanges {
 
@@ -26,6 +27,7 @@ export class BindCustomComponent implements OnInit, OnChanges {
     @Input() endpoint: string;
     @Input() key: string;
     @Input() aux: any;
+    @Input() mask: any;
 
     datePipe: DatePipe;
 
@@ -33,6 +35,7 @@ export class BindCustomComponent implements OnInit, OnChanges {
         private decimalPipe: DecimalPipe,
         private percentPipe: PercentPipe,
         private currencyPipe: CurrencyPipe,
+        private maskPipe: MaskFormatPipe,
         private sanitizer: DomSanitizer,
         private api: ApiService<any>) {
 
@@ -86,6 +89,9 @@ export class BindCustomComponent implements OnInit, OnChanges {
             this.tag = "inner";
             this.value = this.sanitizer.sanitize(SecurityContext.HTML, this.model);
         }
+        else if (this.format.toLocaleLowerCase() === 'mask' && this.model) {
+            this.value = this.maskPipe.transform(this.model, this.mask);
+        }   
         else {
             this.value = this.model;
         }

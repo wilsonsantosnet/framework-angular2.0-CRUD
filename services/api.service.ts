@@ -22,7 +22,7 @@ export class ApiService<T> {
         this._enableNotifification = true;
         this._enableLoading = true;
     }
-   
+
     public get(filters?: any, onlyDataResult?: boolean): Observable<T> {
 
         return this.getBase(this.makeBaseUrl(), filters);
@@ -33,7 +33,7 @@ export class ApiService<T> {
 
 
         let _url = url || this.makeBaseUrl();
-               
+
         this.loading(_url, true);
         let headers = new Headers();
         headers.append('Authorization', "Bearer " + CacheService.get('TOKEN_AUTH', ECacheType.COOKIE))
@@ -182,10 +182,17 @@ export class ApiService<T> {
         return this.getMethodCustom('GetDataCustom', filters);
     }
 
+    public getFile(file: string): Observable<T> {
+
+        return this.http.get(file)
+            .map((res: Response) => res.json())
+
+    }
+
     public getDataitem(filters?: any): Observable<T> {
 
         this._enableLoading = false;
-        let result =  this.getMethodCustom('GetDataItem', filters);
+        let result = this.getMethodCustom('GetDataItem', filters);
         return result;
     }
 
@@ -371,6 +378,6 @@ export class ApiService<T> {
 
     private loading(url: string, value: boolean) {
         if (this._enableLoading || value == false)
-          GlobalService.operationRequesting.emit(value);
+            GlobalService.operationRequesting.emit(value);
     }
 }
