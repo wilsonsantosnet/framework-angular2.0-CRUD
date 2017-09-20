@@ -53,7 +53,7 @@ export class ConfirmModalComponent implements OnInit {
     ngOnInit() {
 
 
-        GlobalService.operationExecuted.subscribe((result) => {
+        GlobalService.getOperationExecutedEmitter().subscribe((result) => {
             if (result.selector == "confirm-modal") {
                 this.vm.messageConfirmation = result.message || this.vm.messageConfirmation;
                 this.show();

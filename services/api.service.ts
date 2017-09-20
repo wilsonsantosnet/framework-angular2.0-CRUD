@@ -185,7 +185,9 @@ export class ApiService<T> {
     public getFile(file: string): Observable<T> {
 
         return this.http.get(file)
-            .map((res: Response) => res.json())
+            .map((res: Response) => {
+                return res.json()
+            })
 
     }
 
@@ -378,6 +380,6 @@ export class ApiService<T> {
 
     private loading(url: string, value: boolean) {
         if (this._enableLoading || value == false)
-            GlobalService.operationRequesting.emit(value);
+            GlobalService.getOperationRequestingEmitter().emit(value);
     }
 }

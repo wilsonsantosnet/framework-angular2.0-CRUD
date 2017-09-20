@@ -10,8 +10,9 @@ declare var $: any;
 })
 
 export class EditorHtmlDiretive implements OnInit {
-    @Output() editorKeyup = new EventEmitter<number>();
 
+    @Output() editorKeyup = new EventEmitter<number>();
+    editor: any;
     constructor(private el: ElementRef, private ngModel: NgModel) {
         
     }
@@ -19,12 +20,17 @@ export class EditorHtmlDiretive implements OnInit {
     ngOnInit() {
         this.render();
 
-        GlobalService.notification.subscribe((not) => {
-            if (not.event == "edit") {
+        GlobalService.getNotificationEmitter().subscribe((not) => {
+            if (not.event == "edit" || not.event == "create") {
                 let element = $(this.el.nativeElement);
                 var selector = element.attr("editorhtml");
                 var name = element.attr("name");
-                tinymce.get(selector).getBody().innerHTML = not.data.model[name];
+                if (tinymce.get(selector)) {
+                    if (not.event == "edit")
+                        tinymce.get(selector).getBody().innerHTML = not.data.model[name];
+                    if (not.event == "create")
+                      tinymce.get(selector).getBody().innerHTML = "";
+                }
             }
         })
     }
@@ -40,6 +46,7 @@ export class EditorHtmlDiretive implements OnInit {
             setup: editor => {
                 editor.on('change', () => {
                     const content = editor.getContent();
+                    this.editor = editor;
                     this.editorKeyup.emit(content);
                   });
             }
@@ -47,6 +54,6 @@ export class EditorHtmlDiretive implements OnInit {
     }
 
     ngOnDestroy() {
-        //tinymce.remove(this.editor);
+        tinymce.remove(this.editor);
     }
 }

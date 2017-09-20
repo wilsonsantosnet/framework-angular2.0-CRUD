@@ -52,7 +52,7 @@ export class UploadCustomComponent implements OnInit {
 
     ngOnInit(): void {
         console.log("upload");
-        GlobalService.notification.subscribe((not) => {
+        GlobalService.getNotificationEmitter().subscribe((not) => {
             if (not.event == "edit") {
                 console.log("upload")
                 this.fileNameOld = this.vm.model[this.ctrlName];        

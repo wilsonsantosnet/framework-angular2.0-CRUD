@@ -28,7 +28,7 @@ export class LoadingComponent implements OnInit {
     requesting: boolean;
 
     ngOnInit() {
-        GlobalService.operationRequesting.subscribe(_requesting => {
+        GlobalService.getOperationRequestingEmitter().subscribe(_requesting => {
 
             this.requesting = _requesting;
         })
