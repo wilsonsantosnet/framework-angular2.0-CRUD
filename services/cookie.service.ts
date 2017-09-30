@@ -22,9 +22,11 @@ export class CookieService {
     }
 
     public static reset() {
-        this.clearAllCookies();
+        Cookie.delete("CURRENT_USER");
+        Cookie.delete("TOKEN_AUTH");
+        Cookie.delete("ARRAffinity");
     }
-    
+
     public static clearAllCookies() {
 
         var cookies = document.cookie.split("; ");

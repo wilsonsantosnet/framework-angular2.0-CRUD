@@ -60,7 +60,8 @@ export class MakeGridComponent implements OnChanges {
     @Input() showPrint: boolean = true;
     @Input() showDelete: boolean = true;
 
-    // [{ class: 'btn-success', tooltip: 'Configuracao', icon: 'fa-cog', click: (model) => { this.router.navigate(['/estagio/configuracao', model.estagioId]); } }]
+    //sample
+    //[customButton]="[{ class: 'btn-success', tooltip: 'Configuracao', icon: 'fa-cog', click: (model) => { this.router.navigate(['/estagio/configuracao', model.estagioId]); } }]"
     @Input() customButton: any = [];
 
     @Output() edit = new EventEmitter<any>();

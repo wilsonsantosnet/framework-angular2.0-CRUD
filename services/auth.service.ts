@@ -6,6 +6,8 @@ import { ApiService } from 'app/common/services/api.service';
 import { ECacheType } from 'app/common/type-cache.enum';
 import { GlobalService } from 'app/global.service';
 import { CacheService } from 'app/common/services/cache.service';
+import { StartupService } from 'app/startup.service';
+
 
 @Injectable()
 export class AuthService {
@@ -23,7 +25,7 @@ export class AuthService {
     private readonly _nameCurrentUser: string;
     private readonly _type: ECacheType;
 
-    constructor(private apiAuth: ApiService<any>, private api: ApiService<any>, private router: Router) {
+    constructor(private apiAuth: ApiService<any>, private api: ApiService<any>, private router: Router, private startupService : StartupService) {
 
 
 
@@ -67,6 +69,7 @@ export class AuthService {
     public loginSso() {
 
 
+        this.startupService.load();
 
         let state = Date.now() + "" + Math.random();
         localStorage["state"] = state;
@@ -92,10 +95,12 @@ export class AuthService {
 
     public logout() {
 
+        console.log("logout", this._typeLogin);
         this._reset();
          
         if (this._typeLogin == "SSO") {
             var authorizationUrl = GlobalService.getEndPoints().AUTH + 'account/logout?returnUrl=' + GlobalService.getEndPoints().APP;
+            console.log(authorizationUrl);
             window.location.href = authorizationUrl;
         }
         else {
@@ -118,13 +123,14 @@ export class AuthService {
 
             if (!result.error) {
                 if (result.state !== localStorage["state"]) {
-                    console.log("<<<<< invalid state >>>>>>", result.state, localStorage["state"]);
+                    console.log("<<<<< INVALID STATE >>>>>>", result.state, localStorage["state"]);
                     localStorage.removeItem("state");
                     this.router.navigate(["/login"]);
                 }
                 else {
                     console.log("<<<<< VALID STATE >>>>>>", result.state, localStorage["state"]);
-                    console.log("<<<<< VALID STATE >>>>>>", result.access_token);
+                    console.log("<<<<< TOKEN >>>>>>", result.access_token);
+                    console.log("<<<<< ENDPOINTS >>>>>>", GlobalService.getEndPoints());
                     localStorage.removeItem("state");
                     this._acceptlogin(result.access_token, false)
                 }
@@ -134,13 +140,14 @@ export class AuthService {
     }
 
     public getCurrentUser(callback) {
+
         var currentUser = this.currentUser();
         if (currentUser.isAuth)
-            callback(currentUser)
+            callback(currentUser, false);
         else {
             this.api.setResource('CurrentUser').get().subscribe(data => {
                 CacheService.add(this._nameCurrentUser, JSON.stringify(data.data), this._type);
-                callback(this.currentUser())
+                callback(this.currentUser(), true);
             }, err => {
                 this.loginSso();
             });
@@ -172,7 +179,7 @@ export class AuthService {
     }
 
     private _reset() {
-        CacheService.reset();
+        CacheService.reset(this._type);
     }
 
     private makeUrl(url, noCache = false) {

@@ -54,11 +54,13 @@ export class ApiService<T> {
             });
     }
 
-    public upload(file: File, folder: string): Observable<T> {
+    public upload(file: File, folder: string, rename: boolean): Observable<T> {
 
         let formData: FormData = new FormData();
         formData.append('files', file, file.name);
         formData.append('folder', folder);
+        formData.append('rename', rename ? "true" : "false");
+
         let url = this.makeResourceUpload();
         return this.uploadCustom(formData, folder, url);
 
