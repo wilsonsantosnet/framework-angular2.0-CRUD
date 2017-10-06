@@ -44,7 +44,8 @@ export class MultiSelectComponent implements OnInit {
         GlobalService.getNotificationEmitter().subscribe((not) => {
             if (not.event == "edit" || not.event == "create") {
                 this.init();
-                this._getInstance(not.data.parentId);
+                if (not.data)
+                    this._getInstance(not.data.parentId);
             }
         })
     }

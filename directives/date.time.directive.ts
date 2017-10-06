@@ -7,10 +7,10 @@ declare var $: any;
 
 
 @Directive({
-    selector: '[datepicker]',
+    selector: '[datetimepicker]',
     providers: [NgModel]
 })
-export class DateDirective {
+export class DateTimeDirective {
     
     @Input() saUiDateTimePicker: any; //configuração do plugin
     @Output() change = new EventEmitter();
@@ -25,9 +25,9 @@ export class DateDirective {
         //iniciando plugin
         $.datetimepicker.setLocale('pt-BR'); //idioma plugin
         let options = $.extend(this.saUiDateTimePicker, {
-            mask: '39/19/2999',
-            format: 'd/m/Y',
-            timepicker: false,
+            mask: '39/19/2999 29:59',
+            format: 'd/m/Y H:i',
+            timepicker: true,
             todayButton: true,
             defaultSelect: true,
             step: 30

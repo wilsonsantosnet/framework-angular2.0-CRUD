@@ -1,7 +1,9 @@
-﻿import { Directive, ElementRef, Renderer, Input, OnInit } from '@angular/core';
-import { ApiService } from '../services/api.service';
-
+﻿import { Directive, ElementRef, Renderer, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { NgModel } from '@angular/forms';
+
+import { ApiService } from '../services/api.service';
+import { GlobalService } from '../../global.service'
+
 
 @Directive({
     selector: '[datasource]',
@@ -13,6 +15,9 @@ export class DataSourceDirective implements OnInit {
     @Input() dataitem: string;
     @Input() endpoint: string;
     @Input() label: string;
+    @Output() chanage = new EventEmitter<any>();
+    @Input() datafilters: any;
+
     private options: any[];
     private accessor: any;
 
@@ -23,6 +28,16 @@ export class DataSourceDirective implements OnInit {
 
     ngOnInit() {
         this.datasource(this._elemetRef.nativeElement);
+
+        GlobalService.notification.subscribe((not) => {
+            if (not.event == "create" || not.event == "edit") {
+                this.datasource(this._elemetRef.nativeElement);
+            }
+            if (not.event == "change") {
+                if (not.data.dataitem == this.dataitem)
+                    this.datasource(this._elemetRef.nativeElement, not.data.parentFilter);
+            }
+        });
     }
 
     private addOption(el, value, text) {
@@ -32,18 +47,22 @@ export class DataSourceDirective implements OnInit {
         el.add(option);
     }
 
-    private datasource(el) {
+    private datasource(el, parentFilter?: any) {
+
+        var filters = Object.assign(this.datafilters || {}, parentFilter || {});
 
         this.addOption(el, undefined, "Selecione");
-        this.api.setResource(this.dataitem, this.endpoint).getDataitem().subscribe((data) => {
+        this.api.setResource(this.dataitem, this.endpoint).getDataitem(filters).subscribe((data) => {
 
             for (var i = 0; i < data.dataList.length; i++) {
                 this.addOption(el, data.dataList[i].id, data.dataList[i].name);
             }
 
-            this.accessor = this.ngModel.valueAccessor;
-            if (this.accessor.value != null && this.accessor.value != undefined) {
-                el.value = this.accessor.value;
+            if (this.ngModel.valueAccessor) {
+                this.accessor = this.ngModel.valueAccessor;
+                if (this.accessor.value) {
+                    el.value = this.accessor.value;
+                }
             }
 
         });

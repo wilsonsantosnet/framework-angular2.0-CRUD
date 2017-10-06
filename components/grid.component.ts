@@ -17,6 +17,9 @@ import { ViewModel } from '../model/viewmodel';
                 </span>
               </th>
               <th width="175" class="text-center">Ações</th>
+              <th width="65" class="text-center text-nowrap" *ngIf="showCheckbox">
+                <input type="checkbox" class="grid-chk" [checked]='isCheckedAll' (click)='onCheckAll($event)' />
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -46,6 +49,11 @@ import { ViewModel } from '../model/viewmodel';
                   <i class="fa fa-trash-o"></i>
                 </button>
               </td>
+              
+              <td class="text-center text-nowrap" *ngIf="showCheckbox">
+                <input type="checkbox" class="grid-chk" name="gridCheckBox" [value]="getPropertyValue(item, checkboxProperty)" (change)='onChange($event)' />
+              </td>
+
             </tr>
           </tbody>
         </table>
@@ -59,20 +67,31 @@ export class MakeGridComponent implements OnChanges {
     @Input() showDetails: boolean = true;
     @Input() showPrint: boolean = true;
     @Input() showDelete: boolean = true;
+    @Input() showCheckbox: boolean = false;
 
-    //sample
-    //[customButton]="[{ class: 'btn-success', tooltip: 'Configuracao', icon: 'fa-cog', click: (model) => { this.router.navigate(['/estagio/configuracao', model.estagioId]); } }]"
+    // [{ class: 'btn-success', tooltip: 'Configuracao', icon: 'fa-cog', click: (model) => { this.router.navigate(['/estagio/configuracao', model.estagioId]); } }]
     @Input() customButton: any = [];
+    @Input() checkboxProperty: string;
 
     @Output() edit = new EventEmitter<any>();
     @Output() details = new EventEmitter<any>();
     @Output() print = new EventEmitter<any>();
     @Output() deleteConfimation = new EventEmitter<any>();
 
+    _modelOutput: any;
+    _collectionjsonTemplate: any;
+    isCheckedAll: boolean;
+
     constructor() {
     }
 
     ngOnChanges(): void { }
+
+    init() {
+        this._modelOutput = [];
+        this._collectionjsonTemplate = "";
+        this.isCheckedAll = false;
+    }
 
     bindFields(item, key) {
         if (key.includes(".")) {
@@ -81,6 +100,80 @@ export class MakeGridComponent implements OnChanges {
             if (keys.length == 3) return item[keys[0]][keys[1]][keys[2]];
         }
         return item[key];
+    }
+
+    onChange(evt) {
+
+        this.addItem(parseInt(evt.target.value), evt.target.checked);
+
+        this.vm.gridCheckModel = this.serializeToJson();
+
+        let checkBoxItens = document.getElementsByName('gridCheckBox');
+
+        for (var i = 0; i < checkBoxItens.length; i++) {
+            if ((<HTMLInputElement>checkBoxItens[i]).checked == false) {
+                this.isCheckedAll = false;
+                break;
+            }
+
+            if (i == checkBoxItens.length - 1) {
+                this.isCheckedAll = true;
+            }
+        }
+    }
+
+    onCheckAll(e) {
+
+        this.isCheckedAll = e.target.checked;
+
+        let checkBoxItens = document.getElementsByName('gridCheckBox');
+
+        for (var i = 0; i < checkBoxItens.length; i++) {
+
+            (<HTMLInputElement>checkBoxItens[i]).checked = e.target.checked;
+
+            this.addItem(parseInt((<HTMLInputElement>checkBoxItens[i]).value), (<HTMLInputElement>checkBoxItens[i]).checked);
+        }
+
+        this.vm.gridCheckModel = this.serializeToJson();
+    }
+
+    private addItem(value: any, checked: boolean) {
+
+        if (checked) {
+            this._modelOutput.push(value);
+        }
+        else {
+            this._modelOutput = this._modelOutput.filter((item) => {
+                return item != value;
+            });
+        }
+    }
+
+    private serializeToJson() {
+
+        this.removeDoubled();
+
+        let items: any = [];
+
+        for (let item in this._modelOutput) {
+            items.push(`{ "${this.checkboxProperty}" : "${this._modelOutput[item]}"}`);
+        }
+
+        this._collectionjsonTemplate = `[ ${items.join()} ]`;
+
+        return JSON.parse(this._collectionjsonTemplate);
+    }
+
+    private removeDoubled() {
+
+        let modelOutputDuplicate = this._modelOutput;
+
+        let modelOutputUnique = modelOutputDuplicate.filter(function (item, pos) {
+            return modelOutputDuplicate.indexOf(item) == pos;
+        });
+
+        this._modelOutput = modelOutputUnique;
     }
 
     onEdit(evt, model) {

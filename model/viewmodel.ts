@@ -21,6 +21,7 @@ export class ViewModel<T> {
         this.form = init.form;
         this.masks = init.masks;
         this.reletedViewModel = init.reletedViewModel;
+        this.gridCheckModel = init.gridCheckModel;
 
     }
 
@@ -40,4 +41,5 @@ export class ViewModel<T> {
     form: FormGroup;
     masks: any;
     reletedViewModel: any;
+    gridCheckModel: any;
 }
