@@ -13,12 +13,12 @@ import { ViewModel } from '../model/viewmodel';
               <th *ngFor="let grid of vm.grid">
                 <span class="table-sort">
                   {{ grid.info.label }}
-                  <i class="fa fa-sort table-sort__icon" aria-hidden="true" data-mockup="sort-icon" data-icon="fa-sort"></i>
+                  <a href='#' (click)='onOrderBy($event,grid.key)'><i class="fa fa-sort table-sort__icon" aria-hidden="true" data-mockup="sort-icon" data-icon="fa-sort"></i></a>
                 </span>
               </th>
               <th width="175" class="text-center">Ações</th>
               <th width="65" class="text-center text-nowrap" *ngIf="showCheckbox">
-                <input type="checkbox" class="grid-chk" [checked]='isCheckedAll' (click)='onCheckAll($event)' />
+                <input type="checkbox" class="grid-chk" [checked]='_isCheckedAll' (click)='onCheckAll($event)' />
               </th>
             </tr>
           </thead>
@@ -62,7 +62,6 @@ import { ViewModel } from '../model/viewmodel';
 export class MakeGridComponent implements OnChanges {
 
     @Input() vm: ViewModel<any>
-
     @Input() showEdit: boolean = true;
     @Input() showDetails: boolean = true;
     @Input() showPrint: boolean = true;
@@ -77,12 +76,16 @@ export class MakeGridComponent implements OnChanges {
     @Output() details = new EventEmitter<any>();
     @Output() print = new EventEmitter<any>();
     @Output() deleteConfimation = new EventEmitter<any>();
+    @Output() orderBy = new EventEmitter<any>();
 
     _modelOutput: any;
     _collectionjsonTemplate: any;
-    isCheckedAll: boolean;
+    _isCheckedAll: boolean;
+    _isAsc: boolean;
+
 
     constructor() {
+        this.init();
     }
 
     ngOnChanges(): void { }
@@ -90,7 +93,8 @@ export class MakeGridComponent implements OnChanges {
     init() {
         this._modelOutput = [];
         this._collectionjsonTemplate = "";
-        this.isCheckedAll = false;
+        this._isCheckedAll = false;
+        this._isAsc = true;
     }
 
     bindFields(item, key) {
@@ -112,19 +116,19 @@ export class MakeGridComponent implements OnChanges {
 
         for (var i = 0; i < checkBoxItens.length; i++) {
             if ((<HTMLInputElement>checkBoxItens[i]).checked == false) {
-                this.isCheckedAll = false;
+                this._isCheckedAll = false;
                 break;
             }
 
             if (i == checkBoxItens.length - 1) {
-                this.isCheckedAll = true;
+                this._isCheckedAll = true;
             }
         }
     }
 
     onCheckAll(e) {
 
-        this.isCheckedAll = e.target.checked;
+        this._isCheckedAll = e.target.checked;
 
         let checkBoxItens = document.getElementsByName('gridCheckBox');
 
@@ -194,6 +198,15 @@ export class MakeGridComponent implements OnChanges {
     onDeleteConfimation(evt, model) {
         evt.preventDefault();
         this.deleteConfimation.emit(model);
+    }
+
+    onOrderBy(evt, field) {
+        this._isAsc = !this._isAsc
+        evt.preventDefault();
+        this.orderBy.emit({
+            field: field,
+            asc: this._isAsc
+        });
     }
 
 }

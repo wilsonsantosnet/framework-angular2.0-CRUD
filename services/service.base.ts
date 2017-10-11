@@ -37,6 +37,15 @@ export class ServiceBase {
 
     }
 
+    public orderByConfig(modelFilter, order) {
+
+        return  Object.assign(modelFilter, {
+            OrderByType: order.asc ? "OrderBy" : "OrderByDescending",
+            OrderFields: [order.field]
+        });
+
+    }
+
     public detectChanges(changeDetector: any) {
 
         changeDetector.detach();
