@@ -65,7 +65,6 @@ export class UploadCustomComponent implements OnInit {
                 this.fileNameOld = this.vm.model[this.ctrlName];
                 this.fileName = this.vm.model[this.ctrlName]
             }
-            console.log("UploadCustomComponent", not.otherEvents)
             if (not.event == "init" || not.otherEvents.filter((event) => event == "init").length > 0) {
                 this.fileNameOld = null;
                 this.fileName = null;

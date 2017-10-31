@@ -15,12 +15,14 @@ export class ApiService<T> {
     private _enableNotifification: boolean;
     private _enableLoading: boolean;
     private _apiDefault: string;
+    private _cacheType: ECacheType;
 
     constructor(private http: Http, private notificationsService: NotificationsService, private router: Router) {
 
         this._apiDefault = GlobalService.getEndPoints().DEFAULT
         this._enableNotifification = true;
         this._enableLoading = true;
+        this._cacheType = GlobalService.getAuthSettings().CACHE_TYPE;
     }
 
     public get(filters?: any, onlyDataResult?: boolean): Observable<T> {
@@ -36,7 +38,7 @@ export class ApiService<T> {
 
         this.loading(_url, true);
         let headers = new Headers();
-        headers.append('Authorization', "Bearer " + CacheService.get('TOKEN_AUTH', ECacheType.COOKIE))
+        headers.append('Authorization', "Bearer " + CacheService.get('TOKEN_AUTH', this._cacheType))
         let options = new RequestOptions({ headers: headers });
 
         return this.http.post(_url,
@@ -177,11 +179,15 @@ export class ApiService<T> {
     }
 
     public getDetails(filters?: any): Observable<T> {
-        return this.getMethodCustom('GetDetails');
+        return this.getMethodCustom('GetDetails', filters);
     }
 
     public getDataCustom(filters?: any): Observable<T> {
         return this.getMethodCustom('GetDataCustom', filters);
+    }
+
+    public getDataListCustomPaging(filters?: any): Observable<T> {
+        return this.getMethodCustom('GetDataListCustomPaging', filters);
     }
 
     public getFile(file: string): Observable<T> {
@@ -363,21 +369,42 @@ export class ApiService<T> {
     private notification(response) {
 
         let _response = response.json();
-        let msg = "Operação realizado com sucesso!";
-        if (_response.result != null) {
-            msg = _response.result.message;
-        }
 
-        this.notificationsService.success(
-            'Sucesso',
-            msg,
-            {
-                timeOut: 1000,
-                showProgressBar: true,
-                pauseOnHover: true,
-                clickToClose: false,
+        if (_response.warning) {
+            if (_response.warning.warnings) {
+                for (var index in _response.warning.warnings) {
+                    this.notificationsService.warn(
+                        'Atenção',
+                        _response.warning.warnings[index],
+                        {
+                            timeOut: 3000,
+                            showProgressBar: true,
+                            pauseOnHover: true,
+                            clickToClose: false,
+                        }
+                    )
+                }
             }
-        )
+
+        }
+        else {
+
+            let msg = "Operação realizado com sucesso!";
+            if (_response.result != null) {
+                msg = _response.result.message;
+            }
+
+            this.notificationsService.success(
+                'Sucesso',
+                msg,
+                {
+                    timeOut: 1000,
+                    showProgressBar: true,
+                    pauseOnHover: true,
+                    clickToClose: false,
+                }
+            )
+        }
     }
 
     private loading(url: string, value: boolean) {

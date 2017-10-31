@@ -2,27 +2,25 @@
 import { GlobalService } from 'app/global.service';
 
 @Component({
-    selector: 'loading',
+    selector: 'loadingTop',
     template: `
     <div class="loader" [hidden]="!requesting">
         <img src="../../../assets/img/loader.gif" alt="carregando..." />
     </div>`,
     styles: [`
     .loader {
-      position: fixed;
-      z-index: 9999;
-      background-color: #fff;
       opacity: .90;
       filter: alpha(opacity=90);
-      width: 100%;
-      height: 100%; }
+      }
 
     .loader img {
-      display: block;
-      margin: 200px auto; }
+      width: 160px;
+      heigth: 30px;
+      margin: 10px;
+     }
   `]
 })
-export class LoadingComponent implements OnInit {
+export class LoadingTopComponent implements OnInit {
 
 
     requesting: boolean;
@@ -33,7 +31,7 @@ export class LoadingComponent implements OnInit {
             this.requesting = _requesting;
         })
     }
-
+    
 
     constructor() { }
 
