@@ -1,4 +1,4 @@
-﻿import { Http, RequestOptions, Response, Headers, URLSearchParams } from '@angular/http';
+import { Http, RequestOptions, Response, Headers, URLSearchParams } from '@angular/http';
 import { Router } from '@angular/router';
 import { Inject, Injectable, OnInit } from '@angular/core';
 import { Observable, Observer } from 'rxjs/Rx';
@@ -247,7 +247,7 @@ export class ApiService<T> {
     public requestOptions(): RequestOptions {
         const headers = new Headers({
             'Content-Type': 'application/json',
-            'Authorization': "Bearer " + CacheService.get('TOKEN_AUTH', ECacheType.COOKIE)
+            'Authorization': "Bearer " + CacheService.get('TOKEN_AUTH', this._cacheType)
         });
 
         return new RequestOptions({ headers: headers });
