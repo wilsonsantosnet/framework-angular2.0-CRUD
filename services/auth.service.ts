@@ -1,4 +1,4 @@
-﻿import { Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Router, NavigationCancel } from '@angular/router';
 import { URLSearchParams, } from '@angular/http';
 
@@ -19,6 +19,7 @@ export class AuthService {
     private readonly _typeLogin: string;
     private readonly _authorizationUrl: string;
     private readonly _client_id: string;
+    private readonly _client_id_ro: string;
     private readonly _redirect_uri: string;
     private readonly _response_type: string;
     private readonly _scope: string;
@@ -36,11 +37,12 @@ export class AuthService {
         this._authorizationUrl = GlobalService.getEndPoints().AUTH + '/connect/authorize';
         this._authorizationClaimsAddUrl = GlobalService.getEndPoints().AUTH + '/AccountAfterAuth/ClaimsAdd';
         this._client_id = GlobalService.getAuthSettings().CLIENT_ID;
+        this._client_id_ro = GlobalService.getAuthSettings().CLIENT_ID_RO
         this._redirect_uri = GlobalService.getEndPoints().APP;
         this._response_type = "token";
         this._scope = GlobalService.getAuthSettings().SCOPE;
         this._nameCurrentUser = "CURRENT_USER";
-        this._cacheType = ECacheType.COOKIE;
+        this._cacheType = GlobalService.getAuthSettings().CACHE_TYPE;
 
 
     }
@@ -49,15 +51,16 @@ export class AuthService {
 
         this.apiAuth.setResource("auth", GlobalService.getEndPoints().AUTHAPI).post({
 
-            ClientId: this._client_id,
-            ClientSecret: "******",
-            Scope: "openid profile ssosm",
+            ClientId: this._client_id_ro,
+            ClientSecret: "secret",
+            Scope: this._scope,
             User: email,
             Password: password
 
-        }).subscribe(data => {
+        }).subscribe(result => {
 
-            CacheService.add(this._nameToken, data.Data.Token, this._cacheType);
+            console.log("<<<<< TOKEN >>>>>>", result.data);
+            CacheService.add(this._nameToken, result.data.accessToken, this._cacheType);
             this.router.navigate(["/home"]);
 
             if (reload)
