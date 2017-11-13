@@ -41,6 +41,14 @@ export class CacheService {
         }
     }
 
+    public static removePartialKey(key: string, type: ECacheType) {
+        if (type === ECacheType.COOKIE) {
+            CookieService.removePartialKey(key);
+        } else if (type === ECacheType.LOCAL) {
+            LocalStorageService.remove(key);
+        }
+    }
+
     public static reset(type?: ECacheType) {
         if (type === ECacheType.COOKIE) {
             CookieService.reset();

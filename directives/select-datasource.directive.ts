@@ -14,12 +14,10 @@ export class DataSourceDirective implements OnInit {
 
     @Input() dataitem: string;
     @Input() endpoint: string;
-    @Input() label: string;
-    @Output() chanage = new EventEmitter<any>();
     @Input() datafilters: any;
 
-    private options: any[];
-    private accessor: any;
+    options: any[];
+    accessor: any;
 
     constructor(private _elemetRef: ElementRef, private _renderer: Renderer, private api: ApiService<any>, private ngModel: NgModel) {
 

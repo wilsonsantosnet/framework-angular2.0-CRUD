@@ -21,6 +21,14 @@ export class CookieService {
         Cookie.delete(key);
     }
 
+    public static removePartialKey(key: string) {
+        var cookies = Cookie.getAll()
+        for (var i in cookies) {
+            if (i.startsWith(key))
+                this.remove(i);
+        };
+    }
+
     public static reset() {
         Cookie.delete("CURRENT_USER");
         Cookie.delete("TOKEN_AUTH");

@@ -1,4 +1,4 @@
-import { Http, RequestOptions, Response, Headers, URLSearchParams } from '@angular/http';
+﻿import { Http, RequestOptions, Response, Headers, URLSearchParams } from '@angular/http';
 import { Router } from '@angular/router';
 import { Inject, Injectable, OnInit } from '@angular/core';
 import { Observable, Observer } from 'rxjs/Rx';
@@ -39,6 +39,7 @@ export class ApiService<T> {
         this.loading(_url, true);
         let headers = new Headers();
         headers.append('Authorization', "Bearer " + CacheService.get('TOKEN_AUTH', this._cacheType))
+        console.log("uploadCustom", headers)
         let options = new RequestOptions({ headers: headers });
 
         return this.http.post(_url,
@@ -111,22 +112,27 @@ export class ApiService<T> {
 
     public delete(data: any): Observable<T> {
 
-
         let url = this.makeBaseUrl();
         this.loading(url, true);
+        
+        var ro = this.requestOptions().merge(new RequestOptions({
+            search: this.makeSearchParams(data)
+        }));
 
-        return this.http.delete(url,
-            this.requestOptions().merge(new RequestOptions({
-                search: this.makeSearchParams(data)
-            })))
+        console.log("delete", data, url, ro);
+
+        return this.http.delete(url, ro)
             .map(res => {
+                console.log("delete map");
                 this.notification(res);
                 return this.successResult(res);
             })
             .catch(error => {
+                console.log("delete Error", error);
                 return this.errorResult(error);
             })
             .finally(() => {
+                console.log("delete finally");
                 this.loading(url, false);
             });
     }
