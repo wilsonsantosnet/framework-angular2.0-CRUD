@@ -20,8 +20,25 @@ export class ServiceBase {
 
         var list = [];
         for (let key in infos) {
+
             var info = infos[key];
+
             list.push(info);
+        }
+        return list;
+    }
+
+    protected objectToArrayWithKeys(infos) {
+
+        var list = [];
+        for (let key in infos) {
+
+            var info = infos[key];
+
+            list.push({
+                key: key,
+                infos: info
+            });
         }
         return list;
     }
@@ -102,6 +119,38 @@ export class ServiceBase {
             }).toString();
         }
         return value;
+    }
+
+    public mergeInfoFields(defaultInfosFields, moreInfosFields) {
+
+        let dataArrayDefault = this.objectToArrayWithKeys(defaultInfosFields);
+        if (moreInfosFields) {
+            let dataArrayMore = this.objectToArrayWithKeys(moreInfosFields);
+
+            dataArrayMore.forEach((_elemetMore) => {
+                dataArrayDefault = dataArrayDefault.map((_elemetDefault) => {
+                    if (_elemetDefault.key == _elemetMore.key)
+                        return _elemetMore;
+                    else {
+                        return _elemetDefault;
+                    }
+                })
+
+                let dataArrayDefaultExists = dataArrayDefault.filter((_elemetDefault) => {
+                    return _elemetDefault.key == _elemetMore.key
+                })
+
+                if (dataArrayDefaultExists.length == 0)
+                    dataArrayDefault.push(_elemetMore)
+            })
+        }
+
+        let objMerged = {};
+        dataArrayDefault.forEach((item) => {
+            objMerged[item.key] = item.infos;
+        });
+
+        return objMerged;
     }
     
 }
