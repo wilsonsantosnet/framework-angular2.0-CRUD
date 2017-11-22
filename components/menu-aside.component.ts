@@ -1,4 +1,4 @@
-﻿import { Component, OnInit, Input, SecurityContext, Output, EventEmitter} from '@angular/core';
+﻿import { Component, OnInit, Input, SecurityContext, Output, EventEmitter } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { AuthService } from 'app/common/services/auth.service';
 
@@ -20,7 +20,6 @@ import { AuthService } from 'app/common/services/auth.service';
         </div>
       </div>
     </div>
-
     <ul class="gc-menu__list list-unstyled">
       <li *ngFor="let item of vm.menu">
         <a routerLink="{{item.Value}}">
@@ -53,22 +52,21 @@ import { AuthService } from 'app/common/services/auth.service';
 })
 export class MenuAsideComponent implements OnInit {
 
-    @Input() vm: any;
     @Output() onToggleMenu = new EventEmitter<any>();
     @Output() onLogout = new EventEmitter<any>();
     @Output() onFilter = new EventEmitter<any>();
 
+
     constructor(private sanitizer: DomSanitizer, private authService: AuthService) { }
 
+    @Input() vm: any;
+
     ngOnInit() {
-
     }
-
     san(fileName) {
         var _url = "url('" + this.vm.downloadUri + "/assinante/" + (fileName || 'vazio.png') + "')";
         return this.sanitizer.sanitize(SecurityContext.HTML, _url)
     }
-
     _onToggleMenu(event) {
         this.onToggleMenu.emit(event);
     }
