@@ -7,7 +7,8 @@ import { GlobalService } from '../../global.service'
 
 @Directive({
     selector: '[dom-element-append]',
-    providers: [NgModel]
+    providers: [NgModel],
+
 })
 
 export class DomElemetAppendDirective implements OnInit {

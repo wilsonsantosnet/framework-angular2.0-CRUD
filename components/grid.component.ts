@@ -7,13 +7,13 @@ import { ViewModel } from '../model/viewmodel';
     selector: 'make-grid',
     template: `
     <div class="gc-table-responsive">
-        <table class="table table-bordered table-striped">
+        <table class="table table-bordered table-striped table-app">
           <thead class="thead-inverse">
             <tr>
               <th *ngFor="let grid of vm.grid">
                 <span class="table-sort">
                   {{ grid.info.label }}
-                  <a href='#' (click)='onOrderBy($event,grid.key)'><i class="fa fa-sort table-sort__icon" aria-hidden="true" data-mockup="sort-icon" data-icon="fa-sort"></i></a>
+                  <a href='#' (click)='onOrderBy($event,grid.key)'><i class="fa fa-sort" aria-hidden="true"></i></a>
                 </span>
               </th>
               <th width="175" class="text-center">Ações</th>

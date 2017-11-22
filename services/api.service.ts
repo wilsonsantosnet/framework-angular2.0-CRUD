@@ -64,7 +64,7 @@ export class ApiService<T> {
         formData.append('folder', folder);
         formData.append('rename', rename ? "true" : "false");
 
-        let url = this.makeResourceUpload();
+        let url = this.makeUrlUpload();
         return this.uploadCustom(formData, folder, url);
 
 
@@ -73,7 +73,7 @@ export class ApiService<T> {
     public deleteUpload(folder: string, fileName: string): Observable<T> {
 
 
-        let url = this.makeResourceDeleteUpload(folder, fileName);
+        let url = this.makeUrlDeleteUpload(folder, fileName);
         this.loading(url, true);
 
         return this.http.delete(url,
@@ -114,25 +114,20 @@ export class ApiService<T> {
 
         let url = this.makeBaseUrl();
         this.loading(url, true);
-        
+
         var ro = this.requestOptions().merge(new RequestOptions({
             search: this.makeSearchParams(data)
         }));
 
-        console.log("delete", data, url, ro);
-
         return this.http.delete(url, ro)
             .map(res => {
-                console.log("delete map");
                 this.notification(res);
                 return this.successResult(res);
             })
             .catch(error => {
-                console.log("delete Error", error);
                 return this.errorResult(error);
             })
             .finally(() => {
-                console.log("delete finally");
                 this.loading(url, false);
             });
     }
@@ -161,7 +156,7 @@ export class ApiService<T> {
 
         if (filters == null) filters = {};
         filters.FilterBehavior = 'Export';
-        var url = this.makeResourceMore();
+        var url = this.makeUrlMore();
 
         this.loading(url, true);
 
@@ -178,6 +173,13 @@ export class ApiService<T> {
             .finally(() => {
                 this.loading(url, false);
             });
+    }
+
+    public getDataitem(filters?: any): Observable<T> {
+
+        this._enableLoading = false;
+        let result = this.getMethodCustom('GetDataItem', filters);
+        return result;
     }
 
     public getDataListCustom(filters?: any): Observable<T> {
@@ -205,11 +207,42 @@ export class ApiService<T> {
 
     }
 
-    public getDataitem(filters?: any): Observable<T> {
+    public getUrlConfig(more: boolean, filterFieldName?: string, filterBehavior?: string, filters?: any) {
 
-        this._enableLoading = false;
-        let result = this.getMethodCustom('GetDataItem', filters);
-        return result;
+        var urlMore = this.makeUrlMore();
+        var urlBase = this.makeBaseUrl();
+        var authConfig = this.makeAuthorization();
+        //var filtersParams = this.makeSearchParams(filters);
+        var url = more ? urlMore : urlBase;
+
+        return {
+            url: url,
+            dataType: 'json',
+            headers: authConfig,
+            delay: 500,
+            data: function (params) {
+
+                var filterComposite = Object.assign(filters || {}, {
+                    filterBehavior: filterBehavior,
+                });
+                filterComposite[filterFieldName] = params.term
+                return filterComposite;
+            },
+            processResults: function (result) {
+
+                let dataList = result.dataList.map((item) => {
+                    let data = {
+                        id: item.id,
+                        text: item.name
+                    };
+                    return data;
+                });
+                return {
+                    results: dataList
+                };
+            }
+
+        };
     }
 
     public getMethodCustom(method: string, filters?: any): Observable<T> {
@@ -218,7 +251,7 @@ export class ApiService<T> {
             filters = {};
 
         filters.FilterBehavior = method;
-        return this.getBase(this.makeResourceMore(), filters);
+        return this.getBase(this.makeUrlMore(), filters);
 
     }
 
@@ -250,15 +283,42 @@ export class ApiService<T> {
         return this._resource;
     }
 
-    public requestOptions(): RequestOptions {
-        const headers = new Headers({
-            'Content-Type': 'application/json',
-            'Authorization': "Bearer " + CacheService.get('TOKEN_AUTH', this._cacheType)
-        });
 
+
+    private getBase(url: string, filters?: any, onlyDataResult?: boolean): Observable<T> {
+
+        if (filters != null && filters.id != null) {
+            url += '/' + filters.id;
+        }
+
+        this.loading(url, true);
+
+        return this.http.get(url,
+            this.requestOptions().merge(new RequestOptions({
+                search: this.makeSearchParams(filters)
+            })))
+            .map(res => {
+                return this.successResult(res);
+            })
+            .catch(error => {
+                return this.errorResult(error);
+            })
+            .finally(() => {
+                this.loading(url, false);
+            });
+    }
+
+    private requestOptions(): RequestOptions {
+        const headers = new Headers(this.makeAuthorization());
         return new RequestOptions({ headers: headers });
     }
 
+    private makeAuthorization() {
+        return {
+            'Content-Type': 'application/json',
+            'Authorization': "Bearer " + CacheService.get('TOKEN_AUTH', this._cacheType)
+        }
+    }
 
     private makeGetCustomMethodBaseUrl(method: string): string {
 
@@ -266,19 +326,19 @@ export class ApiService<T> {
 
     }
 
-    private makeResourceMore(): string {
+    private makeUrlMore(): string {
 
         return this.makeBaseUrl() + "/more";
 
     }
 
-    private makeResourceUpload(): string {
+    private makeUrlUpload(): string {
 
         return this.makeBaseUrl("document");
 
     }
 
-    private makeResourceDeleteUpload(folder: string, fileName: string): string {
+    private makeUrlDeleteUpload(folder: string, fileName: string): string {
 
         return this.makeBaseUrl("document") + "/" + folder + "/" + fileName;
     }
@@ -315,29 +375,6 @@ export class ApiService<T> {
         return params;
     }
 
-    private getBase(url: string, filters?: any, onlyDataResult?: boolean): Observable<T> {
-
-        if (filters != null && filters.id != null) {
-            url += '/' + filters.id;
-        }
-
-        this.loading(url, true);
-
-        return this.http.get(url,
-            this.requestOptions().merge(new RequestOptions({
-                search: this.makeSearchParams(filters)
-            })))
-            .map(res => {
-                return this.successResult(res);
-            })
-            .catch(error => {
-                return this.errorResult(error);
-            })
-            .finally(() => {
-                this.loading(url, false);
-            });
-    }
-
     private successResult(response: Response): Observable<T> {
 
         let _response = response.json();
@@ -369,8 +406,6 @@ export class ApiService<T> {
 
         return Observable.throw(erros);
     }
-
-
 
     private notification(response) {
 

@@ -1,5 +1,4 @@
 ﻿import { Directive, ElementRef, Input, Output, EventEmitter, Optional, Self } from '@angular/core';
-
 import { NgModel, FormControlName } from '@angular/forms';
 
 
@@ -18,6 +17,8 @@ export class DateTimeDirective {
     constructor(private el: ElementRef, private ngModel: NgModel, @Optional() @Self() private controlName: FormControlName) {
         this.render();
     }
+
+
 
     render() {
         let element = $(this.el.nativeElement);
@@ -71,7 +72,9 @@ export class DateTimeDirective {
         this.change.emit(); //necessário para emitir o evento change
     }
 
-    private hasFormControl() { return this.controlName && this.controlName.control; }
+    hasFormControl() {
+        return this.controlName && this.controlName.control;
+    }
 
     get control() {
 
