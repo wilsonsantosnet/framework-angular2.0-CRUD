@@ -1,4 +1,4 @@
-﻿import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, SecurityContext  } from '@angular/core';
+﻿import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, SecurityContext } from '@angular/core';
 import { DatePipe, DecimalPipe, PercentPipe, CurrencyPipe } from "@angular/common";
 import { DomSanitizer } from '@angular/platform-browser';
 import { ApiService } from "app/common/services/api.service";
@@ -62,7 +62,7 @@ export class BindCustomComponent implements OnInit, OnChanges {
             this.value = this.datePipe.transform(this.convertDate(this.model), 'dd/MM/yyyy HH:mm');
         }
         else if ((this.format.toLocaleLowerCase() === 'integer' || this.format.toLocaleLowerCase() === 'int' || this.format.toLocaleLowerCase() === 'int?') && !isNaN(this.model)) {
-            this.value =  this.model;
+            this.value = this.model;
         }
         else if (this.format.toLocaleLowerCase() === 'decimal' && !isNaN(this.model)) {
             this.value = this.decimalPipe.transform(this.model, '1.2-2');
@@ -89,9 +89,19 @@ export class BindCustomComponent implements OnInit, OnChanges {
             this.tag = "inner";
             this.value = this.sanitizer.sanitize(SecurityContext.HTML, this.model);
         }
+        else if (this.format.toLocaleLowerCase() === 'tag') {
+            var itens = this.model.split(',');
+            var content = "<ul>";
+            for (var i in itens) {
+                content += "<li><div class='badge'>" + itens[i] + "</div></li>";
+            }
+            content += "</ul>";
+            this.tag = "inner";
+            this.value = this.sanitizer.sanitize(SecurityContext.HTML, content);
+        }
         else if (this.format.toLocaleLowerCase() === 'mask' && this.model) {
             this.value = this.maskPipe.transform(this.model, this.mask);
-        }   
+        }
         else {
             this.value = this.model;
         }

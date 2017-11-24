@@ -96,7 +96,7 @@ export class ServiceBase {
 
     }
 
-    public tagTransformToShow(value) {
+    public tagTransformToShow(value, readonly) {
         var tagItems = value ? value.split(',') : value;
         var tags = [];
         if (tagItems) {
@@ -104,7 +104,7 @@ export class ServiceBase {
                 tags.push({
                     display: tagItems[i],
                     value: tagItems[i],
-                    readonly: true
+                    readonly: readonly
                 })
             }
         }

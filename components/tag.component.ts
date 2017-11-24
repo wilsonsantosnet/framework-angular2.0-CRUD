@@ -1,4 +1,4 @@
-﻿import { Component, OnInit, Input, forwardRef } from '@angular/core';
+﻿import { Component, OnInit, Input, forwardRef, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 import { GlobalService } from "app/global.service";
 import { ViewModel } from '../model/viewmodel';
@@ -7,7 +7,7 @@ import { ServiceBase } from '../services/service.base';
 
 @Component({
     selector: 'tag-custom',
-    template: `<tag-input [(ngModel)]='value' [placeholder]="placeholder" [secondaryPlaceholder]="secondaryPlaceholder" [disabled]="disabled"></tag-input>`,
+    template: `<tag-input [(ngModel)]='value' (ngModelChange)="onModelChange($event)" [placeholder]="placeholder" [secondaryPlaceholder]="secondaryPlaceholder" [disabled]="disabled"></tag-input>`,
     providers: [{
         provide: NG_VALUE_ACCESSOR,
         useExisting: forwardRef(() => TagCustomComponent),
@@ -15,11 +15,13 @@ import { ServiceBase } from '../services/service.base';
     }]
    
 })
-export class TagCustomComponent implements ControlValueAccessor {
+export class TagCustomComponent implements ControlValueAccessor, OnDestroy {
 
     @Input() readOnly: boolean;
+    @Input() model: any;
+    @Output() tagChange = new EventEmitter<any>();
 
-    model: any
+
     onTouched: any;
     onChange: any;
     placeholder: string;
@@ -27,6 +29,7 @@ export class TagCustomComponent implements ControlValueAccessor {
     disabled: boolean;
     
     constructor(private serviceBase: ServiceBase) {
+        this.model = {};
         if (this.readOnly)
         {
             this.placeholder = "";
@@ -37,8 +40,15 @@ export class TagCustomComponent implements ControlValueAccessor {
 
     //get accessor
     get value(): any {
-        return this.serviceBase.tagTransformToShow(this.model);
+        console.log("value", this.model);
+        return this.serviceBase.tagTransformToShow(this.model, this.readOnly);
+
     };
+
+    onModelChange($event) {
+        this.tagChange.emit(this.model)
+        console.log("onModelChange", this.model);
+    }
 
     //set accessor including call the onchange callback
     set value(v: any) {
@@ -65,4 +75,7 @@ export class TagCustomComponent implements ControlValueAccessor {
         this.onTouched = fn;
     }
 
+    ngOnDestroy() {
+        this.model = {};
+    }
 }

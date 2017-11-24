@@ -27,7 +27,9 @@ export class MakePaginationComponent {
 
     @Input() vm: ViewModel<any>
     @Output() pageChanged = new EventEmitter<any>();
-    public initialPage: number;
+
+    initialPage: number;
+
     constructor() {
 
         this.initialPage = 1;

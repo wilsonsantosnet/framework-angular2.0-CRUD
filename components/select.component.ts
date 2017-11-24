@@ -1,4 +1,4 @@
-﻿import { Component, OnInit, Input, forwardRef } from '@angular/core';
+﻿import { Component, OnInit, Input, forwardRef} from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 import { GlobalService } from "app/global.service";
 import { ViewModel } from '../model/viewmodel';
@@ -15,7 +15,7 @@ import { ApiService } from '../services/api.service';
     }]
    
 })
-export class SelectCustomComponent implements ControlValueAccessor, OnInit {
+export class SelectCustomComponent implements ControlValueAccessor, OnInit{
 
     @Input() dataitem: string;
     @Input() endpoint: string;
@@ -49,13 +49,13 @@ export class SelectCustomComponent implements ControlValueAccessor, OnInit {
 
     //get accessor
     get value(): any {
-        return this.serviceBase.tagTransformToShow(this.model);
+        return this.model;
     };
 
     //set accessor including call the onchange callback
     set value(v: any) {
         if (v !== this.model) {
-            this.model = this.serviceBase.tagTransformToSave(v);
+            this.model = v;
             this.onChange(v);
         }
     }
@@ -97,5 +97,7 @@ export class SelectCustomComponent implements ControlValueAccessor, OnInit {
         });
 
     }
+
+  
 
 }
