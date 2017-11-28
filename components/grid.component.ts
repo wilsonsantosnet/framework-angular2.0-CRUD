@@ -16,7 +16,7 @@ import { ViewModel } from '../model/viewmodel';
                   <a href='#' (click)='onOrderBy($event,grid.key)'><i class="fa fa-sort" aria-hidden="true"></i></a>
                 </span>
               </th>
-              <th width="175" class="text-center">Ações</th>
+              <th width="175" class="text-center" *ngIf="showAction">Ações</th>
               <th width="65" class="text-center text-nowrap" *ngIf="showCheckbox">
                 <input type="checkbox" class="grid-chk" [checked]='_isCheckedAll' (click)='onCheckAll($event)' />
               </th>
@@ -32,7 +32,7 @@ import { ViewModel } from '../model/viewmodel';
                              [aux]="grid.info.aux"></bind-custom>
               </td>
 
-              <td class="text-center text-nowrap">
+              <td class="text-center text-nowrap" *ngIf="showAction">
                 <button *ngFor="let btn of customButton" (click)="btn.click(item)" placement="top" title="btn.tooltip" class="btn btn-sm {{ btn.class }}">
                   <i class="fa {{ btn.icon }}"></i>
                 </button>
@@ -67,6 +67,7 @@ export class MakeGridComponent implements OnChanges {
     @Input() showPrint: boolean = true;
     @Input() showDelete: boolean = true;
     @Input() showCheckbox: boolean = false;
+    @Input() showAction: boolean = true;
 
     // [{ class: 'btn-success', tooltip: 'Configuracao', icon: 'fa-cog', click: (model) => { this.router.navigate(['/estagio/configuracao', model.estagioId]); } }]
     @Input() customButton: any = [];
