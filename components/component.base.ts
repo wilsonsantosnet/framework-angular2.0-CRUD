@@ -1,9 +1,9 @@
 ﻿export class ComponentBase 
 {
-    protected _showContainerCreate: Boolean;
-    protected _showContainerEdit: Boolean;
-    protected _showContainerDetails: Boolean;
-    protected _showContainerFilters: Boolean;
+    _showContainerCreate: Boolean;
+    _showContainerEdit: Boolean;
+    _showContainerDetails: Boolean;
+    _showContainerFilters: Boolean;
 
     constructor() {
         this.hideComponents();

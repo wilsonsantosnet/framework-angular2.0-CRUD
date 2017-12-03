@@ -8,7 +8,7 @@ import { AuthService } from 'app/common/services/auth.service';
   <div class="gc-menu">
     <div class="gc-menu__header">
       <div class="gc-menu__header__brand">
-        <a href="/"><img src="../../assets/img/logo.png" alt="Seed" /></a>
+        <a href="/"><img src="../../assets/img/logo.png" alt="Home" /></a>
       </div>
       <div class="gc-profile">
         <div class="gc-profile__avatar">
@@ -31,7 +31,7 @@ import { AuthService } from 'app/common/services/auth.service';
   </div>
   <div class="gc-header">
   <nav class="navbar navbar-toggleable navbar-light bg-faded d-flex justify-content-start">
-    <button type="button" class="btn btn-default btn-toggler" title="Minimizar menu" data-mockup="main-menu" (click)="_onToggleMenu()">
+    <button type="button" class="btn btn-default btn-toggler" title="Minimizar menu" data-mockup="main-menu" (click)="_onToggleMenu($event)">
       <span class="fa fa-bars" aria-hidden="true"></span>
     </button>
 
@@ -55,18 +55,23 @@ export class MenuAsideComponent implements OnInit {
     @Output() onToggleMenu = new EventEmitter<any>();
     @Output() onLogout = new EventEmitter<any>();
     @Output() onFilter = new EventEmitter<any>();
+    @Input() vm: any;
+    @Input() folderAvatar: any;
 
+    filter: string;
 
     constructor(private sanitizer: DomSanitizer, private authService: AuthService) { }
 
-    @Input() vm: any;
+    
 
     ngOnInit() {
     }
+
     san(fileName) {
-        var _url = "url('" + this.vm.downloadUri + "/assinante/" + (fileName || 'vazio.png') + "')";
+        var _url = "url('" + this.vm.downloadUri + "/" + this.folderAvatar + "/" + (fileName || 'vazio.png') + "')";
         return this.sanitizer.sanitize(SecurityContext.HTML, _url)
     }
+
     _onToggleMenu(event) {
         this.onToggleMenu.emit(event);
     }

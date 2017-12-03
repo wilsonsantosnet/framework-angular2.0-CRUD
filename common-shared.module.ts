@@ -16,6 +16,7 @@ import { MakeGridComponent } from './components/grid.component'
 import { MakePaginationComponent } from 'app/common/components/pagination.component';
 import { CepComponent } from 'app/common/components/cep.component';
 import { TreeViewComponent } from 'app/common/components/tree-view.component';
+import { NestabaleTreeComponent } from 'app/common/components/nestable-tree.component';
 import { UploadCustomComponent } from 'app/common/components/upload-file.component';
 import { MultiSelectComponent } from 'app/common/components/multiselect.component';
 import { DateFormatPipe } from './pipes/date-format.pipe';
@@ -25,6 +26,10 @@ import { TagCustomComponent } from 'app/common/components/tag.component';
 import { Select2Component } from 'angular-select2-component';
 import { SelectCustomComponent } from 'app/common/components/select.component';
 import { DomElemetAppendDirective } from 'app/common/directives/dom-elemet-apped.directive';
+import { CallerDiretive } from 'app/common/directives/caller.directive';
+import { NestableDirective } from 'app/common/directives/nestable.directive';
+
+
 
 @NgModule({
     imports: [
@@ -48,13 +53,16 @@ import { DomElemetAppendDirective } from 'app/common/directives/dom-elemet-apped
         MakeGridComponent,
         CepComponent,
         TreeViewComponent,
+        NestabaleTreeComponent,
         UploadCustomComponent,
         MultiSelectComponent,
         DateFormatPipe,
         MaskFormatPipe,
         TagCustomComponent,
         SelectCustomComponent,
-        Select2Component
+        Select2Component,
+        CallerDiretive,
+        NestableDirective
     ],
     providers: [
     ],
@@ -64,6 +72,7 @@ import { DomElemetAppendDirective } from 'app/common/directives/dom-elemet-apped
         MakeGridComponent,
         CepComponent,
         TreeViewComponent,
+        NestabaleTreeComponent,
         UploadCustomComponent,
         DataSourceDirective,
         MaskInputDirective,
@@ -75,7 +84,9 @@ import { DomElemetAppendDirective } from 'app/common/directives/dom-elemet-apped
         TextMaskModule,
         TagInputModule,
         TagCustomComponent,
-        SelectCustomComponent
+        SelectCustomComponent,
+        CallerDiretive,
+        NestableDirective
 	]
 })
 export class CommonSharedModule {

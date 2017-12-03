@@ -71,21 +71,25 @@ export class MenuTopComponent implements OnInit {
     constructor (private sanitizer: DomSanitizer, private authService:AuthService) { }   
 
     @Input() vm: any;
+    @Input() folderAvatar: any;
     @Output() onLogout = new EventEmitter<any>();
 
-    private _asideActive: boolean;
+
+    _asideActive: boolean;
 
     ngOnInit() {
         this._asideActive = false;
     }
 
     san(fileName) {
-        var _url = "url('" + this.vm.downloadUri + "/assinante/" + (fileName || 'vazio.png') + "')";
+        var _url = "url('" + this.vm.downloadUri + "/" + this.folderAvatar +"/" + (fileName || 'vazio.png') + "')";
         return this.sanitizer.sanitize(SecurityContext.HTML, _url)
     }
+
     _onLogout(e) {
         this.onLogout.emit(event);
     }
+
     activeMenu() {
         this._asideActive = !this._asideActive;        
     }

@@ -90,14 +90,16 @@ export class BindCustomComponent implements OnInit, OnChanges {
             this.value = this.sanitizer.sanitize(SecurityContext.HTML, this.model);
         }
         else if (this.format.toLocaleLowerCase() === 'tag') {
-            var itens = this.model.split(',');
-            var content = "<ul>";
-            for (var i in itens) {
-                content += "<li><div class='badge'>" + itens[i] + "</div></li>";
+            if (this.model) {
+                var itens = this.model.split(',');
+                var content = "<ul>";
+                for (var i in itens) {
+                    content += "<li><div class='badge badge-default'>" + itens[i] + "</div></li>";
+                }
+                content += "</ul>";
+                this.tag = "inner";
+                this.value = this.sanitizer.sanitize(SecurityContext.HTML, content);
             }
-            content += "</ul>";
-            this.tag = "inner";
-            this.value = this.sanitizer.sanitize(SecurityContext.HTML, content);
         }
         else if (this.format.toLocaleLowerCase() === 'mask' && this.model) {
             this.value = this.maskPipe.transform(this.model, this.mask);
@@ -136,7 +138,8 @@ export class BindCustomComponent implements OnInit, OnChanges {
         filters[this.key] = this.model
 
         this.api.setResource(this.instance, this.endpoint).getDataitem(filters).subscribe(data => {
-            this.value = data.dataList[0].name;
+            this.tag = "inner";
+            this.value = this.sanitizer.sanitize(SecurityContext.URL, "<a href=\"" + this.instance.toLowerCase() + "\/details/" + data.dataList[0].id + "\">" + data.dataList[0].name + "</a>");
         });
 
     }

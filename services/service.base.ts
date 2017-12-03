@@ -5,7 +5,9 @@ import { MainService } from '../../main/main.service';
 
 export class ServiceBase {
 
-      
+
+    protected _interval: any;
+
     protected getInfoGrid(infos) {
         var list = [];
         for (let key in infos) {
@@ -55,7 +57,7 @@ export class ServiceBase {
 
     public orderByConfig(modelFilter, order) {
 
-        return  Object.assign(modelFilter, {
+        return Object.assign(modelFilter, {
             OrderByType: order.asc ? "OrderBy" : "OrderByDescending",
             OrderFields: [order.field]
         });
@@ -64,17 +66,26 @@ export class ServiceBase {
 
     public detectChanges(changeDetector: any) {
 
+        if (this._interval)
+            return;
+
         changeDetector.detach();
 
-        setInterval(() => {
-        	changeDetector.reattach();
+        this._interval = setInterval(() => {
+            changeDetector.reattach();
 
-        	if (changeDetector && !(changeDetector as ViewRef_).destroyed) {
-        		changeDetector.detectChanges();
-        	}
+            if (changeDetector && !(changeDetector as ViewRef_).destroyed) {
+                changeDetector.detectChanges();
+            }
 
-        	changeDetector.detach();
+            changeDetector.detach();
         }, 250);
+    }
+
+    public detectChangesStop()
+    {
+        if (this._interval)
+            clearInterval(this._interval);
     }
 
     public masksConfig() {
@@ -111,8 +122,7 @@ export class ServiceBase {
         return tags;
     }
 
-    public tagTransformToSave(value)
-    {
+    public tagTransformToSave(value) {
         if (value) {
             return value.map((item) => {
                 return item.value
@@ -146,11 +156,18 @@ export class ServiceBase {
         }
 
         let objMerged = {};
-        dataArrayDefault.forEach((item) => {
-            objMerged[item.key] = item.infos;
-        });
+        if (moreInfosFields) {
+            dataArrayDefault.reverse().forEach((item) => {
+                objMerged[item.key] = item.infos;
+            });
+        } else {
+            dataArrayDefault.forEach((item) => {
+                objMerged[item.key] = item.infos;
+            });
+        }
+
 
         return objMerged;
     }
-    
+
 }

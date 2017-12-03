@@ -120,7 +120,7 @@ export class AuthService {
         this._reset();
          
         if (this._typeLogin == "SSO") {
-            var authorizationUrl = GlobalService.getEndPoints().AUTH + 'account/logout?returnUrl=' + GlobalService.getEndPoints().APP;
+            var authorizationUrl = GlobalService.getEndPoints().AUTH + 'account/logout?returnUrl=' + GlobalService.getEndPoints().APP + "/login";
             window.location.href = authorizationUrl;
         }
         else {

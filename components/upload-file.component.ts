@@ -21,7 +21,8 @@ import { ViewModel } from '../model/viewmodel';
           <a *ngIf='fileName' href='{{downloadUri}}{{folder}}/{{fileName}}'>{{fileNameOld}}</a>
           <br>
           <img *ngIf='fileName' src='{{downloadUri}}{{folder}}/{{fileName}}' style='max-width:100%' />
-          <div *ngIf='pasteArea' class='upload-component-paste-area' id='upload-component-paste-area'>
+          <div *ngIf='pasteArea' class='upload-component-paste-area upload-component-drop-area' id='upload-component-paste-area'>
+          <p class='muted'>Arraste e solte arquivos ou cole PrintScreans de telas<p>
           </div>
       </section>
     </div>`,
@@ -71,31 +72,40 @@ export class UploadCustomComponent implements OnInit {
             }
         })
 
-        if (this.pasteArea)
-            document.getElementById("upload-component-paste-area").addEventListener("paste", (e) => this.handlePaste(e));
+        if (this.pasteArea) {
+
+            let area = document.getElementById("upload-component-paste-area");
+            area.addEventListener("paste", (e) => this.handlePaste(e));
+
+            area.ondragover = function () { this.className = 'upload-component-paste-area'; return false; };
+            area.ondrop = (e) => { this.handleDrop(e) }
+        }
 
     }
 
+    handleDrop(e)
+    {
+        e.preventDefault();
+        e.dataTransfer.files
+        this.uploadFileOnPaste(e.dataTransfer.files[0]);
+    }
+    
     handlePaste(e) {
 
         for (var i = 0; i < e.clipboardData.items.length; i++) {
             var item = e.clipboardData.items[i];
-            if (item.type.indexOf("image") != -1) {
-                this.uploadFileOnPrint(item.getAsFile());
-            } else {
-                console.log("Discardingimage paste data");
-            }
+            this.uploadFileOnPaste(item.getAsFile());
         }
     }
 
-    uploadFileOnPrint(file) {
+    uploadFileOnPaste(file) {
 
         this.fileNameOld = file.name;
 
         if (this.enabledUploadExternal)
-            this.uploadCustom(file, true);
+            this.uploadCustom(file, this.rename);
         else
-            this.uploadDefault(file, true);
+            this.uploadDefault(file, this.rename);
 
     }
 
