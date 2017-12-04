@@ -1,8 +1,10 @@
-﻿import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, SecurityContext } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, SecurityContext } from '@angular/core';
 import { DatePipe, DecimalPipe, PercentPipe, CurrencyPipe } from "@angular/common";
 import { DomSanitizer } from '@angular/platform-browser';
 import { ApiService } from "app/common/services/api.service";
 import { MaskFormatPipe } from "../pipes/mask.pipe";
+
+declare var $: any;
 
 @Component({
     selector: 'bind-custom',
@@ -104,6 +106,13 @@ export class BindCustomComponent implements OnInit, OnChanges {
         else if (this.format.toLocaleLowerCase() === 'mask' && this.model) {
             this.value = this.maskPipe.transform(this.model, this.mask);
         }
+        else if (this.format.toLocaleLowerCase() === 'color-legend') {
+            this.tag = "inner";
+            let hex = String(this.model || '').replace('#', '');
+            var content = '<div class="status-circle color-change new-color-' + hex + '"><span class="invisible">a<span></div>';
+            this._treatStatus(this.model);
+            this.value = content;
+        }
         else {
             this.value = this.model;
         }
@@ -142,6 +151,18 @@ export class BindCustomComponent implements OnInit, OnChanges {
             this.value = this.sanitizer.sanitize(SecurityContext.URL, "<a href=\"" + this.instance.toLowerCase() + "\/details/" + data.dataList[0].id + "\">" + data.dataList[0].name + "</a>");
         });
 
+    }
+
+    private _treatStatus(data: any) {
+        if (this.model != null) {
+            let valor = $(".color-change");
+            valor.each(function () {
+                var pos = String($(this).attr('class')).indexOf('new-color-');
+                $(this).css('color', '#' + String($(this).attr('class')).substr(pos + 10, 6));
+                $(this).css('background-color', '#' + String($(this).attr('class')).substr(pos + 10, 6));
+            });
+            let color = valor.innerHTML;
+        }
     }
 
 }
