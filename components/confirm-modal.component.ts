@@ -17,8 +17,8 @@ import { GlobalService } from '../../global.service';
                       </h5>
                     </div>
                     <div class="modal-footer">
-                      <button class="btn btn-danger" type="button" (click)="onConfimationYes()">Sim</button>
-                      <button class="btn btn-default" type="button" (click)="onCancel()">Cancelar</button>
+                      <button class="btn btn-danger btn-danger-app" type="button" (click)="onConfimationYes()">Sim</button>
+                      <button class="btn btn-default btn-default-app" type="button" (click)="onCancel()">Cancelar</button>
                     </div>
                   </div>
                 </div>
