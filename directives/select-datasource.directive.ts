@@ -20,16 +20,29 @@ export class DataSourceDirective implements OnInit, OnDestroy {
     @Input() endpoint: string;
     @Input() datafilters: any;
     @Input() fieldFilterName: any;
+    @Input() disabledOnInit: boolean;
+    @Input() enabledSelect2: boolean;
 
     accessor: any;
 
     constructor(private _elemetRef: ElementRef, private _renderer: Renderer, private api: ApiService<any>, private ngModel: NgModel, @Optional() @Self() private controlName: FormControlName) {
+        this.disabledOnInit = false;
+        this.enabledSelect2 = GlobalService.getGlobalSettings().enabledSelect2;
+    }
 
+    get control() {
+
+        if (!this.controlName) {
+            return null;
+        }
+
+        return this.controlName.control;
     }
 
     ngOnInit() {
 
-        this.datasource(this._elemetRef.nativeElement);
+        if (!this.disabledOnInit)
+            this.datasource(this._elemetRef.nativeElement);
 
         GlobalService.notification.subscribe((not) => {
             if (not.event == "create" || not.event == "edit") {
@@ -43,6 +56,108 @@ export class DataSourceDirective implements OnInit, OnDestroy {
     }
 
     onChange(target) { }
+
+    hasFormControl() {
+        return this.controlName && this.controlName.control;
+    }
+    
+    private datasource(el, parentFilter?: any) {
+
+        let selectedValue = null;
+        if (this.ngModel.valueAccessor) {
+            this.accessor = this.ngModel.valueAccessor;
+            if (this.accessor.value) {
+                selectedValue = this.accessor.value;
+            }
+        }
+
+        if (!this.existsDefaultItem(el))
+            this.addOption(el, undefined, "Selecione");
+
+        if (this.enabledSelect2)
+            this.select2(el, selectedValue, parentFilter);
+        else
+            this.select(el, selectedValue, parentFilter);
+
+    }
+
+    private select(el, selectedValue, parentFilter) {
+
+        let filter = Object.assign(this.datafilters || {}, parentFilter || {})
+        this.api.setResource(this.dataitem, this.endpoint).getDataitem(filter).subscribe((data) => {
+
+            for (var i = 0; i < data.dataList.length; i++) {
+                this.addOption(el, data.dataList[i].id, data.dataList[i].name);
+            }
+
+            if (selectedValue)
+                el.value = this.accessor.value;
+
+        });
+
+    }
+
+    private select2(el, selectedValue, parentFilter) {
+
+        if (selectedValue) {
+
+            let filterOne = Object.assign(this.datafilters || {}, parentFilter || {})
+            filterOne[el.name] = selectedValue;
+
+            this.api.setResource(this.dataitem, this.endpoint).getDataitem(filterOne).subscribe((data) => {
+
+                for (var i = 0; i < data.dataList.length; i++) {
+                    this.addOption(el, data.dataList[i].id, data.dataList[i].name);
+                }
+
+                if (selectedValue)
+                    el.value = this.accessor.value;
+
+                this.select2Config(Object.assign(this.datafilters || {}, parentFilter || {}))
+            });
+        }
+        else {
+            this.select2Config(Object.assign(this.datafilters || {}, parentFilter || {}))
+        }
+
+    }
+
+    private select2Config(filters: any) {
+
+        let element = $(this._elemetRef.nativeElement);
+        let ultimoValor = 0;
+        let config = {
+            ajax: this.api.setResource(this.dataitem, this.endpoint)
+                .getUrlConfig(true, this.fieldFilterName, "GetDataItem", filters)
+        }
+        $(element)
+            .select2(config)
+            .on("select2:select", (e) => {
+                let valor = $(e.currentTarget).val()
+                this.updateValue(valor, ultimoValor);
+                ultimoValor = valor;
+            });
+    }
+
+    private updateValue(value, valueold) {
+
+        if (this.ngModel) {
+            this.ngModel.viewToModelUpdate(value);
+
+            if (value != valueold) {
+                this.ngModel.control.markAsDirty();
+            }
+        }
+
+        if (this.hasFormControl()) {
+            this.control.setValue(value);
+
+            if (value != valueold) {
+                this.control.markAsDirty();
+            }
+        }
+
+    }
 
     private addOption(el, value, text) {
 
@@ -77,89 +192,6 @@ export class DataSourceDirective implements OnInit, OnDestroy {
             }
         }
         return found;
-    }
-
-    private datasource(el, parentFilter?: any) {
-
-        let filters = Object.assign(this.datafilters || {}, parentFilter || {});
-        let selectedValue = null;
-        if (this.ngModel.valueAccessor) {
-            this.accessor = this.ngModel.valueAccessor;
-            if (this.accessor.value) {
-                selectedValue = this.accessor.value;
-            }
-        }
-
-        if (!this.existsDefaultItem(el))
-            this.addOption(el, undefined, "Selecione");
-
-        if (selectedValue) {
-            this.api.setResource(this.dataitem, this.endpoint).getDataitem(filters).subscribe((data) => {
-
-                for (var i = 0; i < data.dataList.length; i++) {
-                    this.addOption(el, data.dataList[i].id, data.dataList[i].name);
-                }
-
-                if (selectedValue) 
-                    el.value = this.accessor.value;
-
-                this.select2Config(filters, selectedValue)
-            });
-        }
-        else {
-            this.select2Config(filters, selectedValue)
-        }
-
-    }
-
-    private select2Config(filters: any, selectedValue: any) {
-
-        let element = $(this._elemetRef.nativeElement);
-        let ultimoValor = 0;
-        let config = {
-            ajax: this.api.setResource(this.dataitem, this.endpoint)
-                .getUrlConfig(true, this.fieldFilterName, "GetDataItem", filters)
-        }
-        $(element)
-            .select2(selectedValue ? {} : config)
-            .on("select2:select", (e) => {
-                let valor = $(e.currentTarget).val()
-                this.updateValue(valor, ultimoValor);
-                ultimoValor = valor;
-            });
-    }
-
-    private updateValue(value, valueold) {
-
-        if (this.ngModel) {
-            this.ngModel.viewToModelUpdate(value);
-
-            if (value != valueold) {
-                this.ngModel.control.markAsDirty();
-            }
-        }
-
-        if (this.hasFormControl()) {
-            this.control.setValue(value);
-
-            if (value != valueold) {
-                this.control.markAsDirty();
-            }
-        }
-
-    }
-
-    hasFormControl() {
-        return this.controlName && this.controlName.control;
-    }
-
-    get control() {
-
-        if (!this.controlName) {
-            return null;
-        }
-
-        return this.controlName.control;
     }
 
     ngOnDestroy() {

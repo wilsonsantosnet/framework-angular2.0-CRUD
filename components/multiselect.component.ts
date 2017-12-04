@@ -24,6 +24,7 @@ export class MultiSelectComponent implements OnInit {
     @Input() type: string;
     @Input() attributeBehavior: string;
     @Input() key: string;
+    @Input() disabledOnInit: boolean;
 
     _datasource: any[];
     _modelOutput: any;
@@ -38,8 +39,10 @@ export class MultiSelectComponent implements OnInit {
 
     ngOnInit() {
 
-        this.init();
-        this._getInstance();
+        if (!this.disabledOnInit) {
+            this.init();
+            this._getInstance();
+        }
 
         GlobalService.getNotificationEmitter().subscribe((not) => {
             if (not.event == "edit" || not.event == "create" || not.event == "init") {
