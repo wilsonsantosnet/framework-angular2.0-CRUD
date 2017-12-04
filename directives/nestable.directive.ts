@@ -1,4 +1,4 @@
-﻿import { Directive, ElementRef, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Directive, ElementRef, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { NgModel } from '@angular/forms';
 import { Observable, Observer } from 'rxjs/Rx';
 import { Http, RequestOptions } from '@angular/http';
@@ -39,7 +39,7 @@ export class NestableDirective implements OnInit {
     buildItem(item) {
 
         
-        let html = "<li class='dd-item' data-id='" + item.id + "'>";
+        let html = "<li class='dd-item' data-id='" + item.id + "' data-aditional='" + JSON.stringify(item.dataAditional) + "'>";
         html += "<div class='dd-handle'>" + item.name + "</div>";
 
         if (item.children) {
