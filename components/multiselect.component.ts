@@ -1,4 +1,4 @@
-﻿import { Component, NgModule, OnInit, Input, Output, EventEmitter, ViewChild, AfterViewChecked, AfterViewInit, DoCheck, AfterContentChecked, AfterContentInit } from '@angular/core';
+import { Component, NgModule, OnInit, Input, Output, EventEmitter, ViewChild, AfterViewChecked, AfterViewInit, DoCheck, AfterContentChecked, AfterContentInit } from '@angular/core';
 
 import { ApiService } from "app/common/services/api.service";
 import { GlobalService, NotificationParameters } from "../../global.service";
@@ -17,13 +17,12 @@ import { ViewModel } from '../model/viewmodel';
 export class MultiSelectComponent implements OnInit {
 
     @Input() dataitem: string;
+    @Input() datafilters: any;
     @Input() vm: ViewModel<any>
     @Input() endpoint: string;
     @Input() ctrlName: string;
     @Input() ctrlNameItem: string;
     @Input() type: string;
-    @Input() attributeBehavior: string;
-    @Input() key: string;
     @Input() disabledOnInit: boolean;
 
     _datasource: any[];
@@ -48,7 +47,7 @@ export class MultiSelectComponent implements OnInit {
             if (not.event == "edit" || not.event == "create" || not.event == "init") {
                 this.init();
                 if (not.data)
-                    this._getInstance(not.data.parentId);
+                    this._getInstance(not.data.parentFilter);
             }
         })
     }
@@ -101,14 +100,10 @@ export class MultiSelectComponent implements OnInit {
         return this._modelOutput.join()
     }
 
-    private _getInstance(parentId? :  number) {
+    private _getInstance(parentFilter? :  any) {
         
-        let filters = [];
-        if (parentId) 
-            filters[this.key] = parentId;
 
-        if (this.attributeBehavior)
-            filters["AttributeBehavior"] = this.attributeBehavior;
+        let filters = Object.assign(this.datafilters || {}, parentFilter || {});
 
         this.api.setResource(this.dataitem, this.endpoint).getDataitem(filters).subscribe(result => {
             
