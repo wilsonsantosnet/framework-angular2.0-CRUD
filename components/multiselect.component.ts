@@ -40,6 +40,7 @@ export class MultiSelectComponent implements OnInit {
 
         if (!this.disabledOnInit) {
             this.init();
+
             this._getInstance();
         }
 
