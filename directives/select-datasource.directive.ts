@@ -1,4 +1,4 @@
-﻿import { Directive, ElementRef, Renderer, Input, Output, OnInit, EventEmitter, OnDestroy, Optional, Self } from '@angular/core';
+import { Directive, ElementRef, Renderer, Input, Output, OnInit, EventEmitter, OnDestroy, Optional, Self } from '@angular/core';
 import { NgModel, FormControlName } from '@angular/forms';
 
 import { ApiService } from '../services/api.service';
@@ -195,6 +195,8 @@ export class DataSourceDirective implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
+
+        $(this._elemetRef.nativeElement).select2()
         $(this._elemetRef.nativeElement).select2('destroy');
     }
 
