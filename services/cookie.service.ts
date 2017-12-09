@@ -22,7 +22,7 @@ export class CookieService {
     }
 
     public static removePartialKey(key: string) {
-       this.clearPartialCookies(key);
+        this.clearPartialCookies(key);
     }
 
     public static reset() {
@@ -48,7 +48,7 @@ export class CookieService {
             }
         }
     }
-    
+
     public static clearPartialCookies(key: string) {
 
         var cookies = document.cookie.split("; ");

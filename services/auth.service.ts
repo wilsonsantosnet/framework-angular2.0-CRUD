@@ -117,7 +117,7 @@ export class AuthService {
 
     public logout() {
 
-        this._reset();
+        this.reset();
          
         if (this._typeLogin == "SSO") {
             var authorizationUrl = GlobalService.getEndPoints().AUTH + 'account/logout?returnUrl=' + GlobalService.getEndPoints().APP + "/login";
@@ -198,7 +198,7 @@ export class AuthService {
             window.location.reload();
     }
 
-    private _reset() {
+    reset() {
         CacheService.reset(this._cacheType);
 
     }

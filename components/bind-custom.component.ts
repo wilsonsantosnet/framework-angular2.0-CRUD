@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, SecurityContext } from '@angular/core';
+﻿import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, SecurityContext } from '@angular/core';
 import { DatePipe, DecimalPipe, PercentPipe, CurrencyPipe } from "@angular/common";
 import { DomSanitizer } from '@angular/platform-browser';
 import { ApiService } from "app/common/services/api.service";

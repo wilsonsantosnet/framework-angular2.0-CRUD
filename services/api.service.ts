@@ -39,7 +39,6 @@ export class ApiService<T> {
         this.loading(_url, true);
         let headers = new Headers();
         headers.append('Authorization', "Bearer " + CacheService.get('TOKEN_AUTH', this._cacheType))
-        console.log("uploadCustom", headers)
         let options = new RequestOptions({ headers: headers });
 
         return this.http.post(_url,
@@ -393,6 +392,7 @@ export class ApiService<T> {
             erros = _response.result.errors[0];
         }
 
+        console.log("erros", erros);
         this.notificationsService.error(
             'Erro',
             erros,

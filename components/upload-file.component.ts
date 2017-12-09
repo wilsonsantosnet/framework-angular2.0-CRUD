@@ -13,7 +13,7 @@ import { ViewModel } from '../model/viewmodel';
           <div class="input-group">
             <input type="text" readonly="readonly" [(ngModel)]='fileNameOld' class="form-control" placeholder="Selecionar arquivo..." formControlName="{{ctrlName}}" />
             <span class="btn-group">
-              <button class="btn btn-secondary" (click)="file.click()" type="button">Procurar</button>
+              <button class="btn btn-secondary" (click)="file.click()" type="button" >Procurar</button>
               <button class='btn btn-secondary' [hidden]="!fileName" type='button' (click)='onDelete()'>Excluir</button>
             </span>
           </div>
@@ -128,8 +128,10 @@ export class UploadCustomComponent implements OnInit {
     }
 
     uploadCustom(event, rename) {
+
+        this.fileName = event.name;
         this.onChangeUploadExternal.emit(event)
-        this.reset();
+        this.pasteArea = false;
         return true;
     }
 
@@ -138,6 +140,7 @@ export class UploadCustomComponent implements OnInit {
         this.api.setResource('upload').upload(file, this.folder, rename).subscribe(result => {
             this.vm.model[this.ctrlName] = result.data[0];
             this.fileName = result.data[0]
+            this.pasteArea = false;
         });
         return true;
     }
@@ -153,6 +156,7 @@ export class UploadCustomComponent implements OnInit {
         this.vm.model[this.ctrlName] = null;
         this.fileName = null;
         this.fileNameOld = null;
+        this.pasteArea = true;
     }
 
     ngOnChanges() {

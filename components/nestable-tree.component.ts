@@ -8,8 +8,7 @@ declare var $: any;
     <div class="dd" [id]="id" [nestable]="data" (change)="onChangeNestabale($event)">
       <ol class="dd-list root" >
       </ol>
-    </div>`,
-    styles: [``]
+    </div>`
 })
 export class NestabaleTreeComponent implements OnInit {
 

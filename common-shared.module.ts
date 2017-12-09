@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PaginationModule } from 'ngx-bootstrap/pagination'
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { TagInputModule } from 'ngx-chips';
+import { TabsModule } from 'ngx-bootstrap';
 import { TextMaskModule } from 'angular2-text-mask';
 
 import { DataSourceDirective } from './directives/select-datasource.directive';
@@ -23,8 +24,6 @@ import { DateFormatPipe } from './pipes/date-format.pipe';
 import { MaskFormatPipe } from './pipes/mask.pipe';
 import { EditorHtmlDiretive } from './directives/editor-html.directive';
 import { TagCustomComponent } from 'app/common/components/tag.component';
-import { Select2Component } from 'angular-select2-component';
-import { SelectCustomComponent } from 'app/common/components/select.component';
 import { DomElemetAppendDirective } from 'app/common/directives/dom-elemet-apped.directive';
 import { CallerDiretive } from 'app/common/directives/caller.directive';
 import { NestableDirective } from 'app/common/directives/nestable.directive';
@@ -40,6 +39,7 @@ import { NestableDirective } from 'app/common/directives/nestable.directive';
         FormsModule,
         TextMaskModule,
         TagInputModule,
+        TabsModule.forRoot()
     ],
     declarations: [
         BindCustomComponent,
@@ -59,10 +59,8 @@ import { NestableDirective } from 'app/common/directives/nestable.directive';
         DateFormatPipe,
         MaskFormatPipe,
         TagCustomComponent,
-        SelectCustomComponent,
-        Select2Component,
         CallerDiretive,
-        NestableDirective
+        NestableDirective,
     ],
     providers: [
     ],
@@ -74,19 +72,19 @@ import { NestableDirective } from 'app/common/directives/nestable.directive';
         TreeViewComponent,
         NestabaleTreeComponent,
         UploadCustomComponent,
+        MultiSelectComponent,
+        TagCustomComponent,
         DataSourceDirective,
         MaskInputDirective,
         DateDirective,
         DateTimeDirective,
         EditorHtmlDiretive,
         DomElemetAppendDirective,
-        MultiSelectComponent,
+        CallerDiretive,
+        NestableDirective,
         TextMaskModule,
         TagInputModule,
-        TagCustomComponent,
-        SelectCustomComponent,
-        CallerDiretive,
-        NestableDirective
+        TabsModule
 	]
 })
 export class CommonSharedModule {

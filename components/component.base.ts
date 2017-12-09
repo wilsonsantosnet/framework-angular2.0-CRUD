@@ -4,6 +4,7 @@
     _showContainerEdit: Boolean;
     _showContainerDetails: Boolean;
     _showContainerFilters: Boolean;
+    _showContainerImport: Boolean;
 
     constructor() {
         this.hideComponents();
@@ -13,6 +14,7 @@
         this._showContainerCreate = false;
         this._showContainerEdit = false;
         this._showContainerDetails = false;
+        this._showContainerImport = false;
     }
 
     hideContainerCreate() {
@@ -37,6 +39,10 @@
 
     showContainerFilters() {
         this._showContainerFilters = true;
+    }
+
+    showContainerImport() {
+        this._showContainerImport = true;
     }
 
 }

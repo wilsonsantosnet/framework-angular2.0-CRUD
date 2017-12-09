@@ -10,7 +10,7 @@ import { ServiceBase } from '../services/service.base';
     template: `<tag-input [(ngModel)]='value'  (ngModelChange)="onModelChange($event)" [placeholder]="placeholder" [secondaryPlaceholder]="secondaryPlaceholder" [disabled]="disabled"></tag-input>`,
     providers: [{
         provide: NG_VALUE_ACCESSOR,
-        useExisting: forwardRef(() => TagCustomComponent),
+        useExisting: TagCustomComponent,
         multi: true
     }]
    
@@ -21,16 +21,17 @@ export class TagCustomComponent implements ControlValueAccessor, OnDestroy {
     @Input() model: any;
     @Output() tagChange = new EventEmitter<any>();
 
-
     onTouched: any;
     onChange: any;
     placeholder: string;
     secondaryPlaceholder: string;
     disabled: boolean;
-    teste: any;
+    modelJson: any;
     
     constructor(private serviceBase: ServiceBase) {
         this.model = {};
+        this.modelJson = null;
+
         if (this.readOnly)
         {
             this.placeholder = "";
@@ -41,7 +42,13 @@ export class TagCustomComponent implements ControlValueAccessor, OnDestroy {
 
     //get accessor
     get value(): any {
-        return this.serviceBase.tagTransformToShow(this.model, this.readOnly);
+
+        if (this.modelJson) {
+            return this.modelJson;
+        }
+
+        this.modelJson = this.serviceBase.tagTransformToShow(this.model, this.readOnly);
+        return this.modelJson;
 
     };
     
@@ -49,6 +56,7 @@ export class TagCustomComponent implements ControlValueAccessor, OnDestroy {
     set value(v: any) {
         if (v !== this.model) {
             this.model = this.serviceBase.tagTransformToSave(v);
+            this.modelJson = null;
             this.onChange(v);
         }
     }

@@ -2,6 +2,8 @@
 import createNumberMask from 'text-mask-addons/dist/createNumberMask'
 import { GlobalServiceCulture, Translated, TranslatedField } from '../../global.service.culture';
 import { MainService } from '../../main/main.service';
+import { CacheService } from 'app/common/services/cache.service';
+import { ECacheType } from 'app/common/type-cache.enum';
 
 export class ServiceBase {
 
@@ -82,8 +84,7 @@ export class ServiceBase {
         }, 250);
     }
 
-    public detectChangesStop()
-    {
+    public detectChangesStop() {
         if (this._interval)
             clearInterval(this._interval);
     }
@@ -157,7 +158,7 @@ export class ServiceBase {
 
         let objMerged = {};
         if (moreInfosFields) {
-            dataArrayDefault.reverse().forEach((item) => {
+            dataArrayDefault.forEach((item) => {
                 objMerged[item.key] = item.infos;
             });
         } else {
@@ -168,6 +169,15 @@ export class ServiceBase {
 
 
         return objMerged;
+    }
+
+    saveFilters(modelFilter, key) {
+        CacheService.add(key, JSON.stringify(modelFilter), ECacheType.LOCAL);
+        return modelFilter;
+    }
+
+    getFilters(key) {
+        return JSON.parse(CacheService.get(key, ECacheType.LOCAL));
     }
 
 }

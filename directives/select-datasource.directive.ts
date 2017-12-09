@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Renderer, Input, Output, OnInit, EventEmitter, OnDestroy, Optional, Self } from '@angular/core';
+﻿import { Directive, ElementRef, Renderer, Input, Output, OnInit, EventEmitter, OnDestroy, Optional, Self } from '@angular/core';
 import { NgModel, FormControlName } from '@angular/forms';
 
 import { ApiService } from '../services/api.service';
@@ -45,7 +45,7 @@ export class DataSourceDirective implements OnInit, OnDestroy {
             this.datasource(this._elemetRef.nativeElement);
 
         GlobalService.notification.subscribe((not) => {
-            if (not.event == "create" || not.event == "edit") {
+            if (not.event == "create" || not.event == "edit" || not.event == "init") {
                 this.datasource(this._elemetRef.nativeElement);
             }
             if (not.event == "change") {

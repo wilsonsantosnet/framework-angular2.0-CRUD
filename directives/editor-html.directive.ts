@@ -41,7 +41,7 @@ export class EditorHtmlDiretive implements OnInit {
 
         tinymce.init({
             selector: '[editorhtml=' + element.attr("editorhtml") + ']',
-            plugins: ['link', 'paste', 'table'],
+            plugins: ['link', 'paste', 'lists', 'advlist'],
             skin_url: '/assets/css/skins/lightgray',
             setup: editor => {
                 editor.on('change', () => {
@@ -54,6 +54,8 @@ export class EditorHtmlDiretive implements OnInit {
     }
 
     ngOnDestroy() {
-        tinymce.remove(this.editor);
+
+        if (tinymce)
+          tinymce.remove(this.editor);
     }
 }

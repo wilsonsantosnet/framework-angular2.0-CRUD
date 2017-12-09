@@ -1,4 +1,4 @@
-import { Component, NgModule, OnInit, Input, Output, EventEmitter, ViewChild, AfterViewChecked, AfterViewInit, DoCheck, AfterContentChecked, AfterContentInit } from '@angular/core';
+﻿import { Component, NgModule, OnInit, Input, Output, EventEmitter, ViewChild, AfterViewChecked, AfterViewInit, DoCheck, AfterContentChecked, AfterContentInit } from '@angular/core';
 
 import { ApiService } from "app/common/services/api.service";
 import { GlobalService, NotificationParameters } from "../../global.service";
