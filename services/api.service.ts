@@ -1,4 +1,4 @@
-import { Http, RequestOptions, Response, Headers, URLSearchParams, ResponseContentType  } from '@angular/http';
+import { Http, RequestOptions, Response, Headers, URLSearchParams, ResponseContentType } from '@angular/http';
 import { Router } from '@angular/router';
 import { Inject, Injectable, OnInit } from '@angular/core';
 import { Observable, Observer } from 'rxjs/Rx';
@@ -89,7 +89,7 @@ export class ApiService<T> {
             });
     }
 
-    public post(data: any): Observable<T> {
+    public post(data: any, messageCustom?: any): Observable<T> {
 
         let url = this.makeBaseUrl();
         this.loading(url, true);
@@ -98,7 +98,7 @@ export class ApiService<T> {
             JSON.stringify(data),
             this.requestOptions())
             .map(res => {
-                this.notification(res);
+                this.notification(res, messageCustom);
                 return this.successResult(res);
             })
             .catch(error => {
@@ -174,7 +174,7 @@ export class ApiService<T> {
             });
     }
 
-   
+
     public getDataitem(filters?: any): Observable<T> {
 
         this._enableLoading = false;
@@ -212,7 +212,6 @@ export class ApiService<T> {
         var urlMore = this.makeUrlMore();
         var urlBase = this.makeBaseUrl();
         var authConfig = this.makeAuthorization();
-        //var filtersParams = this.makeSearchParams(filters);
         var url = more ? urlMore : urlBase;
 
         return {
@@ -321,7 +320,7 @@ export class ApiService<T> {
         });
     }
 
-    
+
 
     private makeAuthorization() {
         return {
@@ -330,7 +329,7 @@ export class ApiService<T> {
         }
     }
 
-    
+
 
     private makeGetCustomMethodBaseUrl(method: string): string {
 
@@ -405,7 +404,6 @@ export class ApiService<T> {
             erros = _response.result.errors[0];
         }
 
-        console.log("erros", erros);
         this.notificationsService.error(
             'Erro',
             erros,
@@ -420,7 +418,7 @@ export class ApiService<T> {
         return Observable.throw(erros);
     }
 
-    private notification(response) {
+    private notification(response, messageCustom = null) {
 
         let _response = response.json();
 
@@ -439,7 +437,6 @@ export class ApiService<T> {
                     )
                 }
             }
-
         }
         else {
 
@@ -447,7 +444,9 @@ export class ApiService<T> {
             if (_response.result != null) {
                 msg = _response.result.message;
             }
-
+            if (messageCustom) {
+                msg = messageCustom;
+            }
             this.notificationsService.success(
                 'Sucesso',
                 msg,
