@@ -128,8 +128,6 @@ export class UploadCustomComponent implements OnInit {
     }
 
     uploadCustom(event, rename) {
-
-        this.fileName = event.name;
         this.onChangeUploadExternal.emit(event)
         this.pasteArea = false;
         return true;

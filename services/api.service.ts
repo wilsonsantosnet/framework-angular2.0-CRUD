@@ -1,4 +1,4 @@
-﻿import { Http, RequestOptions, Response, Headers, URLSearchParams } from '@angular/http';
+﻿import { Http, RequestOptions, Response, Headers, URLSearchParams, ResponseContentType  } from '@angular/http';
 import { Router } from '@angular/router';
 import { Inject, Injectable, OnInit } from '@angular/core';
 import { Observable, Observer } from 'rxjs/Rx';
@@ -151,7 +151,7 @@ export class ApiService<T> {
             });
     }
 
-    public export(filters?: any): Observable<T> {
+    public dir(filters?: any): Observable<T> {
 
         if (filters == null) filters = {};
         filters.FilterBehavior = 'Export';
@@ -160,7 +160,7 @@ export class ApiService<T> {
         this.loading(url, true);
 
         return this.http.get(url,
-            this.requestOptions().merge(new RequestOptions({
+            this.requestOptionsBlob().merge(new RequestOptions({
                 search: this.makeSearchParams(filters)
             })))
             .map(res => {
@@ -174,6 +174,7 @@ export class ApiService<T> {
             });
     }
 
+   
     public getDataitem(filters?: any): Observable<T> {
 
         this._enableLoading = false;
@@ -312,12 +313,24 @@ export class ApiService<T> {
         return new RequestOptions({ headers: headers });
     }
 
+    private requestOptionsBlob(): RequestOptions {
+        const headers = new Headers(this.makeAuthorization());
+        return new RequestOptions({
+            headers: headers,
+            responseType: ResponseContentType.Blob
+        });
+    }
+
+    
+
     private makeAuthorization() {
         return {
             'Content-Type': 'application/json',
             'Authorization': "Bearer " + CacheService.get('TOKEN_AUTH', this._cacheType)
         }
     }
+
+    
 
     private makeGetCustomMethodBaseUrl(method: string): string {
 
