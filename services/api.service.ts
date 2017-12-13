@@ -1,4 +1,4 @@
-﻿import { Http, RequestOptions, Response, Headers, URLSearchParams, ResponseContentType  } from '@angular/http';
+import { Http, RequestOptions, Response, Headers, URLSearchParams, ResponseContentType  } from '@angular/http';
 import { Router } from '@angular/router';
 import { Inject, Injectable, OnInit } from '@angular/core';
 import { Observable, Observer } from 'rxjs/Rx';
@@ -151,7 +151,7 @@ export class ApiService<T> {
             });
     }
 
-    public dir(filters?: any): Observable<T> {
+    public export(filters?: any): Observable<T> {
 
         if (filters == null) filters = {};
         filters.FilterBehavior = 'Export';
