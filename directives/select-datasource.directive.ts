@@ -63,6 +63,7 @@ export class DataSourceDirective implements OnInit, OnDestroy {
     
     private datasource(el, parentFilter?: any) {
 
+        el.options.length = 0;
         let selectedValue = null;
         if (this.ngModel.valueAccessor) {
             this.accessor = this.ngModel.valueAccessor;
