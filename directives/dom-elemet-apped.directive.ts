@@ -1,8 +1,8 @@
-﻿import { Directive, ElementRef, Renderer, Input, Output, OnInit, EventEmitter } from '@angular/core';
+﻿import { Directive, ElementRef, Renderer, Input, Output, OnInit, OnDestroy, EventEmitter } from '@angular/core';
 import { NgModel } from '@angular/forms';
 
 import { ApiService } from '../services/api.service';
-import { GlobalService } from '../../global.service'
+import { GlobalService, NotificationParameters } from '../../global.service'
 
 
 @Directive({
@@ -11,9 +11,10 @@ import { GlobalService } from '../../global.service'
 
 })
 
-export class DomElemetAppendDirective implements OnInit {
+export class DomElemetAppendDirective implements OnInit, OnDestroy {
 
     @Input() dataitem: any[];
+    _notificationEmitter: EventEmitter<NotificationParameters>;
 
     constructor(private _elemetRef: ElementRef, private _renderer: Renderer, private api: ApiService<any>, private ngModel: NgModel) {
 
@@ -24,13 +25,17 @@ export class DomElemetAppendDirective implements OnInit {
         this.renderTree(this.dataitem);
     }
 
-    renderTree(tree : any[]) {
+    renderTree(tree: any[]) {
         for (var item in tree) {
             if (tree[item].tree) {
                 this.renderTree(tree[item].tree);
             }
             var result = this._elemetRef.nativeElement.insertAdjacentHTML("beforeend", "<li>" + tree[item].name + "</li>");
-            console.log("insertAdjacentHTML", result);
         }
+    }
+
+    ngOnDestroy() {
+        if (this._notificationEmitter)
+            this._notificationEmitter.unsubscribe();
     }
 }

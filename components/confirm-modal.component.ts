@@ -1,6 +1,6 @@
-﻿import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+﻿import { Component, OnInit,OnDestroy, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap/modal';
-import { GlobalService } from '../../global.service';
+import { GlobalService, NotificationParameters } from '../../global.service';
 
 @Component({
     selector: 'confirm-modal',
@@ -25,8 +25,7 @@ import { GlobalService } from '../../global.service';
               </div>
             `
 })
-export class ConfirmModalComponent implements OnInit {
-
+export class ConfirmModalComponent implements OnInit, OnDestroy {
 
 
     @ViewChild('_confirmModal') private _confirmModal: ModalDirective;
@@ -36,6 +35,7 @@ export class ConfirmModalComponent implements OnInit {
     _openationConfimationYes: any;
     _operationService: any;
     _operationVM: any;
+    _notificationEmitter: EventEmitter<NotificationParameters>;
 
     public config = {
         animated: true,
@@ -52,8 +52,7 @@ export class ConfirmModalComponent implements OnInit {
 
     ngOnInit() {
 
-
-        GlobalService.getOperationExecutedEmitter().subscribe((result) => {
+        this._notificationEmitter = GlobalService.getOperationExecutedEmitter().subscribe((result) => {
             if (result.selector == "confirm-modal") {
                 this.vm.messageConfirmation = result.message || this.vm.messageConfirmation;
                 this.show();
@@ -78,5 +77,11 @@ export class ConfirmModalComponent implements OnInit {
     onCancel() {
         this._confirmModal.hide();
     }
+
+    ngOnDestroy() {
+        if (this._notificationEmitter)
+            this._notificationEmitter.unsubscribe();
+    }
+    
 
 }

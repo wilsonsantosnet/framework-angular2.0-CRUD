@@ -62,16 +62,21 @@ export class CepComponent implements OnInit {
 
 	@Input() vm: ViewModel<any>
 	@Output() cepChange = new EventEmitter<any>();
-	private endpoint: string;
+
+    _endpoint: string;
 
 	constructor(private api: ApiService<any>) {
-		this.endpoint = "http://target-cep.azurewebsites.net/api/";
-	}
+		this._endpoint = "http://target-cep.azurewebsites.net/api/";
+    }
+
+    ngOnInit(): void {
+
+    }
 
 	onChange(cep) {
 
 		if (cep != null) {
-			this.api.setResource("log_logradouro/GetDataListCustom", this.endpoint).get({ cep: cep }).subscribe((result) => {
+            this.api.setResource("log_logradouro/GetDataListCustom", this._endpoint).get({ cep: cep }).subscribe((result) => {
 
 				if (result.DataList == null || result.DataList.length < 1) {
 					result.DataList = [{
@@ -89,7 +94,5 @@ export class CepComponent implements OnInit {
 		}
 	}
 
-	ngOnInit(): void {
-
-	}
+	
 }

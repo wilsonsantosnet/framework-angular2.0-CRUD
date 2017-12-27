@@ -44,13 +44,8 @@ export class BindCustomComponent implements OnInit, OnChanges {
         this.datePipe = new DatePipe("pt-BR");
     }
 
-    public convertDate(value) {
-        if (value) {
-            var datePart = value.toString().split("/");
-            var convertedDate = datePart[1] + "/" + datePart[0] + "/" + datePart[2];
-            return new Date(convertedDate);
-        }
-    }
+    ngOnInit(): void { }
+  
 
     ngOnChanges(changes: SimpleChanges): void {
 
@@ -119,7 +114,14 @@ export class BindCustomComponent implements OnInit, OnChanges {
 
     }
 
-    ngOnInit(): void { }
+   
+    public convertDate(value) {
+        if (value) {
+            var datePart = value.toString().split("/");
+            var convertedDate = datePart[1] + "/" + datePart[0] + "/" + datePart[2];
+            return new Date(convertedDate);
+        }
+    }
 
     private _getInDataItem(model, dataitem) {
 

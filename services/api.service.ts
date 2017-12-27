@@ -1,4 +1,4 @@
-import { Http, RequestOptions, Response, Headers, URLSearchParams, ResponseContentType } from '@angular/http';
+﻿import { Http, RequestOptions, Response, Headers, URLSearchParams, ResponseContentType } from '@angular/http';
 import { Router } from '@angular/router';
 import { Inject, Injectable, OnInit } from '@angular/core';
 import { Observable, Observer } from 'rxjs/Rx';
@@ -95,6 +95,27 @@ export class ApiService<T> {
         this.loading(url, true);
 
         return this.http.post(this.makeBaseUrl(),
+            JSON.stringify(data),
+            this.requestOptions())
+            .map(res => {
+                this.notification(res, messageCustom);
+                return this.successResult(res);
+            })
+            .catch(error => {
+                return this.errorResult(error);
+            })
+            .finally(() => {
+                this.loading(url, false);
+            });
+    }
+
+    public postMany(data: any, messageCustom?: any): Observable<T> {
+
+        var url = this.makeUrlMore();
+
+        this.loading(url, true);
+
+        return this.http.post(url,
             JSON.stringify(data),
             this.requestOptions())
             .map(res => {
@@ -207,18 +228,32 @@ export class ApiService<T> {
 
     }
 
-    public getUrlConfig(more: boolean, filterFieldName?: string, filterBehavior?: string, filters?: any) {
+    public getUrlConfig(more: boolean, filterFieldName?: string, filterBehavior?: string, filters?: any, processResultsCustom?: any) {
 
         var urlMore = this.makeUrlMore();
         var urlBase = this.makeBaseUrl();
         var authConfig = this.makeAuthorization();
         var url = more ? urlMore : urlBase;
+        var processResultsDefault = function (result) {
+            let dataList = result.dataList.map((item) => {
+                let data = {
+                    id: item.id,
+                    text: item.name
+                };
+                return data;
+            });
+            return {
+                results: dataList
+            };
+        };
+
+        if (processResultsCustom)
+            processResultsDefault = processResultsCustom
 
         return {
             url: url,
             dataType: 'json',
             headers: authConfig,
-            delay: 500,
             data: function (params) {
 
                 var filterComposite = Object.assign(filters || {}, {
@@ -227,32 +262,12 @@ export class ApiService<T> {
                 filterComposite[filterFieldName] = params.term
                 return filterComposite;
             },
-            processResults: function (result) {
-
-                let dataList = result.dataList.map((item) => {
-                    let data = {
-                        id: item.id,
-                        text: item.name
-                    };
-                    return data;
-                });
-                return {
-                    results: dataList
-                };
-            }
+            processResults: processResultsDefault
 
         };
     }
 
-    public getMethodCustom(method: string, filters?: any): Observable<T> {
 
-        if (filters == null)
-            filters = {};
-
-        filters.FilterBehavior = method;
-        return this.getBase(this.makeUrlMore(), filters);
-
-    }
 
     public enableNotification(enable: boolean) {
         this._enableNotifification = enable;
@@ -282,7 +297,15 @@ export class ApiService<T> {
         return this._resource;
     }
 
+    private getMethodCustom(method: string, filters?: any): Observable<T> {
 
+        if (filters == null)
+            filters = {};
+
+        filters.FilterBehavior = method;
+        return this.getBase(this.makeUrlMore(), filters);
+
+    }
 
     private getBase(url: string, filters?: any, onlyDataResult?: boolean): Observable<T> {
 

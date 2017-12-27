@@ -1,4 +1,4 @@
-﻿import { Component, OnInit } from '@angular/core';
+﻿import { Component, OnInit, OnDestroy, EventEmitter } from '@angular/core';
 import { GlobalService } from 'app/global.service';
 
 @Component({
@@ -20,19 +20,25 @@ import { GlobalService } from 'app/global.service';
      }
   `]
 })
-export class LoadingTopComponent implements OnInit {
+export class LoadingTopComponent implements OnInit, OnDestroy {
 
 
     requesting: boolean;
+    _operationRequesting: EventEmitter<boolean>;
+
+    constructor() {
+        this._operationRequesting = new EventEmitter<boolean>();
+    }
 
     ngOnInit() {
-        GlobalService.getOperationRequestingEmitter().subscribe(_requesting => {
-
+        this._operationRequesting = GlobalService.getOperationRequestingEmitter().subscribe(_requesting => {
             this.requesting = _requesting;
         })
     }
-    
 
-    constructor() { }
+    ngOnDestroy() {
+        if (this._operationRequesting)
+            this._operationRequesting.unsubscribe();
+    }
 
 }

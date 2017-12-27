@@ -1,5 +1,5 @@
-﻿import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef, ViewChild } from '@angular/core';
-import { GlobalService } from "app/global.service";
+﻿import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, ChangeDetectorRef, ViewChild } from '@angular/core';
+import { GlobalService, NotificationParameters } from "app/global.service";
 import { ApiService } from "app/common/services/api.service";
 import { ViewModel } from '../model/viewmodel';
 
@@ -28,7 +28,7 @@ import { ViewModel } from '../model/viewmodel';
     </div>`,
     providers: [ApiService],
 })
-export class UploadCustomComponent implements OnInit {
+export class UploadCustomComponent implements OnInit, OnDestroy {
 
     @ViewChild('file') fileUpload: any;
     @Output() onChangeUploadExternal = new EventEmitter<any>();
@@ -47,6 +47,8 @@ export class UploadCustomComponent implements OnInit {
     downloadUri: string;
     fileUri: string;
 
+    _notificationEmitter: EventEmitter<NotificationParameters>;
+
     constructor(private api: ApiService<any>, private ref: ChangeDetectorRef) {
 
         this.downloadUri = GlobalService.getEndPoints().DOWNLOAD;
@@ -55,18 +57,19 @@ export class UploadCustomComponent implements OnInit {
         this.accept = "image/*";
         this.rename = true;
         this.pasteArea = false;
+        this._notificationEmitter = new EventEmitter<NotificationParameters>();
 
     }
 
 
     ngOnInit(): void {
 
-        GlobalService.getNotificationEmitter().subscribe((not) => {
+        this._notificationEmitter = GlobalService.getNotificationEmitter().subscribe((not) => {
             if (not.event == "edit") {
                 this.fileNameOld = this.vm.model[this.ctrlName];
                 this.fileName = this.vm.model[this.ctrlName]
             }
-            if (not.event == "init" || not.otherEvents.filter((event) => event == "init").length > 0) {
+            if (not.event == "init") {
                 this.fileNameOld = null;
                 this.fileName = null;
             }
@@ -83,13 +86,12 @@ export class UploadCustomComponent implements OnInit {
 
     }
 
-    handleDrop(e)
-    {
+    handleDrop(e) {
         e.preventDefault();
         e.dataTransfer.files
         this.uploadFileOnPaste(e.dataTransfer.files[0]);
     }
-    
+
     handlePaste(e) {
 
         for (var i = 0; i < e.clipboardData.items.length; i++) {
@@ -159,5 +161,10 @@ export class UploadCustomComponent implements OnInit {
 
     ngOnChanges() {
         this.ref.detectChanges()
+    }
+
+    ngOnDestroy() {
+        if (this._notificationEmitter)
+            this._notificationEmitter.unsubscribe();
     }
 }
