@@ -171,13 +171,17 @@ export class ServiceBase {
         return objMerged;
     }
 
-    saveFilters(modelFilter, key) {
+    public saveFilters(modelFilter, key) {
         CacheService.add(key, JSON.stringify(modelFilter), ECacheType.LOCAL);
         return modelFilter;
     }
 
-    getFilters(key) {
+    public getFilters(key) {
         return JSON.parse(CacheService.get(key, ECacheType.LOCAL));
     }
+    
+    public ExtractDate(data) {
+        return new Date(data.split('/')[2].split(' ')[0], data.split('/')[1] - 1, data.split('/')[0], data.split('/')[2].split(' ')[1].split(':')[0], data.split('/')[2].split(' ')[1].split(':')[1]);
+    } 
 
 }
