@@ -13,7 +13,7 @@
     </div>`,
 
 })
-export class FooterComponent implements OnInit {
+export class FooterComponent  implements OnInit {
     
     constructor () { }   
 

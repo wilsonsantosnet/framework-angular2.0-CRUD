@@ -58,7 +58,7 @@ import { ViewModel } from '../model/viewmodel';
   </section>  
 </div>`
 })
-export class CepComponent implements OnInit {
+export class CepComponent  implements OnInit {
 
 	@Input() vm: ViewModel<any>
 	@Output() cepChange = new EventEmitter<any>();

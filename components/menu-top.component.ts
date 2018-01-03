@@ -66,7 +66,7 @@ styles: [`
 `]
 
 })
-export class MenuTopComponent implements OnInit {
+export class MenuTopComponent  implements OnInit {
     
     constructor (private sanitizer: DomSanitizer, private authService:AuthService) { }   
 

@@ -50,7 +50,7 @@ import { AuthService } from 'app/common/services/auth.service';
   </nav>
 </div>`,
 })
-export class MenuAsideComponent implements OnInit {
+export class MenuAsideComponent  implements OnInit {
 
     @Output() onToggleMenu = new EventEmitter<any>();
     @Output() onLogout = new EventEmitter<any>();

@@ -10,7 +10,7 @@ declare var $: any;
       </ol>
     </div>`
 })
-export class NestabaleTreeComponent implements OnInit {
+export class NestabaleTreeComponent  implements OnInit {
 
     @Input() data: any[];
     @Input() id: any;

@@ -80,6 +80,8 @@ export class DataSourceDirective implements OnInit, OnDestroy {
             }
         }
 
+        console.log("selectedValue", selectedValue);
+
         if (!this.existsDefaultItem(el))
             this.addOption(el, undefined, "Selecione");
 
