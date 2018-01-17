@@ -104,7 +104,7 @@ export class BindCustomComponent implements OnInit, OnChanges {
         else if (this.format.toLocaleLowerCase() === 'color-legend') {
             this.tag = "inner";
             let hex = String(this.model || '').replace('#', '');
-            var content = '<div class="status-circle color-change new-color-' + hex + '"><span class="invisible">a<span></div>';
+            var content = '<div class="badge status-circle color-change new-color-' + hex + '"><span class="invisible">a<span></div>';
             this._treatStatus(this.model);
             this.value = content;
         }
