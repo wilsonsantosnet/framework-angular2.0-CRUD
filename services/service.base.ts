@@ -103,6 +103,8 @@ export class ServiceBase {
             maskCEP: [/\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/],
             maskCPF: [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/],
             maskCNPJ: [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/],
+            maskDDD: ['(', /\d/, /\d/, ')'],
+            maskOnlyTelefone: [/\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/, /\d/],
             maskTelefone: ['(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/, /\d/],
             maskHorario: [/\d/, /\d/, ':', /\d/, /\d/],
             CartaoCredito: [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/],
@@ -187,6 +189,14 @@ export class ServiceBase {
         return new Date(data.split('/')[2].split(' ')[0], data.split('/')[1] - 1, data.split('/')[0], data.split('/')[2].split(' ')[1].split(':')[0], data.split('/')[2].split(' ')[1].split(':')[1]);
     } 
 
-    public OnHide(saveModal: ModalDirective, editModal: ModalDirective, hideFunction: any) {        editModal.onHide.subscribe(() => {            hideFunction();        });        saveModal.onHide.subscribe(() => {            hideFunction();        });    }
+    public OnHide(saveModal: ModalDirective, editModal: ModalDirective, hideFunction: any) {
+        editModal.onHide.subscribe(() => {
+            hideFunction();
+        });
+
+        saveModal.onHide.subscribe(() => {
+            hideFunction();
+        });
+    }
 
 }
