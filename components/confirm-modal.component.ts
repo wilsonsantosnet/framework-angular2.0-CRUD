@@ -6,7 +6,7 @@ import { GlobalService, NotificationParameters } from '../../global.service';
     selector: 'confirm-modal',
     template: `
               <div bsModal #_confirmModal="bs-modal" class="gc-modal modal fade" >
-                <div class="modal-dialog modal-lg">
+                <div class="modal-dialog">
                   <div class="modal-content">
                     <div class="modal-header">
                       <h3 class="modal-title">Confirmação</h3>
@@ -17,8 +17,8 @@ import { GlobalService, NotificationParameters } from '../../global.service';
                       </h5>
                     </div>
                     <div class="modal-footer">
-                      <button class="btn btn-danger btn-danger-app" type="button" (click)="onConfimationYes()">Sim</button>
                       <button class="btn btn-default btn-default-app" type="button" (click)="onCancel()">Cancelar</button>
+                      <button class="btn btn-success btn-success-app" type="button" (click)="onConfimationYes()">Sim</button>
                     </div>
                   </div>
                 </div>
@@ -46,7 +46,7 @@ export class ConfirmModalComponent implements OnInit, OnDestroy {
 
     constructor() {
         this.vm = {};
-        this.vm.messageConfirmation = "tem certeza que deseja Executar Essa operação?"
+        this.vm.messageConfirmation = "Tem certeza que deseja executar essa operação?"
     }
 
 
