@@ -18,7 +18,7 @@ import { ViewModel } from '../model/viewmodel';
             </span>
           </div>
           <br>
-          <a *ngIf='fileName' href='{{downloadUri}}{{folder}}/{{fileName}}'>{{fileNameOld}}</a>
+          <a *ngIf='fileName' href='{{downloadUri}}{{folder}}/{{fileName}}' target='_blank'>{{fileNameOld}}</a>
           <br>
           <img *ngIf='fileName' src='{{downloadUri}}{{folder}}/{{fileName}}' style='max-width:100%' />
           <div *ngIf='pasteArea' class='upload-component-paste-area upload-component-drop-area' id='upload-component-paste-area'>
