@@ -1,4 +1,4 @@
-﻿import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, SecurityContext } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, SecurityContext } from '@angular/core';
 import { DatePipe, DecimalPipe, PercentPipe, CurrencyPipe } from "@angular/common";
 import { DomSanitizer } from '@angular/platform-browser';
 import { ApiService } from "app/common/services/api.service";
@@ -13,7 +13,7 @@ declare var $: any;
       <label *ngIf="tag === 'label'">{{ value }}</label>
       <p *ngIf="tag === 'p'">{{ value }}</p>
       <div *ngIf="tag === 'div'">{{ value }}</div>
-      <div *ngIf="tag === 'inner'" [innerHTML]='value'></div>
+      <div *ngIf="tag === 'inner'" [innerHTML]='value' style='display: inherit;'></div>
     `,
     providers: [DatePipe, DecimalPipe, PercentPipe, CurrencyPipe, MaskFormatPipe, ApiService],
 })

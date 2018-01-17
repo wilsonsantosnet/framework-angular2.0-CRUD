@@ -1,4 +1,4 @@
-﻿import { Directive, ElementRef, Renderer, Input, Output, OnInit, EventEmitter, OnDestroy, Optional, Self } from '@angular/core';
+import { Directive, ElementRef, Renderer, Input, Output, OnInit, EventEmitter, OnDestroy, Optional, Self } from '@angular/core';
 import { NgModel, FormControlName } from '@angular/forms';
 
 import { ApiService } from '../services/api.service';
@@ -79,8 +79,6 @@ export class DataSourceDirective implements OnInit, OnDestroy {
                 selectedValue = this.accessor.value;
             }
         }
-
-        console.log("selectedValue", selectedValue);
 
         if (!this.existsDefaultItem(el))
             this.addOption(el, undefined, "Selecione");

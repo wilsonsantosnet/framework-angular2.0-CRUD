@@ -1,4 +1,4 @@
-﻿import { ViewRef_ } from "@angular/core/src/view";
+import { ViewRef_ } from "@angular/core/src/view";
 import createNumberMask from 'text-mask-addons/dist/createNumberMask'
 import { GlobalServiceCulture, Translated, TranslatedField } from '../../global.service.culture';
 import { MainService } from '../../main/main.service';
@@ -100,6 +100,7 @@ export class ServiceBase {
         })
 
         return {
+            maskUF: [/\D/, /\D/,],
             maskCEP: [/\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/],
             maskCPF: [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/],
             maskCNPJ: [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/],
