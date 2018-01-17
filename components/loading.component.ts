@@ -30,7 +30,7 @@ export class LoadingComponent implements OnInit, OnDestroy  {
 
     ngOnInit() {
 
-        this._operationRequesting = GlobalService.getOperationRequestingEmitter().subscribe(_requesting => {
+        this._operationRequesting = GlobalService.getOperationRequestingEmitter().subscribe((_requesting: boolean) => {
             this.requesting = _requesting;
         })
     }

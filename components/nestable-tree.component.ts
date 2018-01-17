@@ -1,4 +1,4 @@
-﻿import { Component, ElementRef, Input, OnInit, EventEmitter, Output} from '@angular/core';
+﻿import { Component, ElementRef, Input, OnInit, EventEmitter, Output } from '@angular/core';
 
 declare var $: any;
 
@@ -10,7 +10,7 @@ declare var $: any;
       </ol>
     </div>`
 })
-export class NestabaleTreeComponent  implements OnInit {
+export class NestabaleTreeComponent implements OnInit {
 
     @Input() data: any[];
     @Input() id: any;
@@ -24,10 +24,10 @@ export class NestabaleTreeComponent  implements OnInit {
 
     }
 
-    onChangeNestabale(e) {
+    onChangeNestabale(e: any) {
         this.change.emit(e);
     }
 
-  
+
 
 }

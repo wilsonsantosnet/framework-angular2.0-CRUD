@@ -24,7 +24,7 @@ export class EditorHtmlDiretive implements OnInit {
     ngOnInit() {
         this.render();
 
-        this._notificationEmitter = GlobalService.getNotificationEmitter().subscribe((not) => {
+        this._notificationEmitter = GlobalService.getNotificationEmitter().subscribe((not: any) => {
             if (not.event == "edit" || not.event == "create") {
                 let element = $(this.el.nativeElement);
                 var selector = element.attr("editorhtml");
@@ -47,7 +47,7 @@ export class EditorHtmlDiretive implements OnInit {
             selector: '[editorhtml=' + element.attr("editorhtml") + ']',
             plugins: ['link', 'paste', 'lists', 'advlist'],
             skin_url: '/assets/css/skins/lightgray',
-            setup: editor => {
+            setup: (editor : any) => {
                 editor.on('change', () => {
                     const content = editor.getContent();
                     this.editor = editor;

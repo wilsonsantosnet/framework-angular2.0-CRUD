@@ -22,15 +22,15 @@ export class TreeViewComponent {
 
     }
 
-    allowDrop(ev) {
+    allowDrop(ev: any) {
         ev.preventDefault();
     }
 
-    drag(ev) {
+    drag(ev: any) {
         ev.dataTransfer.setData("id-tree", ev.target.id);
     }
 
-    drop(ev) {
+    drop(ev: any) {
 
         ev.preventDefault();
         var data = ev.dataTransfer.getData("id-tree");

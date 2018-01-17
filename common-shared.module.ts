@@ -27,7 +27,7 @@ import { TagCustomComponent } from 'app/common/components/tag.component';
 import { DomElemetAppendDirective } from 'app/common/directives/dom-elemet-apped.directive';
 import { CallerDiretive } from 'app/common/directives/caller.directive';
 import { NestableDirective } from 'app/common/directives/nestable.directive';
-
+import { MultiSelectFunnelComponent } from 'app/common/components/multiselect-funnel.component';
 
 
 @NgModule({
@@ -56,6 +56,7 @@ import { NestableDirective } from 'app/common/directives/nestable.directive';
         NestabaleTreeComponent,
         UploadCustomComponent,
         MultiSelectComponent,
+        MultiSelectFunnelComponent,
         DateFormatPipe,
         MaskFormatPipe,
         TagCustomComponent,
@@ -73,6 +74,7 @@ import { NestableDirective } from 'app/common/directives/nestable.directive';
         NestabaleTreeComponent,
         UploadCustomComponent,
         MultiSelectComponent,
+        MultiSelectFunnelComponent,
         TagCustomComponent,
         DataSourceDirective,
         MaskInputDirective,

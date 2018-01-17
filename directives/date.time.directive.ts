@@ -38,7 +38,7 @@ export class DateTimeDirective {
         this.change.emit(); //necessário para emitir o evento change
 
         let ultimoValor = '';
-        $(element).on('change', ret => {
+        $(element).on('change', (ret : any) => {
             let valor = $(element).val();
             
             if (valor != ultimoValor) {
@@ -51,7 +51,7 @@ export class DateTimeDirective {
 
 
 
-    private updateValue(value,valueold) {
+    private updateValue(value: any, valueold: any) {
 
         if (this.ngModel) {
             this.ngModel.viewToModelUpdate(value);

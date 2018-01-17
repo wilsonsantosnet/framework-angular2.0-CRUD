@@ -3,9 +3,9 @@ import { Router } from '@angular/router';
 import { Inject, Injectable, OnInit } from '@angular/core';
 import { Observable, Observer } from 'rxjs/Rx';
 
-import { ECacheType } from 'app/common/type-cache.enum';
-import { GlobalService } from 'app/global.service';
-import { CacheService } from 'app/common/services/cache.service';
+import { ECacheType } from '../type-cache.enum';
+import { GlobalService } from '../../global.service';
+import { CacheService } from '../services/cache.service';
 import { NotificationsService } from 'angular2-notifications';
 
 @Injectable()
@@ -234,8 +234,8 @@ export class ApiService<T> {
         var urlBase = this.makeBaseUrl();
         var authConfig = this.makeAuthorization();
         var url = more ? urlMore : urlBase;
-        var processResultsDefault = function (result) {
-            let dataList = result.dataList.map((item) => {
+        var processResultsDefault = function (result: any) {
+            let dataList = result.dataList.map((item: any) => {
                 let data = {
                     id: item.id,
                     text: item.name
@@ -254,7 +254,7 @@ export class ApiService<T> {
             url: url,
             dataType: 'json',
             headers: authConfig,
-            data: function (params) {
+            data: function (params: any) {
 
                 var filterComposite = Object.assign(filters || {}, {
                     filterBehavior: filterBehavior,
@@ -441,7 +441,7 @@ export class ApiService<T> {
         return Observable.throw(erros);
     }
 
-    private notification(response, messageCustom = null) {
+    private notification(response: any, messageCustom: any = null) {
 
         let _response = response.json();
 

@@ -73,7 +73,7 @@ export class CepComponent  implements OnInit {
 
     }
 
-	onChange(cep) {
+    onChange(cep: any) {
 
 		if (cep != null) {
             this.api.setResource("log_logradouro/GetDataListCustom", this._endpoint).get({ cep: cep }).subscribe((result) => {

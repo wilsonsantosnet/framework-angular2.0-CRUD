@@ -64,11 +64,14 @@ export class UploadCustomComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
 
-        this._notificationEmitter = GlobalService.getNotificationEmitter().subscribe((not) => {
+        this.edit();
+
+        this._notificationEmitter = GlobalService.getNotificationEmitter().subscribe((not: any) => {
+
             if (not.event == "edit") {
-                this.fileNameOld = this.vm.model[this.ctrlName];
-                this.fileName = this.vm.model[this.ctrlName]
+                this.edit();
             }
+
             if (not.event == "init") {
                 this.fileNameOld = null;
                 this.fileName = null;
@@ -86,13 +89,19 @@ export class UploadCustomComponent implements OnInit, OnDestroy {
 
     }
 
-    handleDrop(e) {
+    edit() {
+        this.fileNameOld = this.vm.model[this.ctrlName];
+        this.fileName = this.vm.model[this.ctrlName]
+    }
+
+
+    handleDrop(e: any) {
         e.preventDefault();
         e.dataTransfer.files
         this.uploadFileOnPaste(e.dataTransfer.files[0]);
     }
 
-    handlePaste(e) {
+    handlePaste(e: any) {
 
         for (var i = 0; i < e.clipboardData.items.length; i++) {
             var item = e.clipboardData.items[i];
@@ -100,7 +109,7 @@ export class UploadCustomComponent implements OnInit, OnDestroy {
         }
     }
 
-    uploadFileOnPaste(file) {
+    uploadFileOnPaste(file: any) {
 
         this.fileNameOld = file.name;
 
@@ -115,7 +124,7 @@ export class UploadCustomComponent implements OnInit, OnDestroy {
         this.ref.detectChanges();
     }
 
-    onChange(event) {
+    onChange(event: any) {
 
         if (event.target.files.length == 0)
             return false;
@@ -129,7 +138,7 @@ export class UploadCustomComponent implements OnInit, OnDestroy {
         return this.uploadDefault(file, this.rename);
     }
 
-    uploadCustom(event, rename) {
+    uploadCustom(event: any, rename: any) {
         this.onChangeUploadExternal.emit(event)
         this.pasteArea = false;
         return true;

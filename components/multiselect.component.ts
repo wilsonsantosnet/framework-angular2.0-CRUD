@@ -36,7 +36,7 @@ export class MultiSelectComponent implements OnInit, OnDestroy {
 
     _datasource: any[];
     _modelOutput: any;
-    _collectionjsonTemplate
+    _collectionjsonTemplate: any;
     _modelInput: any;
     _filter: any;
 
@@ -59,7 +59,7 @@ export class MultiSelectComponent implements OnInit, OnDestroy {
             this._getInstance();
         }
 
-        this._notificationEmitter = GlobalService.getNotificationEmitter().subscribe((not) => {
+        this._notificationEmitter = GlobalService.getNotificationEmitter().subscribe((not: any) => {
 
             if (not.event == "edit" || not.event == "create" || not.event == "init") {
                 this.init();
@@ -81,7 +81,7 @@ export class MultiSelectComponent implements OnInit, OnDestroy {
         $("#" + this.ctrlName).val(null).trigger('change');
     }
 
-    onChange(e) {
+    onChange(e: any) {
         this.updateValue(e.target.value, e.target.checked);
     }
 
@@ -106,7 +106,7 @@ export class MultiSelectComponent implements OnInit, OnDestroy {
             this._modelOutput.push(value);
         }
         else {
-            this._modelOutput = this._modelOutput.filter((item) => {
+            this._modelOutput = this._modelOutput.filter((item: any) => {
                 return item != value;
             });
         }
@@ -133,12 +133,14 @@ export class MultiSelectComponent implements OnInit, OnDestroy {
 
         let filters = Object.assign(this.datafilters || {}, parentFilter || {});
 
+        
+
         if (this.enabledSelect2) {
             if (this._modelInput) {
-                filters.ids = this._modelInput.map((item) => {
+                filters.ids = this._modelInput.map((item: any) => {
                     return item[this.ctrlNameItem];
                 });
-                
+
                 if (filters.ids.length > 0)
                     this.getInstanceMultiSelect(filters);
             }
@@ -151,12 +153,14 @@ export class MultiSelectComponent implements OnInit, OnDestroy {
 
     private getInstanceMultiSelect2(filters: any) {
 
+        console.log("filters", filters);
+
         let config = {
             ajax: this.api.setResource(this.dataitem, this.endpoint).getUrlConfig(true, this.fieldFilterName, "getDataitem", filters)
         }
 
         setTimeout(() => {
-            $("#" + this.ctrlName).select2(config).on('select2:select select2:unselect', (e) => {
+            $("#" + this.ctrlName).select2(config).on('select2:select select2:unselect', (e: any) => {
                 var selcteds = $("#" + this.ctrlName).val();
                 this._modelOutput = [];
                 this.addItems(selcteds);
@@ -174,7 +178,7 @@ export class MultiSelectComponent implements OnInit, OnDestroy {
                 this._datasource.push({
                     id: result.dataList[item].id,
                     name: result.dataList[item].name,
-                    checked: this._modelInput ? this._modelInput.filter((selecteds) => {
+                    checked: this._modelInput ? this._modelInput.filter((selecteds: any) => {
                         let checked = selecteds[this.ctrlNameItem] == result.dataList[item].id;
                         if (checked)
                             this.addItem(result.dataList[item].id, checked);
@@ -184,7 +188,6 @@ export class MultiSelectComponent implements OnInit, OnDestroy {
             }
 
         });
-
 
     }
 

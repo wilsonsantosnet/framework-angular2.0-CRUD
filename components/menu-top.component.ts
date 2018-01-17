@@ -81,12 +81,12 @@ export class MenuTopComponent  implements OnInit {
         this._asideActive = false;
     }
 
-    san(fileName) {
+    san(fileName: any) {
         var _url = "url('" + this.vm.downloadUri + "/" + this.folderAvatar +"/" + (fileName || 'vazio.png') + "')";
         return this.sanitizer.sanitize(SecurityContext.HTML, _url)
     }
 
-    _onLogout(e) {
+    _onLogout(e: any) {
         this.onLogout.emit(event);
     }
 

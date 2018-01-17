@@ -2,12 +2,11 @@
 import { Router, NavigationCancel } from '@angular/router';
 import { URLSearchParams, } from '@angular/http';
 
-import { ApiService } from 'app/common/services/api.service';
-import { ECacheType } from 'app/common/type-cache.enum';
-import { GlobalService } from 'app/global.service';
-import { CacheService } from 'app/common/services/cache.service';
-import { StartupService } from 'app/startup.service';
-
+import { ApiService } from '../services/api.service';
+import { ECacheType } from '../type-cache.enum';
+import { GlobalService } from '../../global.service';
+import { CacheService } from '../services/cache.service';
+import { StartupService } from '../../startup.service';
 
 @Injectable()
 export class AuthService {
@@ -27,7 +26,7 @@ export class AuthService {
     private readonly _cacheType: ECacheType;
     private readonly _authorizationClaimsAddUrl: string;
 
-    constructor(private apiAuth: ApiService<any>, private api: ApiService<any>, private router: Router, private startupService : StartupService) {
+    constructor(private apiAuth: ApiService<any>, private api: ApiService<any>, private router: Router, private startupService: StartupService) {
 
 
 
@@ -47,7 +46,7 @@ export class AuthService {
 
     }
 
-    public loginResourceOwner(email, password, reload = false) {
+    public loginResourceOwner(email: any, password: any, reload = false) {
 
         this.apiAuth.setResource("auth", GlobalService.getEndPoints().AUTHAPI).post({
 
@@ -121,7 +120,7 @@ export class AuthService {
     public logout() {
 
         this.reset();
-         
+
         if (this._typeLogin == "SSO") {
             var authorizationUrl = GlobalService.getEndPoints().AUTH + 'account/logout?returnUrl=' + GlobalService.getEndPoints().APP + "/login";
             window.location.href = authorizationUrl;
@@ -137,7 +136,7 @@ export class AuthService {
 
             let hash = window.location.hash.substr(1);
 
-            let result = hash.split('&').reduce(function (result, item) {
+            let result = hash.split('&').reduce(function (result: any, item: any) {
                 let parts = item.split('=');
                 result[parts[0]] = parts[1];
                 return result;
@@ -162,7 +161,7 @@ export class AuthService {
 
     }
 
-    public getCurrentUser(callback) {
+    public getCurrentUser(callback: any) {
 
         var currentUser = this.currentUser();
         if (currentUser.isAuth)
@@ -190,7 +189,7 @@ export class AuthService {
         return token !== null;
     }
 
-    private _acceptlogin(token, reload) {
+    private _acceptlogin(token: any, reload: any) {
 
         console.log("<<<<<<< _acceptlogin >>>>>>>>>>", token)
         CacheService.add(this._nameToken, token, this._cacheType);
@@ -206,7 +205,7 @@ export class AuthService {
 
     }
 
-    private makeUrl(url, noCache = false) {
+    private makeUrl(url: any, noCache = false) {
 
         if (noCache)
             return url;

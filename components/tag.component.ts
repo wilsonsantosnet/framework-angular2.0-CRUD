@@ -61,7 +61,7 @@ export class TagCustomComponent implements ControlValueAccessor, OnDestroy {
         }
     }
 
-    onModelChange($event) {
+    onModelChange($event: any) {
         this.tagChange.emit(this.model)
     }
 

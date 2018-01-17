@@ -11,7 +11,7 @@ declare var $: any;
     providers: [NgModel]
 })
 export class DateDirective {
-    
+
     @Input() saUiDateTimePicker: any; //configuração do plugin
     @Output() change = new EventEmitter();
 
@@ -37,9 +37,9 @@ export class DateDirective {
         this.change.emit(); //necessário para emitir o evento change
 
         let ultimoValor = '';
-        $(element).on('change', ret => {
+        $(element).on('change', (ret: any) => {
             let valor = $(element).val();
-            
+
             if (valor != ultimoValor) {
 
                 this.updateValue(valor, ultimoValor);
@@ -50,7 +50,7 @@ export class DateDirective {
 
 
 
-    private updateValue(value,valueold) {
+    private updateValue(value: any, valueold: any) {
 
         if (this.ngModel) {
             this.ngModel.viewToModelUpdate(value);

@@ -4,13 +4,15 @@ import { GlobalServiceCulture, Translated, TranslatedField } from '../../global.
 import { MainService } from '../../main/main.service';
 import { CacheService } from 'app/common/services/cache.service';
 import { ECacheType } from 'app/common/type-cache.enum';
+import { ModalDirective } from 'ngx-bootstrap/modal';
+
 
 export class ServiceBase {
 
 
     protected _interval: any;
 
-    protected getInfoGrid(infos) {
+    protected getInfoGrid(infos: any) {
         var list = [];
         for (let key in infos) {
             var info = infos[key];
@@ -20,7 +22,7 @@ export class ServiceBase {
         return list;
     }
 
-    protected objectToArray(infos) {
+    protected objectToArray(infos: any) {
 
         var list = [];
         for (let key in infos) {
@@ -32,7 +34,7 @@ export class ServiceBase {
         return list;
     }
 
-    protected objectToArrayWithKeys(infos) {
+    protected objectToArrayWithKeys(infos: any) {
 
         var list = [];
         for (let key in infos) {
@@ -47,7 +49,7 @@ export class ServiceBase {
         return list;
     }
 
-    public pagingConfig(modelFilter, pageConfig) {
+    public pagingConfig(modelFilter: any, pageConfig: any) {
 
         return Object.assign(modelFilter, {
             PageIndex: pageConfig.PageIndex,
@@ -57,7 +59,7 @@ export class ServiceBase {
 
     }
 
-    public orderByConfig(modelFilter, order) {
+    public orderByConfig(modelFilter: any, order: any) {
 
         return Object.assign(modelFilter, {
             OrderByType: order.asc ? "OrderBy" : "OrderByDescending",
@@ -109,7 +111,7 @@ export class ServiceBase {
 
     }
 
-    public tagTransformToShow(value, readonly) {
+    public tagTransformToShow(value: any, readonly: any) {
         var tagItems = value ? value.split(',') : value;
         var tags = [];
         if (tagItems) {
@@ -124,16 +126,16 @@ export class ServiceBase {
         return tags;
     }
 
-    public tagTransformToSave(value) {
+    public tagTransformToSave(value: any) {
         if (value) {
-            return value.map((item) => {
+            return value.map((item: any) => {
                 return item.value
             }).toString();
         }
         return value;
     }
 
-    public mergeInfoFields(defaultInfosFields, moreInfosFields) {
+    public mergeInfoFields(defaultInfosFields: any, moreInfosFields: any) {
 
         let dataArrayDefault = this.objectToArrayWithKeys(defaultInfosFields);
         if (moreInfosFields) {
@@ -157,7 +159,7 @@ export class ServiceBase {
             })
         }
 
-        let objMerged = {};
+        let objMerged : any = {};
         if (moreInfosFields) {
             dataArrayDefault.forEach((item) => {
                 objMerged[item.key] = item.infos;
@@ -172,17 +174,19 @@ export class ServiceBase {
         return objMerged;
     }
 
-    public saveFilters(modelFilter, key) {
+    public saveFilters(modelFilter: any, key: any) {
         CacheService.add(key, JSON.stringify(modelFilter), ECacheType.LOCAL);
         return modelFilter;
     }
 
-    public getFilters(key) {
+    public getFilters(key: any) {
         return JSON.parse(CacheService.get(key, ECacheType.LOCAL));
     }
     
-    public ExtractDate(data) {
+    public ExtractDate(data: any) {
         return new Date(data.split('/')[2].split(' ')[0], data.split('/')[1] - 1, data.split('/')[0], data.split('/')[2].split(' ')[1].split(':')[0], data.split('/')[2].split(' ')[1].split(':')[1]);
     } 
+
+    public OnHide(saveModal: ModalDirective, editModal: ModalDirective, hideFunction: any) {        editModal.onHide.subscribe(() => {            hideFunction();        });        saveModal.onHide.subscribe(() => {            hideFunction();        });    }
 
 }

@@ -11,7 +11,7 @@ export class LocalStorageService {
             Export: _export,
         }
 
-        function _export(data, nome) {
+        function _export(data : any, nome : any) {
 
 
             var xml;

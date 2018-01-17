@@ -23,20 +23,20 @@ export class NestableDirective implements OnInit {
 
         var element = $(this.el.nativeElement);
 
-        $.each(this.data, (index, item) => {
+        $.each(this.data, (index: any, item: any) => {
             $(element).find(".root").append(this.buildItem(item));
         });
 
         $(element).nestable({
             group: 1
-        }).on('change', (e) => {
+        }).on('change', (e: any) => {
             var element = e.length ? e : $(e.target);
             this.change.emit(element.nestable('serialize'));
         });
     }
 
   
-    buildItem(item) {
+    buildItem(item: any) {
 
         
         let html = "<li class='dd-item' data-id='" + item.id + "' data-aditional='" + JSON.stringify(item.dataAditional) + "'>";
@@ -44,7 +44,7 @@ export class NestableDirective implements OnInit {
 
         if (item.children) {
             html += "<ol class='dd-list'>";
-            $.each(item.children, (index, children) => {
+            $.each(item.children, (index: any, children: any) => {
                 html += this.buildItem(children);
             });
             html += "</ol>";

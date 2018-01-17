@@ -45,7 +45,7 @@ export class BindCustomComponent implements OnInit, OnChanges {
     }
 
     ngOnInit(): void { }
-  
+
 
     ngOnChanges(changes: SimpleChanges): void {
 
@@ -114,8 +114,8 @@ export class BindCustomComponent implements OnInit, OnChanges {
 
     }
 
-   
-    public convertDate(value) {
+
+    public convertDate(value: any) {
         if (value) {
             var datePart = value.toString().split("/");
             var convertedDate = datePart[1] + "/" + datePart[0] + "/" + datePart[2];
@@ -123,11 +123,11 @@ export class BindCustomComponent implements OnInit, OnChanges {
         }
     }
 
-    private _getInDataItem(model, dataitem) {
+    private _getInDataItem(model: any, dataitem: any) {
 
 
         if (dataitem) {
-            var result = dataitem.filter(function (item) {
+            var result = dataitem.filter(function (item: any) {
                 return model == item.id;
             });
             return result.length > 0 ? result[0].name : "--";
@@ -135,7 +135,7 @@ export class BindCustomComponent implements OnInit, OnChanges {
         return "--";
     }
 
-    private _getChangeForThis(model, newValue) {
+    private _getChangeForThis(model: any, newValue: any) {
         return newValue;
     }
 
@@ -145,7 +145,7 @@ export class BindCustomComponent implements OnInit, OnChanges {
             return;
         }
 
-        let filters = [];
+        let filters: any = [];
         filters[this.key] = this.model
 
         this.api.setResource(this.instance, this.endpoint).getDataitem(filters).subscribe(data => {

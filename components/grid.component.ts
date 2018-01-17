@@ -98,7 +98,7 @@ export class MakeGridComponent implements OnChanges {
         this._isAsc = true;
     }
 
-    bindFields(item, key) {
+    bindFields(item: any, key: any) {
         if (key.includes(".")) {
             let keys = key.split(".");
             if (keys.length == 2) return item[keys[0]][keys[1]];
@@ -107,7 +107,7 @@ export class MakeGridComponent implements OnChanges {
         return item[key];
     }
 
-    onChange(evt) {
+    onChange(evt: any) {
 
         this.addItem(parseInt(evt.target.value), evt.target.checked);
 
@@ -127,7 +127,7 @@ export class MakeGridComponent implements OnChanges {
         }
     }
 
-    onCheckAll(e) {
+    onCheckAll(e : any) {
 
         this._isCheckedAll = e.target.checked;
 
@@ -149,7 +149,7 @@ export class MakeGridComponent implements OnChanges {
             this._modelOutput.push(value);
         }
         else {
-            this._modelOutput = this._modelOutput.filter((item) => {
+            this._modelOutput = this._modelOutput.filter((item: any) => {
                 return item != value;
             });
         }
@@ -174,34 +174,34 @@ export class MakeGridComponent implements OnChanges {
 
         let modelOutputDuplicate = this._modelOutput;
 
-        let modelOutputUnique = modelOutputDuplicate.filter(function (item, pos) {
+        let modelOutputUnique = modelOutputDuplicate.filter(function (item: any, pos: any) {
             return modelOutputDuplicate.indexOf(item) == pos;
         });
 
         this._modelOutput = modelOutputUnique;
     }
 
-    onEdit(evt, model) {
+    onEdit(evt: any, model: any) {
         evt.preventDefault();
         this.edit.emit(model);
     }
 
-    onDetails(evt, model) {
+    onDetails(evt: any, model: any) {
         evt.preventDefault();
         this.details.emit(model);
     }
 
-    onPrint(evt, model) {
+    onPrint(evt: any, model: any) {
         evt.preventDefault();
         this.print.emit(model);
     }
 
-    onDeleteConfimation(evt, model) {
+    onDeleteConfimation(evt: any, model: any) {
         evt.preventDefault();
         this.deleteConfimation.emit(model);
     }
 
-    onOrderBy(evt, field) {
+    onOrderBy(evt: any, field: any) {
         this._isAsc = !this._isAsc
         evt.preventDefault();
         this.orderBy.emit({

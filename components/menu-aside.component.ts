@@ -67,20 +67,20 @@ export class MenuAsideComponent  implements OnInit {
     ngOnInit() {
     }
 
-    san(fileName) {
+    san(fileName : any) {
         var _url = "url('" + this.vm.downloadUri + "/" + this.folderAvatar + "/" + (fileName || 'vazio.png') + "')";
         return this.sanitizer.sanitize(SecurityContext.HTML, _url)
     }
 
-    _onToggleMenu(event) {
+    _onToggleMenu(event: any) {
         this.onToggleMenu.emit(event);
     }
 
-    _onLogout(event) {
+    _onLogout(event: any) {
         this.onLogout.emit(event);
     }
 
-    _onFilter(event) {
+    _onFilter(event: any) {
         this.onFilter.emit(event);
     }
 }
