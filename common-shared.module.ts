@@ -28,7 +28,7 @@ import { DomElemetAppendDirective } from 'app/common/directives/dom-elemet-apped
 import { CallerDiretive } from 'app/common/directives/caller.directive';
 import { NestableDirective } from 'app/common/directives/nestable.directive';
 import { MultiSelectFunnelComponent } from 'app/common/components/multiselect-funnel.component';
-
+import { CepDirective } from "app/common/directives/cep.directive";
 
 @NgModule({
     imports: [
@@ -48,6 +48,7 @@ import { MultiSelectFunnelComponent } from 'app/common/components/multiselect-fu
         MaskInputDirective,
         DateDirective,
         DateTimeDirective,
+    	CepDirective,
         EditorHtmlDiretive,
         DomElemetAppendDirective,
         MakeGridComponent,
@@ -70,6 +71,7 @@ import { MultiSelectFunnelComponent } from 'app/common/components/multiselect-fu
         MakePaginationComponent,
         MakeGridComponent,
         CepComponent,
+    	CepDirective,
         TreeViewComponent,
         NestabaleTreeComponent,
         UploadCustomComponent,
