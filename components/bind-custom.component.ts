@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, SecurityContext } from '@angular/core';
+﻿import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, SecurityContext } from '@angular/core';
 import { DatePipe, DecimalPipe, PercentPipe, CurrencyPipe } from "@angular/common";
 import { DomSanitizer } from '@angular/platform-browser';
 import { ApiService } from "app/common/services/api.service";
@@ -150,7 +150,9 @@ export class BindCustomComponent implements OnInit, OnChanges {
 
         this.api.setResource(this.instance, this.endpoint).getDataitem(filters).subscribe(data => {
             this.tag = "inner";
-            this.value = this.sanitizer.sanitize(SecurityContext.URL, "<a href=\"" + this.instance.toLowerCase() + "\/details/" + data.dataList[0].id + "\">" + data.dataList[0].name + "</a>");
+            this.value = "--";
+            if (data.dataList.length > 0)
+                this.value = this.sanitizer.sanitize(SecurityContext.URL, "<a href=\"" + this.instance.toLowerCase() + "\/details/" + data.dataList[0].id + "\">" + data.dataList[0].name + "</a>");
         });
 
     }

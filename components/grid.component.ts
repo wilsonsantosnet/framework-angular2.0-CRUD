@@ -10,13 +10,18 @@ import { ViewModel } from '../model/viewmodel';
         <table class="table table-bordered table-striped table-app">
           <thead class="thead-inverse">
             <tr>
+
+              <th width="175" class="text-center" *ngIf="showAction  && ActionLeft">Ações</th>
+
               <th *ngFor="let grid of vm.grid">
                 <span class="table-sort">
                   {{ grid.info.label }}
                   <a href='#' (click)='onOrderBy($event,grid.key)'><i class="fa fa-sort" aria-hidden="true"></i></a>
                 </span>
               </th>
-              <th width="175" class="text-center" *ngIf="showAction">Ações</th>
+
+              <th width="175" class="text-center" *ngIf="showAction  && !ActionLeft">Ações</th>
+
               <th width="65" class="text-center text-nowrap" *ngIf="showCheckbox">
                 <input type="checkbox" class="grid-chk" [checked]='_isCheckedAll' (click)='onCheckAll($event)' />
               </th>
@@ -25,6 +30,25 @@ import { ViewModel } from '../model/viewmodel';
           <tbody>
             <tr *ngFor="let item of vm.filterResult">
 
+              <td class="text-center text-nowrap" *ngIf="showAction && ActionLeft" >
+                <button *ngFor="let btn of customButton" (click)="btn.click(item)" placement="top" title="btn.tooltip" class="btn btn-sm {{ btn.class }}">
+                  <i class="fa {{ btn.icon }}"></i>
+                </button>
+                <button (click)="onEdit($event, item)" *ngIf="showEdit" placement="top" title="Editar" class="btn btn-sm btn-primary">
+                  <i class="fa fa-pencil"></i>
+                </button>
+                <button (click)="onDetails($event, item)" *ngIf="showDetails" placement="top" title="Detalhes" class="btn btn-sm">
+                  <i class="fa fa-table"></i>
+                </button>
+                <button (click)="onPrint($event, item)" *ngIf="showPrint" placement="top" title="Imprimir" class="btn btn-sm btn-success">
+                  <i class="fa fa-print"></i>
+                </button>
+                <button (click)="onDeleteConfimation($event, item)" *ngIf="showDelete" placement="top" title="Excluir" class="btn btn-sm btn-danger">
+                  <i class="fa fa-trash-o"></i>
+                </button>
+              </td>
+
+
               <td *ngFor="let grid of vm.grid" class="text-nowrap">
                 <bind-custom [model]="bindFields(item, grid.key)" 
                              [format]="grid.info.type" 
@@ -32,7 +56,7 @@ import { ViewModel } from '../model/viewmodel';
                              [aux]="grid.info.aux"></bind-custom>
               </td>
 
-              <td class="text-center text-nowrap" *ngIf="showAction">
+              <td class="text-center text-nowrap" *ngIf="showAction && !ActionLeft">
                 <button *ngFor="let btn of customButton" (click)="btn.click(item)" placement="top" title="btn.tooltip" class="btn btn-sm {{ btn.class }}">
                   <i class="fa {{ btn.icon }}"></i>
                 </button>
@@ -62,12 +86,13 @@ import { ViewModel } from '../model/viewmodel';
 export class MakeGridComponent implements OnChanges {
 
     @Input() vm: ViewModel<any>
-    @Input() showEdit: boolean = true;
-    @Input() showDetails: boolean = true;
-    @Input() showPrint: boolean = true;
-    @Input() showDelete: boolean = true;
-    @Input() showCheckbox: boolean = false;
-    @Input() showAction: boolean = true;
+    @Input() showEdit: boolean;
+    @Input() showDetails: boolean;
+    @Input() showPrint: boolean;
+    @Input() showDelete: boolean ;
+    @Input() showCheckbox: boolean;
+    @Input() showAction: boolean;
+    @Input() ActionLeft: boolean;
 
     // [{ class: 'btn-success', tooltip: 'Configuracao', icon: 'fa-cog', click: (model) => { this.router.navigate(['/estagio/configuracao', model.estagioId]); } }]
     @Input() customButton: any = [];
@@ -78,6 +103,7 @@ export class MakeGridComponent implements OnChanges {
     @Output() print = new EventEmitter<any>();
     @Output() deleteConfimation = new EventEmitter<any>();
     @Output() orderBy = new EventEmitter<any>();
+    
 
     _modelOutput: any;
     _collectionjsonTemplate: any;
@@ -96,6 +122,13 @@ export class MakeGridComponent implements OnChanges {
         this._collectionjsonTemplate = "";
         this._isCheckedAll = false;
         this._isAsc = true;
+        this.showEdit = true;
+        this.showDetails = true;
+        this.showPrint = true;
+        this.showDelete = true;
+        this.showCheckbox = false;
+        this.showAction = true;
+        this.ActionLeft = GlobalService.getGlobalSettings().actionLeft;
     }
 
     bindFields(item: any, key: any) {
