@@ -1,11 +1,11 @@
-﻿import { NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { PaginationModule } from 'ngx-bootstrap/pagination'
+import { TabsModule } from 'ngx-bootstrap/tabs';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { TagInputModule } from 'ngx-chips';
-import { TabsModule } from 'ngx-bootstrap';
 import { TextMaskModule } from 'angular2-text-mask';
 
 import { DataSourceDirective } from './directives/select-datasource.directive';

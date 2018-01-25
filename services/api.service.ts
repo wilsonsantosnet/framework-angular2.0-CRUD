@@ -297,7 +297,7 @@ export class ApiService<T> {
     if (filters == null)
       filters = {};
 
-    filters.FilterBehavior = method;
+    filters.filterBehavior = method;
     return this.getBase(this.makeUrlMore(), filters);
 
   }
