@@ -35,7 +35,7 @@ import { AuthService } from 'app/common/services/auth.service';
       <span class="fa fa-bars" aria-hidden="true"></span>
     </button>
 
-    <a class="navbar-brand p-2" href="/"><img src="../../assets/img/logo.png" alt="Target Software"></a>
+    <a class="navbar-brand p-2" href="/"><img src="../../assets/img/logo.png"></a>
 
     <div class="form-inline p-2">
       <input class="form-control mr-sm-2" type="text" placeholder="Procurar tarefa" [(ngModel)]="filter">
@@ -43,9 +43,15 @@ import { AuthService } from 'app/common/services/auth.service';
     </div>
     <ul class="navbar-nav ml-auto p-2">
       <li class="nav-item">
+        <a class="nav-link" 
+          popover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
+          popoverTitle="Notificações"
+          placement="bottom"
+          href="#" title="Notificações" ><span class="fa fa-bullhorn" aria-hidden="true" style="color:red"></span></a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" href="#" title="Sair" (click)="_onLogout($event)"><span class="fa fa-sign-out" aria-hidden="true"></span> Sair</a>
       </li>
- 
     </ul>
   </nav>
 </div>`,
@@ -57,6 +63,7 @@ export class MenuAsideComponent  implements OnInit {
     @Output() onFilter = new EventEmitter<any>();
     @Input() vm: any;
     @Input() folderAvatar: any;
+    @Input() notification: any[];
 
     filter: string;
 
