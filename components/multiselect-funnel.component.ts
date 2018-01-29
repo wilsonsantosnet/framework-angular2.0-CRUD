@@ -1,4 +1,4 @@
-﻿import { Component, NgModule, OnInit, OnDestroy, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, NgModule, OnInit, OnDestroy, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 
 import { ApiService } from "app/common/services/api.service";
 import { GlobalService, NotificationParameters } from "../../global.service";
@@ -26,7 +26,7 @@ import { ViewModel } from '../model/viewmodel';
         </div>
 
         <hr>    
-,        <label>Disponiveis:</label>
+        <label>Disponiveis:</label>
         <div class='checkbox'  *ngFor="let option of _datasource">
           <label>
               <input type='checkbox' [(ngModel)]='option.checked' name='{{ctrlNameItem}}'  value='{{option.id}}' (change)='onChange($event)' /> {{ option.name }}
@@ -35,8 +35,8 @@ import { ViewModel } from '../model/viewmodel';
       </section>
 
       <section class="col-md-2" style='padding:43px'>
-        <button class="btn btn-default" type="button" (click)="onTransferenciaToLeft()"> >> </button>
-        <button class="btn btn-default" type="button" (click)="onTransferenciaToRigth()"> << </button>
+        <button class="btn btn-default" type="button" (click)="onTransferenciaToRight()"> >> </button>
+        <button class="btn btn-default" type="button" (click)="onTransferenciaToLeft()"> << </button>
       </section>
   
       <section class="col-md-5 section-scroll-larger">
@@ -153,7 +153,7 @@ export class MultiSelectFunnelComponent implements OnInit, OnDestroy {
 
     }
 
-    onTransferenciaToLeft() {
+    onTransferenciaToRight() {
 
         var removeables = [];
         for (var i in this._datasource) {
@@ -176,7 +176,7 @@ export class MultiSelectFunnelComponent implements OnInit, OnDestroy {
 
     }
 
-    onTransferenciaToRigth() {
+    onTransferenciaToLeft() {
 
         var removeables = [];
         for (let i in this._datasource_funnel) {
@@ -246,7 +246,7 @@ export class MultiSelectFunnelComponent implements OnInit, OnDestroy {
                 });
             }
 
-            this.onTransferenciaToLeft();
+            this.onTransferenciaToRight();
         });
 
     }
