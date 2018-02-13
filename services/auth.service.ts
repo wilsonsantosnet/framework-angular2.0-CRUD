@@ -25,6 +25,7 @@ export class AuthService {
     private readonly _nameCurrentUser: string;
     private readonly _cacheType: ECacheType;
     private readonly _authorizationClaimsAddUrl: string;
+    private readonly _authorizationAfterLogin: string;
 
     constructor(private apiAuth: ApiService<any>, private api: ApiService<any>, private router: Router, private startupService: StartupService) {
 
@@ -35,6 +36,7 @@ export class AuthService {
         this._typeLogin = GlobalService.getAuthSettings().TYPE_LOGIN;
         this._authorizationUrl = GlobalService.getEndPoints().AUTH + '/connect/authorize';
         this._authorizationClaimsAddUrl = GlobalService.getEndPoints().AUTH + '/AccountAfterAuth/ClaimsAdd';
+        this._authorizationAfterLogin = GlobalService.getEndPoints().AUTH + '/Funnel/Register';
         this._client_id = GlobalService.getAuthSettings().CLIENT_ID;
         this._client_id_ro = GlobalService.getAuthSettings().CLIENT_ID_RO;
         this._redirect_uri = GlobalService.getEndPoints().APP;
@@ -44,6 +46,26 @@ export class AuthService {
         this._cacheType = GlobalService.getAuthSettings().CACHE_TYPE;
 
 
+    }
+    
+    public loginAfterRegister(userName: any, password: any) {
+
+        let state = Date.now() + "" + Math.random();
+        localStorage["state"] = state;
+        let token = CacheService.get(this._nameToken, this._cacheType)
+        let url = this._authorizationAfterLogin + "?" +
+            "userName=" + encodeURI(userName) + "&" +
+            "password=" + encodeURI(password) + "&" +
+            "client_id=" + encodeURI(this._client_id) + "&" +
+            "redirect_uri=" + encodeURI(this._redirect_uri) + "&" +
+            "response_type=" + encodeURI(this._response_type) + "&" +
+            "scope=" + encodeURI(this._scope) + "&" +
+            "state=" + encodeURI(state);
+
+        CacheService.remove(this._nameCurrentUser, this._cacheType);
+
+        window.location.href = url;
+        return this._typeLogin;
     }
 
     public loginResourceOwner(email: any, password: any, reload = false) {
