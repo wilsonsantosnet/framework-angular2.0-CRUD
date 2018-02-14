@@ -19,8 +19,8 @@ var vm = new ViewModel({
       ],
  
       grid: [
-        { key: 'nome', info: { label: 'valor1', type: "string", aux: "" } },
-        { key: 'id', info: { label: 'codigo', type: "int", aux: "" } }
+        { key: 'nome', info: { label: 'valor1', type: "string" } },
+        { key: 'id', info: { label: 'codigo', type: "int" } }
       ],
  
     });
