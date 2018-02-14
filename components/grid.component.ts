@@ -75,7 +75,7 @@ import { ViewModel } from '../model/viewmodel';
               </td>
               
               <td class="text-center text-nowrap" *ngIf="showCheckbox">
-                <input type="checkbox" class="grid-chk" name="gridCheckBox" [value]="getPropertyValue(item, checkboxProperty)" (change)='onChange($event)' />
+                <input type="checkbox" class="grid-chk" name="gridCheckBox" [value]="item[checkboxProperty]" (change)='onChange($event)' />
               </td>
 
             </tr>
