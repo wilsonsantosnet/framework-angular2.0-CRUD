@@ -47,7 +47,31 @@ export class AuthService {
 
 
     }
-    
+
+    public loginResourceOwner(userName: any, password: any, reload = false) {
+
+        this.apiAuth.setResource("auth", GlobalService.getEndPoints().AUTHAPI).post({
+
+            ClientId: this._client_id_ro,
+            ClientSecret: "secret",
+            Scope: this._scope,
+            User: userName,
+            Password: password
+
+        }).subscribe(result => {
+
+            console.log("<<<<< LOGINRESOURCEOWNER TOKEN >>>>>>", result.data);
+            CacheService.add(this._nameToken, result.data.accessToken, this._cacheType);
+            this.router.navigate(["/home"]);
+
+            if (reload)
+                window.location.reload();
+
+        }, err => { });
+
+        this._typeLogin;
+    }
+
     public loginAfterRegister(userName: any, password: any) {
 
         let state = Date.now() + "" + Math.random();
@@ -66,30 +90,6 @@ export class AuthService {
 
         window.location.href = url;
         return this._typeLogin;
-    }
-
-    public loginResourceOwner(email: any, password: any, reload = false) {
-
-        this.apiAuth.setResource("auth", GlobalService.getEndPoints().AUTHAPI).post({
-
-            ClientId: this._client_id_ro,
-            ClientSecret: "secret",
-            Scope: this._scope,
-            User: email,
-            Password: password
-
-        }).subscribe(result => {
-
-            console.log("<<<<< LOGINRESOURCEOWNER TOKEN >>>>>>", result.data);
-            CacheService.add(this._nameToken, result.data.accessToken, this._cacheType);
-            this.router.navigate(["/home"]);
-
-            if (reload)
-                window.location.reload();
-
-        }, err => { });
-
-        this._typeLogin;
     }
 
     public loginSso() {

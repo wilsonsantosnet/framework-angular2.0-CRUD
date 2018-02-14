@@ -6,7 +6,7 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col">
-            Copyright ©Target Software 2017. Todos os direitos reservados.
+            Copyright ©SmartSecretary 2017. Todos os direitos reservados.
           </div>
         </div>
       </div>

@@ -1,6 +1,6 @@
 ﻿import { Component, NgModule, OnInit, OnDestroy, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 
-import { ApiService } from "app/common/services/api.service";
+import { ApiService } from "../../common/services/api.service";
 import { GlobalService, NotificationParameters } from "../../global.service";
 import { ViewModel } from '../model/viewmodel';
 

@@ -1,7 +1,7 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+﻿import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { ApiService } from '../services/api.service';
-import { GlobalService } from 'app/global.service';
+import { GlobalService } from '../../global.service';
 import { ViewModel } from '../model/viewmodel';
 
 @Component({

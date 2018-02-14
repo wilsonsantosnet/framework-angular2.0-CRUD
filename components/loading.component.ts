@@ -1,5 +1,5 @@
 ﻿import { Component, OnInit, OnDestroy, EventEmitter } from '@angular/core';
-import { GlobalService } from 'app/global.service';
+import { GlobalService } from '../../global.service';
 
 @Component({
     selector: 'loading',

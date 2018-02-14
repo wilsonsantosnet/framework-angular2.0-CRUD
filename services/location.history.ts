@@ -1,7 +1,7 @@
 ﻿import { Injectable } from '@angular/core';
 
 import { CacheService } from './cache.service';
-import { ECacheType } from 'app/common/type-cache.enum';
+import { ECacheType } from '../../common/type-cache.enum';
 
 @Injectable()
 export class LocationHistoryService {

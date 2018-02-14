@@ -1,11 +1,11 @@
-import { ViewRef_ } from "@angular/core/src/view";
+﻿import { ViewRef_ } from "@angular/core/src/view";
 import createNumberMask from 'text-mask-addons/dist/createNumberMask'
-import { GlobalServiceCulture, Translated, TranslatedField } from '../../global.service.culture';
-import { MainService } from '../../main/main.service';
-import { CacheService } from 'app/common/services/cache.service';
-import { ECacheType } from 'app/common/type-cache.enum';
-import { ModalDirective } from 'ngx-bootstrap/modal';
 
+import { MainService } from '../../main/main.service';
+import { CacheService } from '../../common/services/cache.service';
+import { ECacheType } from '../../common/type-cache.enum';
+
+import { ModalDirective } from 'ngx-bootstrap/modal';
 
 export class ServiceBase {
 
@@ -108,7 +108,7 @@ export class ServiceBase {
             maskOnlyTelefone: [/\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/, /\d/],
             maskTelefone: ['(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/, /\d/],
             maskHorario: [/\d/, /\d/, ':', /\d/, /\d/],
-            CartaoCredito: [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/],
+            cartaoCredito: [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/],
             maskDecimal: decimalMask
         }
 
@@ -199,5 +199,7 @@ export class ServiceBase {
             hideFunction();
         });
     }
+
+   
 
 }

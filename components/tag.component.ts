@@ -1,6 +1,6 @@
 ﻿import { Component, OnInit, Input, forwardRef, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
-import { GlobalService } from "app/global.service";
+import { GlobalService } from "../../global.service";
 import { ViewModel } from '../model/viewmodel';
 import { ServiceBase } from '../services/service.base';
 

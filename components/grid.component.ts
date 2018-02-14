@@ -1,6 +1,6 @@
 ﻿import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 
-import { GlobalService } from 'app/global.service';
+import { GlobalService } from '../../global.service';
 import { ViewModel } from '../model/viewmodel';
 
 @Component({

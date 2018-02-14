@@ -1,6 +1,6 @@
 ﻿import { Component, OnInit, Input, SecurityContext, Output, EventEmitter} from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { AuthService } from 'app/common/services/auth.service';
+import { AuthService } from '../../common/services/auth.service';
 
 @Component({
   selector: 'app-menu-top',
@@ -15,7 +15,7 @@ import { AuthService } from 'app/common/services/auth.service';
                 <button type="button" class="btn btn-default btn-toggler" title="Minimizar menu" data-mockup="open-single-header" (click)="activeMenu()">
                     <span class="fa fa-bars" aria-hidden="true"></span>
                 </button>
-                <a class="navbar-brand p-2" href="#"><img src="../../assets/img/logo-CNA-big.png" alt="Seed"></a>
+                <a class="navbar-brand p-2" href="/wellcome"><img src="../../assets/img/logo-CNA-big.png" alt="wellcome"></a>
 
                 <form class="gc-header-top__search gc-header-top__search-app form-inline p-2">
                     <input class="form-control mr-sm-2" type="text" placeholder="Busca">
