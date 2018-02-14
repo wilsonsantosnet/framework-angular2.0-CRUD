@@ -7,19 +7,19 @@ Framework  Angular 2.0
 var vm = new ViewModel({
     
       filterResult: [
-        { Nome: 'teste', id: 10 },
-        { Nome: 'teste', id: 11 },
-        { Nome: 'teste', id: 12 },
-        { Nome: 'teste', id: 13 },
-        { Nome: 'teste', id: 14 },
-        { Nome: 'teste', id: 10 },
-        { Nome: 'teste', id: 10 },
-        { Nome: 'teste', id: 10 },
-        { Nome: 'teste', id: 10 },
+        { nome: 'teste', id: 10 },
+        { nome: 'teste', id: 11 },
+        { nome: 'teste', id: 12 },
+        { nome: 'teste', id: 13 },
+        { nome: 'teste', id: 14 },
+        { nome: 'teste', id: 15 },
+        { nome: 'teste', id: 16 },
+        { nome: 'teste', id: 17 },
+        { nome: 'teste', id: 18 },
       ],
  
       grid: [
-        { key: 'chave1', info: { label: 'valor1', type: "string", aux: "" } },
+        { key: 'nome', info: { label: 'valor1', type: "string", aux: "" } },
         { key: 'id', info: { label: 'codigo', type: "int", aux: "" } }
       ],
  
