@@ -31,3 +31,14 @@ var vm = new ViewModel({
 <make-grid [(vm)]="vm" [checkboxProperty]="'id'" [showDelete]="false" [showEdit]="false" [showAction]="false" [showCheckbox]="true" [showDetails]="false" [showPrint]="false" (edit)="onEdit($event)"></make-grid>
 ```
 
+# TAG
+
+## JS
+```
+var model = "valor1,valor2,valor3"
+
+```
+## html
+```
+<tag-custom [ngModel] ="model" (tagChange)="model=$event"></tag-custom>
+```
