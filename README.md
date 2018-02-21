@@ -38,7 +38,13 @@ var vm = new ViewModel({
 var model = "valor1,valor2,valor3"
 
 ```
-## html
+## HTML
 ```
 <tag-custom [ngModel] ="model" (tagChange)="model=$event"></tag-custom>
 ```
+
+### DEPENDECY
+```
+npm install ngx-chips@1.5.9
+```
+
