@@ -33,7 +33,7 @@ var vm = new ViewModel({
 
 # TAG 
 
-## permite utilizar uma string separa por virgulas como tags
+## permite utilizar uma string separada por virgulas como tags
 
 ## JS
 ```
@@ -54,7 +54,7 @@ service.base.ts
 ```
 
 ### MODULE
-
+```
 import { TagInputModule } from 'ngx-chips';
 
 @NgModule({
@@ -64,5 +64,5 @@ import { TagInputModule } from 'ngx-chips';
         
     ]]
 })
-
+```
 
