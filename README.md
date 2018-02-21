@@ -44,7 +44,22 @@ var model = "valor1,valor2,valor3"
 ```
 
 ### DEPENDECY
+
 ```
 npm install ngx-chips@1.5.9
+
 ```
+
+### MODULE
+
+import { TagInputModule } from 'ngx-chips';
+
+@NgModule({
+    imports: [
+    
+        TagInputModule,
+        
+    ]]
+})
+
 
