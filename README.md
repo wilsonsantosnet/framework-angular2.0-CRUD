@@ -31,7 +31,7 @@ var vm = new ViewModel({
 <make-grid [(vm)]="vm" [checkboxProperty]="'id'" [showDelete]="false" [showEdit]="false" [showAction]="false" [showCheckbox]="true" [showDetails]="false" [showPrint]="false" (edit)="onEdit($event)"></make-grid>
 ```
 
-# TAG
+# TAG , permite utilizar uma string separa por virgulas como tags
 
 ## JS
 ```
@@ -47,6 +47,7 @@ var model = "valor1,valor2,valor3"
 
 ```
 npm install ngx-chips@1.5.9
+service.base.ts 
 
 ```
 
