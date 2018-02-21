@@ -31,7 +31,9 @@ var vm = new ViewModel({
 <make-grid [(vm)]="vm" [checkboxProperty]="'id'" [showDelete]="false" [showEdit]="false" [showAction]="false" [showCheckbox]="true" [showDetails]="false" [showPrint]="false" (edit)="onEdit($event)"></make-grid>
 ```
 
-# TAG , permite utilizar uma string separa por virgulas como tags
+# TAG 
+
+## permite utilizar uma string separa por virgulas como tags
 
 ## JS
 ```
