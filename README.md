@@ -69,6 +69,52 @@ import { TagInputModule } from 'ngx-chips';
 ## multiselect-funnel
 ## componente que permite fazer uma pré seleção de itens de uma lista , seleciona-los e separa-los em uma segunda lista.
 
+## C# API Core
+```
+
+
+        [HttpGet]
+        public async Task<IActionResult> Get([FromQuery]DescricaoComponenteFilter filters)
+        {
+            var result = new HttpResult<dynamic>(this._logger);
+            try
+            {
+                if (filters.FilterBehavior == FilterBehavior.GetDataItem)
+                {
+                    var searchResult = await this._rep.GetDataItem(filters);
+                    return result.ReturnCustomResponse(searchResult, filters);
+                }
+
+                if (filters.FilterBehavior == FilterBehavior.GetDataCustom)
+                {
+                    var searchResult = await this._rep.GetDataCustom(filters);
+                    return result.ReturnCustomResponse(searchResult, filters);
+                }
+
+                if (filters.FilterBehavior == FilterBehavior.GetDataListCustom)
+                {
+                    var searchResult = await this._rep.GetDataListCustom(filters);
+                    return result.ReturnCustomResponse(searchResult, filters);
+                }
+				
+				if (filters.FilterBehavior == FilterBehavior.Export)
+                {
+					var searchResult = await this._rep.GetDataListCustom(filters);
+                    var export = new ExportExcelCustom<dynamic>(filters);
+                    var file = export.ExportFile(this.Response, searchResult, "DescricaoComponente", this._env.RootPath);
+                    return File(file, export.ContentTypeExcel(), export.GetFileName());
+                }
+
+                throw new InvalidOperationException("invalid FilterBehavior");
+
+            }
+            catch (Exception ex)
+            {
+                return result.ReturnCustomException(ex,"Seed - DescricaoComponente", filters, new ErrorMapCustom());
+            }
+        }
+
+```
 ## C# API 4.5
 ```
 	[ActionName("GetDataItem")]
