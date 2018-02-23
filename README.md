@@ -72,7 +72,7 @@ import { TagInputModule } from 'ngx-chips';
 ## C# API 4.5
 ```
 	[ActionName("GetDataItem")]
-        public async Task<HttpResponseMessage> GetDataItem([FromUri]PC_BannerFilter filters)
+        public async Task<HttpResponseMessage> GetDataItem([FromUri]sampleTypeFilter filters)
         {
             var result = new HttpResult<object>();
 
