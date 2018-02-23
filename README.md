@@ -108,11 +108,11 @@ collectionSampleType : [
 ```
 ## HTML
 
-- [dataitem]="'SampleType'" -- Nome do Recurso na API (Controller com Metodod getDataItem Implementado)
-- [ctrlName]="'collectionSampleType'" -- Nome da propriedade da vm onde sera adicionado os dados a vm sera a view model que sera enviada no POSt
-- [vm]="vm" -- model da tela que console o componete e que sera usada para o post
-- [ctrlNameItem]="'typeId'" -- nome do campo do item da collection collectionSampleType
-- [fieldFilterName]="'name'" -- Campo usado para fazer o filtro do itens
+- [dataitem]="'SampleType'" -- Nome do Recurso na API (Controller com Metodod getDataItem Implementado).
+- [ctrlName]="'collectionSampleType'" -- Nome da propriedade da vm onde sera adicionado os dados selecionados.
+- [vm]="vm" -- model da tela que console o componete e que sera usada para o post.
+- [ctrlNameItem]="'typeId'" -- nome do campo do item da collection collectionSampleType.
+- [fieldFilterName]="'name'" -- Campo usado para fazer o filtro do itens.
 
 ```
 <multiselect-funnel [dataitem]="'SampleType'" [ctrlName]="'collectionSampleType'" [vm]="vm" [ctrlNameItem]="'typeId'" [fieldFilterName]="'name'"></multiselect-funnel>
