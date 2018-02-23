@@ -66,3 +66,54 @@ import { TagInputModule } from 'ngx-chips';
 })
 ```
 
+## multiselect-funnel
+## componente que permite fazer uma pré seleção de itens de uma lista , selecionanlos e separalos em uma seunda lista.
+
+## C# API 4.5
+```
+[ActionName("GetDetails")]
+public async Task<HttpResponseMessage> GetDetails([FromUri]DescricaoComponenteDto model)
+{
+	try
+	{
+
+		var token = HelperAuth.GetHeaderToken();
+		this.app = new DescricaoComponenteApp(token);
+		var searchResult = await this.app.GetDetails(model);
+		result.Warnings = await this.app.GetDomainWarning();
+		result.Success(searchResult);
+		return Request.CreateResponse(result.StatusCode, result);
+
+	}
+	catch (Exception ex)
+	{
+		result.ReturnCustomException(ex, model);
+		return Request.CreateResponse(result.StatusCode, result);
+	}
+
+}
+
+```
+## JS
+```
+var vm = {
+others: "",
+collectionSampleType : [
+		{typeId : 1},
+		{typeId : 2}
+	]
+}
+```
+## HTML
+
+- [dataitem]="'SampleType'" -- Nome do Recurso na API (Controller com Metodod getDataItem Implementado)
+- [ctrlName]="'collectionSampleType'" -- Nome da propriedade da vm onde sera adicionado os dados a vm sera a view model que sera enviada no POSt
+- [vm]="vm" -- model da tela que console o componete e que sera usada para o post
+- [ctrlNameItem]="'typeId'" -- nome do campo do item da collection collectionSampleType
+- [fieldFilterName]="'name'" -- Campo usado para fazer o filtro do itens
+
+```
+<multiselect-funnel [dataitem]="'SampleType'" [ctrlName]="'collectionSampleType'" [vm]="vm" [ctrlNameItem]="'typeId'" [fieldFilterName]="'name'"></multiselect-funnel>
+```
+
+
