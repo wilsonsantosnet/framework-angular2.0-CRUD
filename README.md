@@ -33,7 +33,7 @@ var vm = new ViewModel({
 
 # TAG 
 
-## permite utilizar uma string separada por virgulas como tags
+## Permite utilizar uma string separada por virgulas como tags
 
 ## JS
 ```
@@ -67,12 +67,10 @@ import { TagInputModule } from 'ngx-chips';
 ```
 
 ## multiselect-funnel
-## componente que permite fazer uma pré seleção de itens de uma lista , seleciona-los e separa-los em uma segunda lista.
+## Componente que permite fazer uma pré seleção de itens de uma lista , seleciona-los e separa-los em uma segunda lista.
 
-## C# API Core (API MORE)
+## C# API Core (CONTROLLER MORE)
 ```
-
-
         [HttpGet]
         public async Task<IActionResult> Get([FromQuery]DescricaoComponenteFilter filters)
         {
@@ -95,7 +93,7 @@ import { TagInputModule } from 'ngx-chips';
         }
 
 ```
-## C# API 4.5
+## C# API 4.5 (CONTROLLER PRINCIPAL)
 ```
 	[ActionName("GetDataItem")]
         public async Task<HttpResponseMessage> GetDataItem([FromUri]sampleTypeFilter filters)
