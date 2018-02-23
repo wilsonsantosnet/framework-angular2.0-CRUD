@@ -69,7 +69,7 @@ import { TagInputModule } from 'ngx-chips';
 ## multiselect-funnel
 ## componente que permite fazer uma pré seleção de itens de uma lista , seleciona-los e separa-los em uma segunda lista.
 
-## C# API Core
+## C# API Core (API MORE)
 ```
 
 
@@ -83,26 +83,6 @@ import { TagInputModule } from 'ngx-chips';
                 {
                     var searchResult = await this._rep.GetDataItem(filters);
                     return result.ReturnCustomResponse(searchResult, filters);
-                }
-
-                if (filters.FilterBehavior == FilterBehavior.GetDataCustom)
-                {
-                    var searchResult = await this._rep.GetDataCustom(filters);
-                    return result.ReturnCustomResponse(searchResult, filters);
-                }
-
-                if (filters.FilterBehavior == FilterBehavior.GetDataListCustom)
-                {
-                    var searchResult = await this._rep.GetDataListCustom(filters);
-                    return result.ReturnCustomResponse(searchResult, filters);
-                }
-				
-				if (filters.FilterBehavior == FilterBehavior.Export)
-                {
-					var searchResult = await this._rep.GetDataListCustom(filters);
-                    var export = new ExportExcelCustom<dynamic>(filters);
-                    var file = export.ExportFile(this.Response, searchResult, "DescricaoComponente", this._env.RootPath);
-                    return File(file, export.ContentTypeExcel(), export.GetFileName());
                 }
 
                 throw new InvalidOperationException("invalid FilterBehavior");
