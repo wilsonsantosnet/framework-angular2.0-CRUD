@@ -67,31 +67,33 @@ import { TagInputModule } from 'ngx-chips';
 ```
 
 ## multiselect-funnel
-## componente que permite fazer uma pré seleção de itens de uma lista , selecionanlos e separalos em uma seunda lista.
+## componente que permite fazer uma pré seleção de itens de uma lista , seleciona-los e separa-los em uma segunda lista.
 
 ## C# API 4.5
 ```
-[ActionName("GetDetails")]
-public async Task<HttpResponseMessage> GetDetails([FromUri]DescricaoComponenteDto model)
-{
-	try
-	{
+	[ActionName("GetDataItem")]
+        public async Task<HttpResponseMessage> GetDataItem([FromUri]PC_BannerFilter filters)
+        {
+            var result = new HttpResult<object>();
 
-		var token = HelperAuth.GetHeaderToken();
-		this.app = new DescricaoComponenteApp(token);
-		var searchResult = await this.app.GetDetails(model);
-		result.Warnings = await this.app.GetDomainWarning();
-		result.Success(searchResult);
-		return Request.CreateResponse(result.StatusCode, result);
+            try
+            {
+                var token = HelperAuth.GetHeaderToken();
+                this.app = new PC_BannerApp(token);
+                var data = await this.app.GetDataItem(filters);
+                this.app.Dispose();
+                result.Warnings = await this.app.GetDomainWarning(filters);
+                result.Success(data);
+                return Request.CreateResponse(result.StatusCode, result);
 
-	}
-	catch (Exception ex)
-	{
-		result.ReturnCustomException(ex, model);
-		return Request.CreateResponse(result.StatusCode, result);
-	}
+            }
+            catch (Exception ex)
+            {
+                result.ReturnCustomException(ex, filters);
+                return Request.CreateResponse(result.StatusCode, result);
+            }
 
-}
+        }
 
 ```
 ## JS
