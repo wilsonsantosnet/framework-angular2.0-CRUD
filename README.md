@@ -165,7 +165,7 @@ collectionSampleType : [
 ### upload
 
 
-##html
+## HTML
 
 - [ctrlName]="'foto'" -- Nome da propriedade da vm onde sera adicionado o nome do arquivo.
 - [vm]="vm" -- model da tela que consome o componete e que sera usada para o post.
@@ -176,7 +176,7 @@ collectionSampleType : [
 <upload-custom [(vm)]='vm' [ctrlName]='"foto"' [label]='vm.infos.foto.label' [folder]='"sample"'></upload-custom>
 ```
 
-##Gerador
+## GERADOR
 ```
 TableInfo = new UniqueListTableInfo
 {
