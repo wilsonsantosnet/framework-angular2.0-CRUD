@@ -66,6 +66,26 @@ import { TagInputModule } from 'ngx-chips';
 })
 ```
 
+### GERADOR
+
+```
+TableInfo = new UniqueListTableInfo
+                {
+
+                   new TableInfo { TableName = "Sample", MakeDomain = true, MakeApp = true, MakeDto = true, MakeCrud = true, MakeApi= true, MakeSummary = true , MakeFront= true , FieldsConfig = new List<FieldConfig> {
+
+                       new FieldConfig {
+                           Name ="tags",
+                           Tags = true
+                       }
+                   } },
+                   new TableInfo { TableName = "SampleType", MakeDomain = true, MakeApp = true, MakeDto = true, MakeCrud = true, MakeApi= true, MakeSummary = true , MakeFront= true},
+                   new TableInfo { TableName = "ManySampleType", MakeDomain = true, MakeApp = true, MakeDto = true, MakeCrud = true, MakeApi= true, MakeSummary = true , MakeFront= true}
+
+                }
+
+```
+
 ## multiselect-funnel
 ## Componente que permite fazer uma pré seleção de itens de uma lista , seleciona-los e separa-los em uma segunda lista.
 
