@@ -154,7 +154,7 @@ collectionSampleType : [
 
 - [dataitem]="'SampleType'" -- Nome do Recurso na API (Controller com Metodod getDataItem Implementado).
 - [ctrlName]="'collectionSampleType'" -- Nome da propriedade da vm onde sera adicionado os dados selecionados.
-- [vm]="vm" -- model da tela que console o componete e que sera usada para o post.
+- [vm]="vm" -- model da tela que consome o componete e que sera usada para o post.
 - [ctrlNameItem]="'typeId'" -- nome do campo do item da collection collectionSampleType.
 - [fieldFilterName]="'name'" -- Campo usado para fazer o filtro do itens.
 
@@ -162,4 +162,36 @@ collectionSampleType : [
 <multiselect-funnel [dataitem]="'SampleType'" [ctrlName]="'collectionSampleType'" [vm]="vm" [ctrlNameItem]="'typeId'" [fieldFilterName]="'name'"></multiselect-funnel>
 ```
 
+### upload
+
+
+##html
+
+- [ctrlName]="'foto'" -- Nome da propriedade da vm onde sera adicionado o nome do arquivo.
+- [vm]="vm" -- model da tela que consome o componete e que sera usada para o post.
+- [label]="vm.infos.foto.label" -- label
+- [folder]="'sample'" -- diretório onde a o arquivo sera upado
+
+```
+<upload-custom [(vm)]='vm' [ctrlName]='"foto"' [label]='vm.infos.foto.label' [folder]='"sample"'></upload-custom>
+```
+
+##Gerador
+```
+TableInfo = new UniqueListTableInfo
+{
+
+                   new TableInfo { TableName = "Sample", MakeDomain = true, MakeApp = true, MakeDto = true, MakeCrud = true, MakeApi= true, MakeSummary = true , MakeFront= true  },
+                   new TableInfo { TableName = "SampleType", MakeDomain = true, MakeApp = true, MakeDto = true, MakeCrud = true, MakeApi= true, MakeSummary = true , MakeFront= true,FieldsConfig = new List<FieldConfig> {
+
+                       new FieldConfig {
+                       Name ="foto",
+                       Upload = true,
+                       List = false,
+                       }
+                   } },
+                   new TableInfo { TableName = "ManySampleType", MakeDomain = true, MakeApp = true, MakeDto = true, MakeCrud = true, MakeApi= true, MakeSummary = true , MakeFront= true}
+}
+		
+```
 
