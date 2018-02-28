@@ -84,7 +84,7 @@ export class BindCustomComponent implements OnInit, OnChanges {
         }
         else if (this.format.toLocaleLowerCase() === 'html') {
             this.tag = "inner";
-            this.value = this.sanitizer.sanitize(SecurityContext.HTML, this.model);
+            this.value = this.sanitizer.bypassSecurityTrustHtml(this.model)
         }
         else if (this.format.toLocaleLowerCase() === 'tag') {
             if (this.model) {
@@ -95,7 +95,7 @@ export class BindCustomComponent implements OnInit, OnChanges {
                 }
                 content += "</ul>";
                 this.tag = "inner";
-                this.value = this.sanitizer.sanitize(SecurityContext.HTML, content);
+                this.value = this.sanitizer.bypassSecurityTrustHtml(content)
             }
         }
         else if (this.format.toLocaleLowerCase() === 'mask' && this.model) {
