@@ -1,4 +1,4 @@
-﻿import { Http, RequestOptions, Response, Headers, URLSearchParams, ResponseContentType } from '@angular/http';
+import { Http, RequestOptions, Response, Headers, URLSearchParams, ResponseContentType } from '@angular/http';
 import { Router } from '@angular/router';
 import { Inject, Injectable, OnInit } from '@angular/core';
 import { Observable, Observer } from 'rxjs/Rx';
@@ -31,7 +31,7 @@ export class ApiService<T> {
         return this.getBase(this.makeBaseUrl(), filters);
     }
 
-    public uploadCustom(formData: FormData, folder: string, url?: string): Observable<T> {
+    public uploadCustom(formData: FormData, folder: string, url?: string): Observable<any> {
 
         let _url = url || this.makeBaseUrl();
         let _count = 0;
@@ -65,7 +65,7 @@ export class ApiService<T> {
         return this.uploadCustom(formData, folder, url);
     }
 
-    public deleteUpload(folder: string, fileName: string): Observable<T> {
+    public deleteUpload(folder: string, fileName: string): Observable<any> {
 
 
         let url = this.makeUrlDeleteUpload(folder, fileName);
@@ -87,7 +87,7 @@ export class ApiService<T> {
             });
     }
 
-    public post(data: any, messageCustom?: any): Observable<T> {
+    public post(data: any, messageCustom?: any): Observable<any> {
 
         let url = this.makeBaseUrl();
         let _count = 0;
@@ -109,7 +109,7 @@ export class ApiService<T> {
             });
     }
 
-    public postMany(data: any, messageCustom?: any): Observable<T> {
+    public postMany(data: any, messageCustom?: any): Observable<any> {
 
         var url = this.makeUrlMore();
         let _count = 0;
@@ -131,7 +131,7 @@ export class ApiService<T> {
             });
     }
 
-    public delete(data: any): Observable<T> {
+    public delete(data: any): Observable<any> {
 
         let url = this.makeBaseUrl();
         let _count = 0;
@@ -155,7 +155,7 @@ export class ApiService<T> {
             });
     }
 
-    public put(data: any): Observable<T> {
+    public put(data: any): Observable<any> {
 
         let url = this.makeBaseUrl();
         let _count = 0;
@@ -177,7 +177,7 @@ export class ApiService<T> {
             });
     }
 
-    public export(filters?: any): Observable<T> {
+    public export(filters?: any): Observable<any> {
 
         if (filters == null) filters = {};
         filters.filterBehavior = 'Export';
@@ -201,7 +201,6 @@ export class ApiService<T> {
                 this.loading(this.getResource(), false, _count);
             });
     }
-
 
     public getDataitem(filters?: any): Observable<T> {
 
@@ -308,7 +307,7 @@ export class ApiService<T> {
         return this._resource;
     }
 
-    private getMethodCustom(method: string, filters?: any): Observable<any> {
+    private getMethodCustom(method: string, filters?: any): Observable<T> {
 
         if (filters == null)
             filters = {};
@@ -321,7 +320,7 @@ export class ApiService<T> {
 
     }
 
-    private getBase(url: string, filters?: any, onlyDataResult?: boolean): Observable<T> {
+    private getBase(url: string, filters?: any, onlyDataResult?: boolean): Observable<any> {
 
         if (filters != null && filters.id != null) {
             url += '/' + filters.id;
@@ -530,7 +529,7 @@ export class ApiService<T> {
         if (this._enableLoading || value == false) {
             setTimeout(() => {
                 GlobalService.getOperationRequestingEmitter().emit(new OperationRequest(resourceName, count, value));
-            },150)
+            }, 150)
         }
     }
 
