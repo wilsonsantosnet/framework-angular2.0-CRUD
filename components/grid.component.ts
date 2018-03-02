@@ -6,12 +6,13 @@ import { ViewModel } from '../model/viewmodel';
 @Component({
     selector: 'make-grid',
     template: `
+    
     <div class="gc-table-responsive">
-        <table class="table table-bordered table-striped table-app">
+        <table class="{{gridCss}}">
           <thead class="thead-inverse">
             <tr>
 
-              <th width="175" class="text-center" *ngIf="showAction  && ActionLeft">Ações</th>
+              <th width="175" class="text-center" *ngIf="showAction  && actionLeft">Ações</th>
 
               <th *ngFor="let grid of vm.grid">
                 <span class="table-sort">
@@ -20,7 +21,7 @@ import { ViewModel } from '../model/viewmodel';
                 </span>
               </th>
 
-              <th width="175" class="text-center" *ngIf="showAction  && !ActionLeft">Ações</th>
+              <th width="175" class="text-center" *ngIf="showAction  && !actionLeft">Ações</th>
 
               <th width="65" class="text-center text-nowrap" *ngIf="showCheckbox">
                 <input type="checkbox" class="grid-chk" [checked]='_isCheckedAll' (click)='onCheckAll($event)' />
@@ -30,7 +31,7 @@ import { ViewModel } from '../model/viewmodel';
           <tbody>
             <tr *ngFor="let item of vm.filterResult">
 
-              <td class="text-center text-nowrap" *ngIf="showAction && ActionLeft" >
+              <td class="text-center text-nowrap" *ngIf="showAction && actionLeft" >
                 <button *ngFor="let btn of customButton" (click)="btn.click(item)" placement="top" title="btn.tooltip" class="btn btn-sm {{ btn.class }}">
                   <i class="fa {{ btn.icon }}"></i>
                 </button>
@@ -56,7 +57,7 @@ import { ViewModel } from '../model/viewmodel';
                              [aux]="grid.info.aux"></bind-custom>
               </td>
 
-              <td class="text-center text-nowrap" *ngIf="showAction && !ActionLeft">
+              <td class="text-center text-nowrap" *ngIf="showAction && !actionLeft">
                 <button *ngFor="let btn of customButton" (click)="btn.click(item)" placement="top" title="btn.tooltip" class="btn btn-sm {{ btn.class }}">
                   <i class="fa {{ btn.icon }}"></i>
                 </button>
@@ -92,7 +93,9 @@ export class MakeGridComponent implements OnChanges {
     @Input() showDelete: boolean ;
     @Input() showCheckbox: boolean;
     @Input() showAction: boolean;
-    @Input() ActionLeft: boolean;
+    @Input() actionLeft: boolean;
+    @Input() gridCss: string;
+    
 
     // [{ class: 'btn-success', tooltip: 'Configuracao', icon: 'fa-cog', click: (model) => { this.router.navigate(['/estagio/configuracao', model.estagioId]); } }]
     @Input() customButton: any = [];
@@ -128,7 +131,8 @@ export class MakeGridComponent implements OnChanges {
         this.showDelete = true;
         this.showCheckbox = false;
         this.showAction = true;
-        this.ActionLeft = GlobalService.getGlobalSettings().actionLeft;
+        this.actionLeft = GlobalService.getGlobalSettings().actionLeft;
+        this.gridCss = "table table-bordered table-striped table-app";
     }
 
     bindFields(item: any, key: any) {

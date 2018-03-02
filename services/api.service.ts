@@ -1,17 +1,17 @@
-import { Http, RequestOptions, Response, Headers, URLSearchParams, ResponseContentType } from '@angular/http';
+﻿import { Http, RequestOptions, Response, Headers, URLSearchParams, ResponseContentType } from '@angular/http';
 import { Router } from '@angular/router';
 import { Inject, Injectable, OnInit } from '@angular/core';
 import { Observable, Observer } from 'rxjs/Rx';
 
 import { ECacheType } from '../type-cache.enum';
-import { GlobalService } from '../../global.service';
+import { GlobalService, OperationRequest } from '../../global.service';
 import { CacheService } from '../services/cache.service';
 import { NotificationsService } from 'angular2-notifications';
 
 @Injectable()
 export class ApiService<T> {
 
-    protected _resource: string;
+    private _resource: string;
     private _enableNotifification: boolean;
     private _enableLoading: boolean;
     private _apiDefault: string;
@@ -34,13 +34,15 @@ export class ApiService<T> {
     public uploadCustom(formData: FormData, folder: string, url?: string): Observable<T> {
 
         let _url = url || this.makeBaseUrl();
+        let _count = 0;
 
-        this.loading(_url, true);
+        this.loading(this.getResource(), true, _count);
 
         return this.http.post(_url,
             formData,
             this.requestOptions(false))
             .map(res => {
+                _count = this.countReponse(res);
                 this.notification(res);
                 return this.successResult(res);
             })
@@ -48,7 +50,7 @@ export class ApiService<T> {
                 return this.errorResult(error);
             })
             .finally(() => {
-                this.loading(_url, false);
+                this.loading(this.getResource(), false, _count);
             });
     }
 
@@ -67,11 +69,13 @@ export class ApiService<T> {
 
 
         let url = this.makeUrlDeleteUpload(folder, fileName);
-        this.loading(url, true);
+        let _count = 0;
+        this.loading(this.getResource(), true, _count);
 
         return this.http.delete(url,
             this.requestOptions())
             .map(res => {
+                _count = this.countReponse(res);
                 this.notification(res);
                 return this.successResult(res);
             })
@@ -79,19 +83,21 @@ export class ApiService<T> {
                 return this.errorResult(error);
             })
             .finally(() => {
-                this.loading(url, false);
+                this.loading(this.getResource(), false, _count);
             });
     }
 
     public post(data: any, messageCustom?: any): Observable<T> {
 
         let url = this.makeBaseUrl();
-        this.loading(url, true);
+        let _count = 0;
+        this.loading(this.getResource(), true, _count);
 
-        return this.http.post(this.makeBaseUrl(),
+        return this.http.post(url,
             JSON.stringify(data),
             this.requestOptions())
             .map(res => {
+                _count = this.countReponse(res);
                 this.notification(res, messageCustom);
                 return this.successResult(res);
             })
@@ -99,20 +105,21 @@ export class ApiService<T> {
                 return this.errorResult(error);
             })
             .finally(() => {
-                this.loading(url, false);
+                this.loading(this.getResource(), false, _count);
             });
     }
 
     public postMany(data: any, messageCustom?: any): Observable<T> {
 
         var url = this.makeUrlMore();
-
-        this.loading(url, true);
+        let _count = 0;
+        this.loading(this.getResource(), true, _count);
 
         return this.http.post(url,
             JSON.stringify(data),
             this.requestOptions())
             .map(res => {
+                _count = this.countReponse(res);
                 this.notification(res, messageCustom);
                 return this.successResult(res);
             })
@@ -120,14 +127,15 @@ export class ApiService<T> {
                 return this.errorResult(error);
             })
             .finally(() => {
-                this.loading(url, false);
+                this.loading(url, false, _count);
             });
     }
 
     public delete(data: any): Observable<T> {
 
         let url = this.makeBaseUrl();
-        this.loading(url, true);
+        let _count = 0;
+        this.loading(this.getResource(), true, _count);
 
         var ro = this.requestOptions().merge(new RequestOptions({
             search: this.makeSearchParams(data)
@@ -135,6 +143,7 @@ export class ApiService<T> {
 
         return this.http.delete(url, ro)
             .map(res => {
+                _count = this.countReponse(res);
                 this.notification(res);
                 return this.successResult(res);
             })
@@ -142,19 +151,21 @@ export class ApiService<T> {
                 return this.errorResult(error);
             })
             .finally(() => {
-                this.loading(url, false);
+                this.loading(url, false, _count);
             });
     }
 
     public put(data: any): Observable<T> {
 
         let url = this.makeBaseUrl();
-        this.loading(url, true);
+        let _count = 0;
+        this.loading(this.getResource(), true, _count);
 
         return this.http.put(url,
             JSON.stringify(data),
             this.requestOptions())
             .map(res => {
+                _count = this.countReponse(res);
                 this.notification(res);
                 return this.successResult(res);
             })
@@ -162,7 +173,7 @@ export class ApiService<T> {
                 return this.errorResult(error);
             })
             .finally(() => {
-                this.loading(url, false);
+                this.loading(url, false, _count);
             });
     }
 
@@ -172,20 +183,22 @@ export class ApiService<T> {
         filters.filterBehavior = 'Export';
         var url = this.makeUrlMore();
 
-        this.loading(url, true);
+        let _count = 0;
+        this.loading(this.getResource(), true, _count);
 
         return this.http.get(url,
             this.requestOptionsBlob().merge(new RequestOptions({
                 search: this.makeSearchParams(filters)
             })))
             .map(res => {
+                _count = this.countReponse(res);
                 return res;
             })
             .catch(error => {
                 return this.errorResult(error);
             })
             .finally(() => {
-                this.loading(url, false);
+                this.loading(this.getResource(), false, _count);
             });
     }
 
@@ -193,7 +206,10 @@ export class ApiService<T> {
     public getDataitem(filters?: any): Observable<T> {
 
         this._enableLoading = false;
-        let result = this.getMethodCustom('GetDataItem', filters);
+        let result = this.getMethodCustom('GetDataItem', filters).map(res => {
+            this._enableLoading = true
+            return res;
+        });
         return result;
     }
 
@@ -225,9 +241,9 @@ export class ApiService<T> {
     public getUrlConfig(more: boolean, filterFieldName?: string, filterBehavior?: string, filters?: any, processResultsCustom?: any) {
 
         var urlMore = this.makeUrlMore();
-        var urlBase = this.makeBaseUrl();
+        var urlMethod = this.makeGetCustomMethodBaseUrl(filterBehavior);
         var authConfig = this.defaultHeaders();
-        var url = more ? urlMore : urlBase;
+        var url = this._enabledOldBack ? urlMethod : urlMore;
         var processResultsDefault = function (result: any) {
             let dataList = result.dataList.map((item: any) => {
                 let data = {
@@ -263,8 +279,9 @@ export class ApiService<T> {
 
 
 
-    public enableNotification(enable: boolean) {
+    public enableNotification(enable: boolean): ApiService<T> {
         this._enableNotifification = enable;
+        return this;
     }
 
     public enableLoading(enable: boolean) {
@@ -309,21 +326,22 @@ export class ApiService<T> {
         if (filters != null && filters.id != null) {
             url += '/' + filters.id;
         }
-
-        this.loading(url, true);
+        let _count = 0;
+        this.loading(this.getResource(), true, _count);
 
         return this.http.get(url,
             this.requestOptions().merge(new RequestOptions({
                 search: this.makeSearchParams(filters)
             })))
             .map(res => {
+                _count = this.countReponse(res);
                 return this.successResult(res);
             })
             .catch(error => {
                 return this.errorResult(error);
             })
             .finally(() => {
-                this.loading(url, false);
+                this.loading(this.getResource(), false, _count);
             });
     }
 
@@ -366,16 +384,8 @@ export class ApiService<T> {
     }
 
     private HeaderContentType() {
-
-        if (this._enabledOldBack) {
-            return {
-                'Content-Type': 'application/json',
-            }
-        }
-        else {
-            return {
-                'Content-Type': 'application/json',
-            }
+        return {
+            'Content-Type': 'application/json',
         }
     }
 
@@ -438,9 +448,10 @@ export class ApiService<T> {
 
     private successResult(response: Response): Observable<T> {
         let _response = response.json();
-        this._enableLoading = true;
         return _response;
     }
+
+
 
     private errorResult(response: Response): Observable<T> {
 
@@ -515,8 +526,15 @@ export class ApiService<T> {
         }
     }
 
-    private loading(url: string, value: boolean) {
-        if (this._enableLoading || value == false)
-            GlobalService.getOperationRequestingEmitter().emit(value);
+    private loading(resourceName: string, value: boolean, count: number) {
+        if (this._enableLoading || value == false) {
+            setTimeout(() => {
+                GlobalService.getOperationRequestingEmitter().emit(new OperationRequest(resourceName, count, value));
+            },150)
+        }
+    }
+
+    private countReponse(res: any) {
+        return res.json().dataList ? res.json().dataList.length : res.json().data ? 1 : 0;
     }
 }

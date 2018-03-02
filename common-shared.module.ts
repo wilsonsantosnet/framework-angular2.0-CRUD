@@ -29,6 +29,7 @@ import { CallerDiretive } from '../common/directives/caller.directive';
 import { NestableDirective } from '../common/directives/nestable.directive';
 import { MultiSelectFunnelComponent } from '../common/components/multiselect-funnel.component';
 import { CepDirective } from "../common/directives/cep.directive";
+import { LoadingOnSideComponent } from '../common/components/loading-on-side.component';
 
 @NgModule({
     imports: [
@@ -62,7 +63,8 @@ import { CepDirective } from "../common/directives/cep.directive";
         MaskFormatPipe,
         TagCustomComponent,
         CallerDiretive,
-        NestableDirective,
+        NestableDirective, 
+        LoadingOnSideComponent,
     ],
     providers: [
     ],
@@ -88,7 +90,8 @@ import { CepDirective } from "../common/directives/cep.directive";
         NestableDirective,
         TextMaskModule,
         TagInputModule,
-        TabsModule
+        TabsModule,
+        LoadingOnSideComponent
 	]
 })
 export class CommonSharedModule {

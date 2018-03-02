@@ -1,5 +1,5 @@
 ﻿import { Component, OnInit, OnDestroy, EventEmitter } from '@angular/core';
-import { GlobalService } from '../../global.service';
+import { GlobalService, OperationRequest } from '../../global.service';
 
 @Component({
     selector: 'loading',
@@ -26,23 +26,24 @@ export class LoadingComponent implements OnInit, OnDestroy  {
 
 
     requesting: boolean;
-    _operationRequesting : EventEmitter<boolean>;
+    operationRequesting: EventEmitter<OperationRequest>;
 
     ngOnInit() {
 
-        this._operationRequesting = GlobalService.getOperationRequestingEmitter().subscribe((_requesting: boolean) => {
-            this.requesting = _requesting;
+        this.operationRequesting = GlobalService.getOperationRequestingEmitter().subscribe((_requesting: OperationRequest) => {
+            this.requesting = _requesting.value;
+            //console.log("_requesting", _requesting)
         })
     }
 
 
     constructor() {
-        this._operationRequesting = new EventEmitter<boolean>();
+        this.operationRequesting = new EventEmitter<OperationRequest>();
     }
 
     ngOnDestroy() {
-        if (this._operationRequesting)
-            this._operationRequesting.unsubscribe();
+        if (this.operationRequesting)
+            this.operationRequesting.unsubscribe();
     }
 
 }
