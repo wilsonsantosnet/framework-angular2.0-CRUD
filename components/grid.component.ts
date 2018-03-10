@@ -32,7 +32,7 @@ import { ViewModel } from '../model/viewmodel';
             <tr *ngFor="let item of vm.filterResult">
 
               <td class="text-center text-nowrap" *ngIf="showAction && actionLeft" >
-                <button *ngFor="let btn of customButton" (click)="btn.click(item)" placement="top" title="btn.tooltip" class="btn btn-sm {{ btn.class }}">
+                <button *ngFor="let btn of customButton" (click)="btn.click(item)" placement="top" title="{{btn.tooltip}}" class="btn btn-sm {{ btn.class }}">
                   <i class="fa {{ btn.icon }}"></i>
                 </button>
                 <button (click)="onEdit($event, item)" *ngIf="showEdit" placement="top" title="Editar" class="btn btn-sm btn-primary">
