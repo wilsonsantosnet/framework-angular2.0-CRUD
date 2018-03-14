@@ -199,7 +199,19 @@ export class ServiceBase {
             hideFunction();
         });
     }
+    
+    public convertToUtc(value: any) {
 
-   
+        if (value.indexOf('T') == -1) {
+            let _valor = value;
+            var time = _valor.split('/')[2].split(' ').length > 1 ? "T" + _valor.split('/')[2].split(' ')[1] + ":00Z" : null;
+            var year = _valor.split('/')[2].split(' ')[0];
+            var month = _valor.split('/')[1];
+            var day = _valor.split('/')[0];
+            let valor = year + "-" + month + "-" + day + time
+            return valor;
+        }
+        return value;
+    }
 
 }
