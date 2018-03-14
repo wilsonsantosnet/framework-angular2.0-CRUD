@@ -135,6 +135,9 @@ export class ApiService<T> {
 
         let url = this.makeBaseUrl();
         let _count = 0;
+        if (data != null && data.id != null) {
+            url += '/' + data.id;
+        }
         this.loading(this.getResource(), true, _count);
 
         var ro = this.requestOptions().merge(new RequestOptions({
