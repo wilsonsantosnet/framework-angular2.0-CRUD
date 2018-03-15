@@ -2,6 +2,7 @@ import { Http, RequestOptions, Response, Headers, URLSearchParams, ResponseConte
 import { Router } from '@angular/router';
 import { Inject, Injectable, OnInit } from '@angular/core';
 import { Observable, Observer } from 'rxjs/Rx';
+import { QueryEncoder } from '@angular/http';
 
 import { ECacheType } from '../type-cache.enum';
 import { GlobalService, OperationRequest } from '../../global.service';
@@ -427,7 +428,7 @@ export class ApiService<T> {
     }
 
     private makeSearchParams(filters?: any): URLSearchParams {
-        const params = new URLSearchParams();
+        const params = new URLSearchParams('', new CustomQueryEncoder());
         if (filters != null) {
             for (const key in filters) {
 
@@ -538,5 +539,17 @@ export class ApiService<T> {
 
     private countReponse(res: any) {
         return res.json().dataList ? res.json().dataList.length : res.json().data ? 1 : 0;
+    }
+}
+
+export class CustomQueryEncoder extends QueryEncoder {
+
+    encodeKey(k: string): string {
+        k = super.encodeKey(k);
+        return k.replace(/\+/gi, '%2B');
+    }
+    encodeValue(v: string): string {
+        v = super.encodeKey(v);
+        return v.replace(/\+/gi, '%2B');
     }
 }
