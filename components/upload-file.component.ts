@@ -20,7 +20,8 @@ import { ViewModel } from '../model/viewmodel';
           <br>
           <a *ngIf='fileName' href='{{downloadUri}}{{folder}}/{{fileName}}' target='_blank'>{{fileNameOld}}</a>
           <br>
-          <img *ngIf='fileName' src='{{downloadUri}}{{folder}}/{{fileName}}' style='max-width:100%' />
+          <img *ngIf='fileName && isImage' src='{{downloadUri}}{{folder}}/{{fileName}}' style='max-width:100%' />
+          <img *ngIf='fileName && !isImage' src='../../../assets/img/file_icon.png' style='max-width:100%' />
           <div *ngIf='pasteArea' class='upload-component-paste-area upload-component-drop-area' id='upload-component-paste-area'>
           <p class='muted'>Arraste e solte arquivos ou cole PrintScreans de telas<p>
           </div>
@@ -46,6 +47,7 @@ export class UploadCustomComponent implements OnInit, OnDestroy {
     fileNameOld: string;
     downloadUri: string;
     fileUri: string;
+    isImage: boolean;
 
     _notificationEmitter: EventEmitter<NotificationParameters>;
 
@@ -57,6 +59,7 @@ export class UploadCustomComponent implements OnInit, OnDestroy {
         this.accept = "image/*";
         this.rename = true;
         this.pasteArea = false;
+        this.isImage = false;
         this._notificationEmitter = new EventEmitter<NotificationParameters>();
 
     }
@@ -138,8 +141,9 @@ export class UploadCustomComponent implements OnInit, OnDestroy {
         return this.uploadDefault(file, this.rename);
     }
 
-    uploadCustom(event: any, rename: any) {
-        this.onChangeUploadExternal.emit(event)
+    uploadCustom(file: File, rename: any) {
+        this.onChangeUploadExternal.emit(file)
+        this.verifyFileType(file);
         this.pasteArea = false;
         return true;
     }
@@ -149,9 +153,18 @@ export class UploadCustomComponent implements OnInit, OnDestroy {
         this.api.setResource('upload').upload(file, this.folder, rename).subscribe(result => {
             this.vm.model[this.ctrlName] = result.data[0];
             this.fileName = result.data[0]
+            this.verifyFileType(file);
             this.pasteArea = false;
         });
         return true;
+    }
+
+    verifyFileType(file: File) {
+        this.isImage = false;
+        if (file.type == "image/png") this.isImage = true;
+        if (file.type == "image/jpeg") this.isImage = true;
+        if (file.type == "image/gif") this.isImage = true;
+        console.log("verifyFileType",file.type, this.isImage);
     }
 
     onDelete() {
