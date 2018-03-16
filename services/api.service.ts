@@ -319,7 +319,7 @@ export class ApiService<T> {
         if (this._enabledOldBack)
             return this.getBase(this.makeGetCustomMethodBaseUrl(method), filters);
 
-        filters.FilterBehavior = method;
+        filters.filterBehavior = method;
         return this.getBase(this.makeUrlMore(), filters);
 
     }
