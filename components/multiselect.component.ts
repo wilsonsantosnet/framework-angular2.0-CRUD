@@ -54,6 +54,9 @@ export class MultiSelectComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
+     let numberId = Math.floor((Math.random() * 10000) + 1);
+     this.ctrlName = this.ctrlName + numberId.toString();
+    
     if (!this.disabledOnInit) {
       this.init();
       this._getInstance();
