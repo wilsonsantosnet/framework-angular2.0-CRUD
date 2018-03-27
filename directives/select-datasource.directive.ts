@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Renderer, Input, Output, OnInit, EventEmitter, OnDestroy, Optional, Self } from '@angular/core';
+import { Directive, ElementRef, Renderer, Input, Output, OnInit, OnChanges, EventEmitter, OnDestroy, Optional, Self } from '@angular/core';
 import { NgModel, FormControlName } from '@angular/forms';
 
 import { ApiService } from '../services/api.service';
@@ -29,26 +29,27 @@ export class DataSourceDirective implements OnInit, OnDestroy {
 
         this.disabledOnInit = false;
         this.enabledSelect2 = GlobalService.getGlobalSettings().enabledSelect2;
-        this.change = new EventEmitter<any>();
+        this.change = new EventEmitter<any>(); 
         this.fieldFilterName = "nome";
-        this._notificationEmitter = new EventEmitter<NotificationParameters>();
+        this._notificationEmitter = new EventEmitter<NotificationParameters>();    
 
     }
-
+   
     ngOnInit() {
 
         if (!this.disabledOnInit)
             this.datasource(this._elemetRef.nativeElement);
 
-        this._notificationEmitter = GlobalService.notification.subscribe((not: any) => {
+        this._notificationEmitter = GlobalService.notification.subscribe((not) => {
 
             if (not.event == "create" || not.event == "edit" || not.event == "init") {
                 this.init();
             }
 
             if (not.event == "change") {
-                if (not.data.dataitem == this.dataitem)
+                if (not.data.dataitem == this.dataitem) {
                     this.datasource(this._elemetRef.nativeElement, not.data.parentFilter);
+                }
             }
         });
     }
@@ -68,8 +69,8 @@ export class DataSourceDirective implements OnInit, OnDestroy {
     hasFormControl() {
         return this.controlName && this.controlName.control;
     }
-
-    private datasource(el: any, parentFilter?: any) {
+    
+    private datasource(el, parentFilter?: any) {
 
         el.options.length = 0;
         let selectedValue = null;
@@ -90,9 +91,10 @@ export class DataSourceDirective implements OnInit, OnDestroy {
 
     }
 
-    private select(el: any, selectedValue: any, parentFilter: any) {
+    private select(el, selectedValue, parentFilter) {
 
-        let filter = Object.assign(this.datafilters || {}, parentFilter || {})
+        let filter = Object.assign(this.datafilters || {}, parentFilter || {});
+
         this.api.setResource(this.dataitem, this.endpoint).getDataitem(filter).subscribe((data) => {
 
             for (var i = 0; i < data.dataList.length; i++) {
@@ -106,11 +108,11 @@ export class DataSourceDirective implements OnInit, OnDestroy {
 
     }
 
-    private select2(el: any, selectedValue: any, parentFilter: any) {
+    private select2(el, selectedValue, parentFilter) {
 
         if (selectedValue) {
 
-            let filterOne = Object.assign(this.datafilters || {}, parentFilter || {})
+            let filterOne = {};
             filterOne[el.name] = selectedValue;
 
             this.api.setResource(this.dataitem, this.endpoint).getDataitem(filterOne).subscribe((data) => {
@@ -121,7 +123,6 @@ export class DataSourceDirective implements OnInit, OnDestroy {
 
                 if (selectedValue)
                     el.value = this.accessor.value;
-
                 this.select2Config(Object.assign(this.datafilters || {}, parentFilter || {}))
             });
         }
@@ -141,7 +142,7 @@ export class DataSourceDirective implements OnInit, OnDestroy {
         }
         $(element)
             .select2(config)
-            .on("select2:select", (e: any) => {
+            .on("select2:select", (e) => {
                 let valor = $(e.currentTarget).val()
                 this.updateValue(valor, ultimoValor);
                 ultimoValor = valor;
@@ -153,7 +154,7 @@ export class DataSourceDirective implements OnInit, OnDestroy {
             });
     }
 
-    private updateValue(value: any, valueold: any) {
+    private updateValue(value, valueold) {
 
         if (this.ngModel) {
             this.ngModel.viewToModelUpdate(value);
@@ -173,7 +174,7 @@ export class DataSourceDirective implements OnInit, OnDestroy {
 
     }
 
-    private addOption(el: any, value: any, text: any) {
+    private addOption(el, value, text) {
 
         if (this.existsItem(el, value))
             return;
@@ -184,7 +185,7 @@ export class DataSourceDirective implements OnInit, OnDestroy {
         el.add(option);
     }
 
-    private existsItem(el: any, value: any) {
+    private existsItem(el, value) {
 
         let found = false;
         if (el.options) {
@@ -196,7 +197,7 @@ export class DataSourceDirective implements OnInit, OnDestroy {
         return found;
     }
 
-    private existsDefaultItem(el: any) {
+    private existsDefaultItem(el) {
 
         let found = false;
         if (el.options) {
