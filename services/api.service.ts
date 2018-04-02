@@ -311,7 +311,7 @@ export class ApiService<T> {
         return this._resource;
     }
 
-    private getMethodCustom(method: string, filters?: any): Observable<T> {
+    public getMethodCustom(method: string, filters?: any): Observable<T> {
 
         if (filters == null)
             filters = {};
