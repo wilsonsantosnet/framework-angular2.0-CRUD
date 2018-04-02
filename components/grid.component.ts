@@ -138,8 +138,8 @@ export class MakeGridComponent implements OnChanges {
     bindFields(item: any, key: any) {
         if (key.includes(".")) {
             let keys = key.split(".");
-            if (keys.length == 2) return item[keys[0]][keys[1]];
-            if (keys.length == 3) return item[keys[0]][keys[1]][keys[2]];
+            if (keys.length == 2) return item[keys[0]] ? item[keys[0]][keys[1]] : "--";
+            if (keys.length == 3) return item[keys[0]] && item[keys[0]][keys[1]] ? item[keys[0]][keys[1]][keys[2]] : "--";
         }
         return item[key];
     }
