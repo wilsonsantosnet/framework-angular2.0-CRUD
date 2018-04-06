@@ -138,13 +138,16 @@ export class ServiceBase {
         return value;
     }
 
-    public mergeInfoFields(defaultInfosFields: any, moreInfosFields: any) {
+    public mergeInfoFields(defaultInfosFields, moreInfosFields, orderByMore = false) {
 
         let dataArrayDefault = this.objectToArrayWithKeys(defaultInfosFields);
+        let objMerged = {};
+
         if (moreInfosFields) {
             let dataArrayMore = this.objectToArrayWithKeys(moreInfosFields);
 
             dataArrayMore.forEach((_elemetMore) => {
+
                 dataArrayDefault = dataArrayDefault.map((_elemetDefault) => {
                     if (_elemetDefault.key == _elemetMore.key)
                         return _elemetMore;
@@ -160,19 +163,19 @@ export class ServiceBase {
                 if (dataArrayDefaultExists.length == 0)
                     dataArrayDefault.push(_elemetMore)
             })
+
+            if (orderByMore) {
+                dataArrayMore.forEach((item) => {
+                    objMerged[item.key] = item.infos;
+                });
+            }
         }
 
-        let objMerged : any = {};
-        if (moreInfosFields) {
+        if (!orderByMore) {
             dataArrayDefault.forEach((item) => {
                 objMerged[item.key] = item.infos;
             });
-        } else {
-            dataArrayDefault.forEach((item) => {
-                objMerged[item.key] = item.infos;
-            });
         }
-
 
         return objMerged;
     }
