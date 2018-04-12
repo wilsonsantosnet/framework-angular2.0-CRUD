@@ -178,10 +178,14 @@ export class MultiSelectComponent implements OnInit, OnDestroy {
         }
 
         setTimeout(() => {
-            $("#" + this._ctrlNameNumberId).select2(config).on('select2:select select2:unselect', (e) => {
+            $("#" + this._ctrlNameNumberId).select2(config).on('select2:select', (e) => {
                 var selcteds = $("#" + this._ctrlNameNumberId).val();
                 this._modelOutput = [];
                 this.addItems(selcteds);
+            }).on('select2:unselect', (e) => {
+                var selcteds = $("#" + this._ctrlNameNumberId).val();
+                this.vm.model[this.ctrlName] = null;
+                this.vm.modelFilter[this.ctrlName] = null;
             });
         }, 100);
 
