@@ -205,6 +205,10 @@ export class AuthService {
             claims: JSON.parse(currentUser)
         }
     }
+    
+    public IsAuthApiVerify() {
+        return this.api.setResource('CurrentUser/isAuth').get();
+    }
 
     public isAuthenticated(): boolean {
         const token = CacheService.get(this._nameToken, this._cacheType);
