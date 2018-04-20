@@ -8,7 +8,7 @@ declare var $: any;
 
 @Component({
     selector: 'multiselect',
-    template: ` <section *ngIf="!enabledSelect2" class="col-md-12 section-scroll" >
+    template: `<section *ngIf="!enabledSelect2" class="col-md-12 section-scroll">
     <div class='checkbox' *ngFor="let option of _datasource">
       <label>
           <input type='checkbox' [(ngModel)]='option.checked' name='{{ctrlNameItem}}'  value='{{option.id}}' (change)='onChange($event)' /> {{ option.name }}
@@ -83,7 +83,9 @@ export class MultiSelectComponent implements OnInit, OnDestroy {
         this._modelOutput = [];
         this._datasource = [];
         if (this.type.toLowerCase() == "filter") {
-            this._modelInput = this.transformeCSVModelFiltersInCollection(this.vm.modelFilter[this.ctrlName])
+            if (this.vm.modelFilter[this.ctrlName]) {
+                this._modelInput = this.transformeCSVModelFiltersInCollection(this.vm.modelFilter[this.ctrlName])
+            }
         }
         else
             this._modelInput = this.vm.model[this.ctrlName];
@@ -110,6 +112,12 @@ export class MultiSelectComponent implements OnInit, OnDestroy {
     private updateValue(value: any, checked: boolean) {
 
         this.addItem(value, checked);
+        this.updateSerialize();
+       
+    }
+
+    private updateSerialize() {
+
         if (this.type.toLowerCase() == "filter")
             return this.vm.modelFilter[this.ctrlName] = this.serializeToFilter();
 
@@ -123,14 +131,15 @@ export class MultiSelectComponent implements OnInit, OnDestroy {
     }
 
     private addItem(value: any, checked: boolean) {
-
-        if (checked) {
-            this._modelOutput.push(value);
-        }
-        else {
-            this._modelOutput = this._modelOutput.filter((item) => {
-                return item != value;
-            });
+        if (value) {
+            if (checked) {
+                this._modelOutput.push(value);
+            }
+            else {
+                this._modelOutput = this._modelOutput.filter((item) => {
+                    return item != value;
+                });
+            }
         }
     }
 
@@ -184,15 +193,22 @@ export class MultiSelectComponent implements OnInit, OnDestroy {
                 this.addItems(selcteds);
             }).on('select2:unselect', (e) => {
                 var selcteds = $("#" + this._ctrlNameNumberId).val();
-                this.vm.model[this.ctrlName] = null;
-                this.vm.modelFilter[this.ctrlName] = null;
+                if (selcteds.length > 0) {
+                    this._modelOutput = [];
+                    this.addItems(selcteds);
+                }
+                else {
+                    if (this.ctrlName) {
+                        this.vm.model[this.ctrlName] = null;
+                        this.vm.modelFilter[this.ctrlName] = null;
+                    }
+                }
             });
         }, 100);
 
     }
 
     private getInstanceMultiSelect(filters: any) {
-
 
         this.api.setResource(this.dataitem, this.endpoint).getDataitem(filters).subscribe(result => {
             this._datasource = [];
