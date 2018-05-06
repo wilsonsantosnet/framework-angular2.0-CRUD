@@ -13,20 +13,26 @@ import { ViewModel } from '../model/viewmodel';
           <div class="input-group">
             <input type="text" readonly="readonly" [(ngModel)]='fileNameOld' class="form-control" placeholder="Selecionar arquivo..." formControlName="{{ctrlName}}" />
             <span class="btn-group">
-              <button class="btn btn-secondary" (click)="file.click()" type="button" >Procurar</button>
-              <button class='btn btn-secondary' [hidden]="!fileName" type='button' (click)='onDelete()'>Excluir</button>
+              <button class="btn btn-secondary" (click)="file.click()" type="button" style='width:100px'>Procurar</button>
+              <button class='btn btn-secondary' [hidden]="!fileName" type='button' (click)='onDelete()' style='width:100px'>Excluir</button>
             </span>
           </div>
-          <br>
-          <a *ngIf='fileName' href='{{downloadUri}}{{folder}}/{{fileName}}' target='_blank'>{{fileNameOld}}</a>
-          <br>
-          <img *ngIf='fileName && isImage' src='{{downloadUri}}{{folder}}/{{fileName}}' style='max-width:100%' />
-          <img *ngIf='fileName && !isImage' src='../../../assets/img/file_icon.png' style='max-width:100%' />
+          <hr *ngIf='fileName'>
+          <div class="input-group">
+            <input *ngIf='fileName' type='text' id='{{fileName}}' value='{{downloadUri}}{{folder}}/{{fileName}}' class="form-control">
+            <span class="btn-group">
+              <button class='btn btn-secondary' [hidden]="!fileName" type='button' (click)='copyToClipboard(fileName)' style='width:100px'>Copy</button>
+              <a class='btn btn-secondary' *ngIf='fileName' href='{{downloadUri}}{{folder}}/{{fileName}}' target='_blank' style='width:100px'>Ver</a>
+            </span>
+          </div>
+          <hr *ngIf='fileName'>
+          <img *ngIf='fileName' src='{{downloadUri}}{{folder}}/{{fileName}}' style='max-width:100%' />
+          <hr *ngIf='fileName'>
           <div *ngIf='pasteArea' class='upload-component-paste-area upload-component-drop-area' id='upload-component-paste-area'>
           <p class='muted'>Arraste e solte arquivos ou cole PrintScreans de telas<p>
           </div>
       </section>
-    </div>`,
+    </div> `,
     providers: [ApiService],
 })
 export class UploadCustomComponent implements OnInit, OnDestroy {
@@ -97,6 +103,12 @@ export class UploadCustomComponent implements OnInit, OnDestroy {
         this.fileName = this.vm.model[this.ctrlName]
     }
 
+    copyToClipboard(file: any) {
+        var copyText = document.getElementById(file) as any;
+        copyText.select();
+        document.execCommand("Copy");
+
+    }
 
     handleDrop(e: any) {
         e.preventDefault();
