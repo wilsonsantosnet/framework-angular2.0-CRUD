@@ -197,3 +197,15 @@ TableInfo = new UniqueListTableInfo
 		
 ```
 
+### multiselect
+
+```
+div class="row">
+  <section class="col-md-12">
+    <div class='form-group'>
+      <label>{{ vm.infos.collectionManySampleType.label }}</label>
+      <multiselect name='collectionManySampleType' [vm]="vm" [dataitem]="'SampleType'" [fieldFilterName]="'Name'" [ctrlName]="'collectionManySampleType'" [ctrlNameItem]="'sampleTypeId'" [type]="'save'"></multiselect>
+    </div>
+  </section>
+</div>
+```
