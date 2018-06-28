@@ -199,6 +199,14 @@ TableInfo = new UniqueListTableInfo
 
 ## Multiselect
 
+## HTML
+
+- [dataitem]="'SampleType'" -- Nome do Recurso na API (Controller com Metodod getDataItem Implementado).
+- [ctrlName]="'collectionSampleType'" -- Nome da propriedade da vm onde sera adicionado os dados selecionados.
+- [vm]="vm" -- model da tela que consome o componete e que sera usada para o post.
+- [ctrlNameItem]="'typeId'" -- nome do campo do item da collection collectionSampleType.
+- [fieldFilterName]="'name'" -- Campo usado para fazer o filtro do itens.
+
 ```
 div class="row">
   <section class="col-md-12">
