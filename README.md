@@ -197,7 +197,7 @@ TableInfo = new UniqueListTableInfo
 		
 ```
 
-### multiselect
+## Multiselect
 
 ```
 div class="row">
