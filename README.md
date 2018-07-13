@@ -206,6 +206,15 @@ TableInfo = new UniqueListTableInfo
 - [vm]="vm" -- model da tela que consome o componete e que sera usada para o post.
 - [ctrlNameItem]="'sampleTypeId'" -- nome do campo do item da collection collectionSampleType.
 - [fieldFilterName]="'name'" -- Campo usado para fazer o filtro do itens.
+- [type]="'save or filter'" -- defeine como a model sera construida
+
+
+```
+//Para Save
+collectionManySampleType :[{sampleTypeId: "1"}, {sampleTypeId: "6"}]
+//Para Filter
+collectionManySampleType :[1,6]
+```
 
 ```
 div class="row">
