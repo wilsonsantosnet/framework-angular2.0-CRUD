@@ -211,9 +211,9 @@ TableInfo = new UniqueListTableInfo
 
 ```
 //Para Save
-collectionManySampleType :[{sampleTypeId: "1"}, {sampleTypeId: "6"}]
+vm.model.collectionManySampleType :[{sampleTypeId: "1"}, {sampleTypeId: "6"}]
 //Para Filter
-collectionManySampleType :[1,6]
+vm.modelFilter.collectionManySampleType :[1,6]
 ```
 
 ```
